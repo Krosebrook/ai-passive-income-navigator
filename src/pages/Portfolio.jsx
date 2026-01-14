@@ -32,6 +32,7 @@ import MonetizationModal from '@/components/monetization/MonetizationModal';
 import FinancialEntry from '@/components/finance/FinancialEntry';
 import PerformanceCharts from '@/components/finance/PerformanceCharts';
 import ViabilityScore from '@/components/enrichment/ViabilityScore';
+import IdeaGeneratorModal from '@/components/ideas/IdeaGeneratorModal';
 import { GRADIENT_OPTIONS } from '@/components/data/ideasCatalog';
 
 const STATUS_OPTIONS = ['all', 'exploring', 'planning', 'in_progress', 'launched', 'paused'];
@@ -46,6 +47,7 @@ export default function Portfolio() {
   const [analyzingIdea, setAnalyzingIdea] = useState(null);
   const [selectedIdea, setSelectedIdea] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showIdeaGenerator, setShowIdeaGenerator] = useState(false);
   const [newIdea, setNewIdea] = useState({
     title: '',
     description: '',
@@ -58,6 +60,14 @@ export default function Portfolio() {
   const { data: ideas = [], isLoading } = useQuery({
     queryKey: ['portfolioIdeas'],
     queryFn: () => base44.entities.PortfolioIdea.list('-created_date')
+  });
+
+  const { data: preferences } = useQuery({
+    queryKey: ['userPreferences'],
+    queryFn: async () => {
+      const prefs = await base44.entities.UserPreferences.list();
+      return prefs.length > 0 ? prefs[0] : null;
+    }
   });
 
   const updateMutation = useMutation({
@@ -130,13 +140,22 @@ export default function Portfolio() {
           title="My Portfolio"
           subtitle="Manage and track your passive income ideas"
           action={
-            <Button
-              onClick={() => setShowAddModal(true)}
-              className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 gap-2"
-            >
-              <Plus className="w-5 h-5" />
-              Add Idea
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                onClick={() => setShowIdeaGenerator(true)}
+                className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 gap-2"
+              >
+                <Sparkles className="w-5 h-5" />
+                Generate Ideas
+              </Button>
+              <Button
+                onClick={() => setShowAddModal(true)}
+                className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 gap-2"
+              >
+                <Plus className="w-5 h-5" />
+                Add Idea
+              </Button>
+            </div>
           }
         />
 
@@ -394,6 +413,13 @@ export default function Portfolio() {
         idea={analyzingIdea}
         open={!!analyzingIdea}
         onClose={() => setAnalyzingIdea(null)}
+      />
+
+      {/* Idea Generator Modal */}
+      <IdeaGeneratorModal
+        open={showIdeaGenerator}
+        onClose={() => setShowIdeaGenerator(false)}
+        userPreferences={preferences}
       />
     </div>
   );
