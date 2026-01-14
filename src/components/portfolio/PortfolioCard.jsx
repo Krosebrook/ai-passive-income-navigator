@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import TaskManager from '@/components/portfolio/TaskManager';
 import { 
   MoreVertical, Trash2, Edit2, Sparkles, LineChart, 
   ChevronDown, Clock, DollarSign 
@@ -182,8 +183,13 @@ export default function PortfolioCard({
               ))}
             </div>
           )}
-        </CardContent>
-      </Card>
-    </motion.div>
-  );
-}
+
+          {/* Task Manager */}
+          <div className="mt-4 pt-4 border-t border-gray-200">
+            <TaskManager ideaId={idea.id} />
+          </div>
+          </CardContent>
+          </Card>
+          </motion.div>
+          );
+          }
