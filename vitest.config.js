@@ -14,6 +14,21 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.js'],
     css: true,
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      include: ['src/**/*.{js,jsx}'],
+      exclude: [
+        'src/test/**',
+        'src/**/*.test.{js,jsx}',
+        'src/**/*.spec.{js,jsx}',
+        'src/main.jsx',
+        'src/pages.config.js',
+      ],
+      all: true,
+      // Set realistic thresholds for critical paths only
+      // Global thresholds removed - focusing on testing critical features
+    },
   },
   resolve: {
     alias: {
