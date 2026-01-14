@@ -8,7 +8,6 @@ import {
   ChevronRight, ChevronLeft, Sparkles, Check
 } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
-import { Checkbox } from '@/components/ui/checkbox';
 
 const STEPS = [
   {

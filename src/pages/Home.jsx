@@ -5,14 +5,10 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { 
-  Sparkles, TrendingUp, FolderHeart, Bookmark, 
-  ArrowRight, MessageSquare, Zap, Target
+  Sparkles, TrendingUp, FolderHeart, Bookmark, MessageSquare, Zap, Target
 } from 'lucide-react';
 
-import PageHeader from '@/components/ui/PageHeader';
-import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import IdeaCard from '@/components/ideas/IdeaCard';
 import CategoryFilter from '@/components/ideas/CategoryFilter';
 import SearchBar from '@/components/ideas/SearchBar';

@@ -3,15 +3,14 @@ import { motion } from 'framer-motion';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent } from '@/components/ui/card';
 import { 
   TrendingUp, Lightbulb, Zap, Wrench, RefreshCw,
-  Loader2, ArrowUpRight, Bell, BellOff
+  Loader2, Bell
 } from 'lucide-react';
 
 import PageHeader from '@/components/ui/PageHeader';
-import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import TrendCard from '@/components/trends/TrendCard';
 
 const TREND_CATEGORIES = [

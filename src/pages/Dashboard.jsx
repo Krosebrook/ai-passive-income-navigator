@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
@@ -7,8 +7,8 @@ import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { 
-  TrendingUp, DollarSign, Target, Zap, Clock,
-  ArrowUpRight, FolderHeart, Bookmark, Sparkles,
+  TrendingUp, Target, Zap,
+  ArrowUpRight, FolderHeart, Sparkles,
   BarChart3, PieChart
 } from 'lucide-react';
 import {
@@ -19,7 +19,7 @@ import {
 
 import PageHeader from '@/components/ui/PageHeader';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
-import { IDEAS_CATALOG, CATEGORIES, STATUS_COLORS } from '@/components/data/ideasCatalog';
+import { CATEGORIES, STATUS_COLORS } from '@/components/data/ideasCatalog';
 
 const CHART_COLORS = ['#8b5cf6', '#06b6d4', '#10b981', '#f59e0b', '#ef4444'];
 

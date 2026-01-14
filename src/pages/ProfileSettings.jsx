@@ -3,11 +3,9 @@ import { motion } from 'framer-motion';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
   Select,
   SelectContent,
@@ -16,7 +14,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { 
-  User, Settings, Target, Clock, DollarSign,
+  User, Settings, Target,
   Save, Loader2, CheckCircle, LogOut
 } from 'lucide-react';
 import { toast } from 'sonner';

@@ -7,7 +7,7 @@ import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { 
-  Bookmark, Trash2, ArrowRight, Plus, FolderHeart,
+  Bookmark, Trash2, ArrowRight, Plus,
   Search
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
