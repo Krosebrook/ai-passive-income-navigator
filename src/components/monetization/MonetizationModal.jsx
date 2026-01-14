@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   DollarSign, Users, Scale, Megaphone, Target, 
-  Loader2, Copy, CheckCircle, TrendingUp
+  Loader2, Copy, CheckCircle, TrendingUp, Calendar, FileCheck
 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
@@ -17,7 +17,8 @@ import { toast } from 'sonner';
 const ANALYSIS_TABS = [
   { id: 'pricing', label: 'Pricing Strategy', icon: DollarSign },
   { id: 'competitors', label: 'Competitors', icon: Users },
-  { id: 'legal', label: 'Legal', icon: Scale },
+  { id: 'legal', label: 'Legal Compliance', icon: Scale },
+  { id: 'campaigns', label: 'Campaign Manager', icon: Calendar },
   { id: 'marketing', label: 'Marketing Copy', icon: Megaphone },
   { id: 'validation', label: 'Validation', icon: Target }
 ];
@@ -34,7 +35,30 @@ export default function MonetizationModal({ idea, open, onClose, existingAnalysi
     const prompts = {
       pricing: `Analyze pricing strategy for this business idea: "${idea.title}". Description: ${idea.description}. Include: recommended pricing tiers, competitive pricing analysis, psychological pricing tactics, and revenue projections.`,
       competitors: `Perform competitor analysis for: "${idea.title}". Include: top 5 competitors, market gaps, differentiation strategies, SWOT analysis.`,
-      legal: `Provide legal compliance requirements for: "${idea.title}". Include: recommended business structure, required licenses, tax obligations, data privacy requirements, IP considerations.`,
+      legal: `Provide comprehensive legal compliance checklist for: "${idea.title}". Description: ${idea.description}. Category: ${idea.category}. Include:
+1. Recommended business structure (LLC, Corporation, Sole Proprietorship) with pros/cons for this specific niche
+2. Required licenses and permits (federal, state, local) specific to this industry
+3. Tax obligations (income tax, sales tax, payroll tax, self-employment tax)
+4. Industry-specific regulations and compliance requirements
+5. Data privacy laws (GDPR, CCPA, COPPA if applicable)
+6. Intellectual property considerations (trademarks, copyrights, patents)
+7. Terms of service and privacy policy requirements
+8. Insurance recommendations (liability, professional, cyber)
+9. Estimated costs for legal setup and ongoing compliance
+10. Timeline for getting legally compliant`,
+      campaigns: `Create a comprehensive multi-channel marketing campaign automation plan for: "${idea.title}". Description: ${idea.description}. Include:
+1. Campaign Calendar: 90-day marketing schedule with specific dates and campaigns
+2. Multi-Channel Strategy: Email sequences, social media posts, paid ads, content marketing
+3. Automation Workflows: Welcome sequences, nurture campaigns, re-engagement flows
+4. Channel-Specific Tactics:
+   - Email: Subject lines, preview text, body copy, CTAs (5 sequences)
+   - Social Media: Platform-specific posts for Facebook, Instagram, LinkedIn, Twitter (30 posts total)
+   - Paid Ads: Google Ads and Facebook Ads copy with targeting suggestions (10 ad variations)
+   - Content Marketing: Blog topics, video ideas, podcast topics (15 ideas)
+5. Key Performance Indicators (KPIs) to track for each channel
+6. Budget allocation recommendations across channels
+7. A/B testing suggestions
+8. Tools and platforms needed for automation`,
       marketing: `Create marketing copy for: "${idea.title}". Include: landing page headlines and copy, 3 email campaign templates, 10 social media posts, 5 ad copy variations.`,
       validation: `Validate this business idea: "${idea.title}". Include: market size (TAM, SAM, SOM), target audience profile, competition analysis, monetization potential score (1-10), risk factors, recommended next steps.`
     };
@@ -119,10 +143,14 @@ export default function MonetizationModal({ idea, open, onClose, existingAnalysi
           </div>
         )}
 
-        {/* Analysis Content */}
+        {/* Analysis Content - Enhanced Display */}
         <div className="bg-gray-50 rounded-xl p-4">
           <div className="flex items-center justify-between mb-4">
-            <h4 className="font-medium text-gray-900">Analysis Details</h4>
+            <h4 className="font-medium text-gray-900">
+              {activeTab === 'legal' && '📋 Legal Compliance Checklist'}
+              {activeTab === 'campaigns' && '📅 Campaign Automation Plan'}
+              {!['legal', 'campaigns'].includes(activeTab) && 'Analysis Details'}
+            </h4>
             <Button
               variant="ghost"
               size="sm"
@@ -133,9 +161,39 @@ export default function MonetizationModal({ idea, open, onClose, existingAnalysi
               Copy
             </Button>
           </div>
-          <pre className="text-sm text-gray-600 whitespace-pre-wrap overflow-auto max-h-64">
-            {JSON.stringify(currentAnalysis.analysis, null, 2)}
-          </pre>
+          
+          {/* Structured Display for Legal and Campaigns */}
+          {(activeTab === 'legal' || activeTab === 'campaigns') ? (
+            <div className="space-y-4 max-h-96 overflow-y-auto">
+              {Object.entries(currentAnalysis.analysis).map(([key, value]) => (
+                <div key={key} className="bg-white rounded-lg p-4 border border-gray-200">
+                  <h5 className="font-semibold text-gray-900 mb-2 capitalize">
+                    {key.replace(/_/g, ' ')}
+                  </h5>
+                  {Array.isArray(value) ? (
+                    <ul className="space-y-2">
+                      {value.map((item, i) => (
+                        <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
+                          <span className="w-1.5 h-1.5 rounded-full bg-violet-500 mt-1.5 flex-shrink-0" />
+                          {typeof item === 'object' ? JSON.stringify(item) : item}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : typeof value === 'object' ? (
+                    <pre className="text-xs text-gray-600 whitespace-pre-wrap">
+                      {JSON.stringify(value, null, 2)}
+                    </pre>
+                  ) : (
+                    <p className="text-sm text-gray-700">{value}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <pre className="text-sm text-gray-600 whitespace-pre-wrap overflow-auto max-h-64">
+              {JSON.stringify(currentAnalysis.analysis, null, 2)}
+            </pre>
+          )}
         </div>
 
         {/* Recommendations */}
@@ -180,13 +238,13 @@ export default function MonetizationModal({ idea, open, onClose, existingAnalysi
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 overflow-hidden flex flex-col">
-          <TabsList className="grid grid-cols-5 mb-4">
+          <TabsList className="grid grid-cols-6 mb-4">
             {ANALYSIS_TABS.map((tab) => {
               const Icon = tab.icon;
               return (
                 <TabsTrigger key={tab.id} value={tab.id} className="gap-2">
                   <Icon className="w-4 h-4" />
-                  <span className="hidden sm:inline">{tab.label}</span>
+                  <span className="hidden lg:inline text-xs">{tab.label}</span>
                 </TabsTrigger>
               );
             })}
