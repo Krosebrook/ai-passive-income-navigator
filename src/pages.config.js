@@ -1,31 +1,33 @@
-import { lazy } from 'react';
-import Home from './pages/Home';
 import Bookmarks from './pages/Bookmarks';
-import Trends from './pages/Trends';
+import bookmarksTest from './pages/Bookmarks.test';
 import Community from './pages/Community';
-
-// Safe addition: Lazy load largest pages to improve initial load time
-// Reduces main bundle size by code-splitting heavy pages
-// Pages load on-demand when user navigates to them
-// Smallest pages (Home, Bookmarks, Trends, Community) remain eagerly loaded for fast initial render
-const IdeaDetail = lazy(() => import('./pages/IdeaDetail'));
-const Portfolio = lazy(() => import('./pages/Portfolio'));
-const Dashboard = lazy(() => import('./pages/Dashboard'));
-const ProfileSettings = lazy(() => import('./pages/ProfileSettings'));
+import Dashboard from './pages/Dashboard';
+import Home from './pages/Home';
+import IdeaDetail from './pages/IdeaDetail';
+import Portfolio from './pages/Portfolio';
+import portfolioTest from './pages/Portfolio.test';
+import ProfileSettings from './pages/ProfileSettings';
+import Trends from './pages/Trends';
+import Learn from './pages/Learn';
+import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
+    "Bookmarks": Bookmarks,
+    "Bookmarks.test": bookmarksTest,
+    "Community": Community,
+    "Dashboard": Dashboard,
     "Home": Home,
     "IdeaDetail": IdeaDetail,
     "Portfolio": Portfolio,
-    "Bookmarks": Bookmarks,
-    "Trends": Trends,
-    "Dashboard": Dashboard,
-    "Community": Community,
+    "Portfolio.test": portfolioTest,
     "ProfileSettings": ProfileSettings,
+    "Trends": Trends,
+    "Learn": Learn,
 }
 
 export const pagesConfig = {
     mainPage: "Home",
     Pages: PAGES,
+    Layout: __Layout,
 };
