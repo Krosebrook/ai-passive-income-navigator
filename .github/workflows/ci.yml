@@ -8,6 +8,11 @@ on:
   pull_request:
     branches: [ main, master, develop ]
 
+# Security: Limit GITHUB_TOKEN permissions to minimum required
+# This follows the principle of least privilege for CI workflows
+permissions:
+  contents: read  # Read repository contents for checkout
+
 jobs:
   quality-checks:
     name: Code Quality & Security
