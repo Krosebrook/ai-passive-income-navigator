@@ -13,6 +13,8 @@ import {
 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
+import PricingStrategyTool from '@/components/monetization/PricingStrategyTool';
+import FinancialProjectionsTool from '@/components/monetization/FinancialProjectionsTool';
 
 const ANALYSIS_TABS = [
   { id: 'pricing', label: 'Pricing Strategy', icon: DollarSign },
@@ -28,6 +30,8 @@ export default function MonetizationModal({ idea, open, onClose, existingAnalysi
   const [isLoading, setIsLoading] = useState(false);
   const [analysis, setAnalysis] = useState(existingAnalysis || {});
   const [copied, setCopied] = useState(false);
+  const [showPricingTool, setShowPricingTool] = useState(false);
+  const [showProjections, setShowProjections] = useState(false);
 
   const generateAnalysis = async (type) => {
     setIsLoading(true);
@@ -124,12 +128,24 @@ export default function MonetizationModal({ idea, open, onClose, existingAnalysi
           <p className="text-gray-500 text-center max-w-md mb-6">
             Get AI-powered insights to help you monetize your idea effectively.
           </p>
-          <Button
-            onClick={() => generateAnalysis(activeTab)}
-            className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700"
-          >
-            Generate Analysis
-          </Button>
+          <div className="flex flex-col gap-3">
+            <Button
+              onClick={() => generateAnalysis(activeTab)}
+              className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700"
+            >
+              Generate Analysis
+            </Button>
+            {activeTab === 'pricing' && (
+              <Button
+                onClick={() => setShowPricingTool(true)}
+                variant="outline"
+                className="gap-2"
+              >
+                <TrendingUp className="w-4 h-4" />
+                Advanced Pricing Tool
+              </Button>
+            )}
+          </div>
         </div>
       );
     }
@@ -216,6 +232,18 @@ export default function MonetizationModal({ idea, open, onClose, existingAnalysi
           </div>
         )}
 
+        {/* Advanced Tools */}
+        {activeTab === 'pricing' && (
+          <Button
+            onClick={() => setShowPricingTool(true)}
+            variant="outline"
+            className="w-full gap-2"
+          >
+            <TrendingUp className="w-4 h-4" />
+            Open Advanced Pricing Tool
+          </Button>
+        )}
+
         {/* Regenerate */}
         <Button
           variant="outline"
@@ -254,6 +282,21 @@ export default function MonetizationModal({ idea, open, onClose, existingAnalysi
             {renderContent()}
           </div>
         </Tabs>
+
+        {/* Pricing Strategy Tool */}
+        <PricingStrategyTool
+          ideaTitle={idea?.title}
+          ideaDescription={idea?.description}
+          open={showPricingTool}
+          onClose={() => setShowPricingTool(false)}
+        />
+
+        {/* Financial Projections Tool */}
+        <FinancialProjectionsTool
+          ideaTitle={idea?.title}
+          open={showProjections}
+          onClose={() => setShowProjections(false)}
+        />
       </DialogContent>
     </Dialog>
   );
