@@ -8,6 +8,7 @@ import {
   ChevronRight, ChevronLeft, Sparkles, Check
 } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
+import GuidedTour from './GuidedTour';
 
 const STEPS = [
   {
@@ -55,8 +56,9 @@ const SKILLS = [
   'Social Media', 'Photography', 'Finance', 'Project Management'
 ];
 
-export default function OnboardingModal({ open, onComplete }) {
+export default function OnboardingModal({ open, onComplete, showTour = true }) {
   const [step, setStep] = useState(0);
+  const [showGuide, setShowGuide] = useState(false);
   const [preferences, setPreferences] = useState({
     passive_income_goal: '',
     time_commitment: 2,
@@ -71,6 +73,9 @@ export default function OnboardingModal({ open, onComplete }) {
       setStep(step + 1);
     } else {
       onComplete?.(preferences);
+      if (showTour) {
+        setShowGuide(true);
+      }
     }
   };
 
@@ -238,6 +243,7 @@ export default function OnboardingModal({ open, onComplete }) {
   };
 
   return (
+    <>
     <Dialog open={open} onOpenChange={() => {}}>
       <DialogContent className="sm:max-w-2xl p-0 gap-0 overflow-hidden" hideCloseButton>
         {/* Progress */}
@@ -281,5 +287,14 @@ export default function OnboardingModal({ open, onComplete }) {
         </div>
       </DialogContent>
     </Dialog>
+
+    {showGuide && (
+      <GuidedTour
+        open={showGuide}
+        onClose={() => setShowGuide(false)}
+        onComplete={() => setShowGuide(false)}
+      />
+    )}
+    </>
   );
 }
