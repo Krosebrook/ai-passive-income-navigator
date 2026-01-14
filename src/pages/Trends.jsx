@@ -12,19 +12,22 @@ import {
 
 import PageHeader from '@/components/ui/PageHeader';
 import TrendCard from '@/components/trends/TrendCard';
+import TrendAnalysisPanel from '@/components/trends/TrendAnalysisPanel';
 
 const TREND_CATEGORIES = [
-  { id: 'opportunity', label: 'Opportunities', icon: TrendingUp },
-  { id: 'niche', label: 'Hot Niches', icon: Lightbulb },
-  { id: 'shift', label: 'Market Shifts', icon: Zap },
-  { id: 'tool', label: 'Rising Tools', icon: Wrench }
+  { id: 'opportunity', label: 'Opportunities', icon: TrendingUp, analysisKey: 'opportunities' },
+  { id: 'niche', label: 'Hot Niches', icon: Lightbulb, analysisKey: 'niches' },
+  { id: 'shift', label: 'Market Shifts', icon: Zap, analysisKey: 'consumer' },
+  { id: 'tool', label: 'Rising Tools', icon: Wrench, analysisKey: 'technologies' }
 ];
 
 export default function Trends() {
   const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = useState('opportunity');
   const [trends, setTrends] = useState({});
+  const [trendAnalysis, setTrendAnalysis] = useState({});
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(null);
 
   const { data: followedTrends = [] } = useQuery({
@@ -113,11 +116,29 @@ export default function Trends() {
     setIsGenerating(false);
   };
 
+  const analyzeTrends = async (category) => {
+    setIsAnalyzing(true);
+    const analysisKey = TREND_CATEGORIES.find(c => c.id === category)?.analysisKey || 'opportunities';
+    
+    const response = await base44.functions.invoke('analyzeMarketTrends', { category: analysisKey });
+    setTrendAnalysis(prev => ({
+      ...prev,
+      [category]: response.data
+    }));
+    setIsAnalyzing(false);
+  };
+
   useEffect(() => {
     if (Object.keys(trends).length === 0) {
       generateTrends();
     }
   }, []);
+
+  useEffect(() => {
+    if (!trendAnalysis[activeTab] && Object.keys(trends).length > 0) {
+      analyzeTrends(activeTab);
+    }
+  }, [activeTab]);
 
   const currentTrends = trends[activeTab] || [];
   const isFollowed = (trend) => followedTrends.some(f => f.trend_name === trend.name);
@@ -185,6 +206,27 @@ export default function Trends() {
             })}
           </TabsList>
         </Tabs>
+
+        {/* AI Analysis */}
+        {!isGenerating && Object.keys(trends).length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8"
+          >
+            {isAnalyzing ? (
+              <div className="flex flex-col items-center justify-center py-8">
+                <Loader2 className="w-10 h-10 text-violet-600 animate-spin mb-2" />
+                <p className="text-gray-600 text-sm">Generating detailed insights...</p>
+              </div>
+            ) : (
+              <TrendAnalysisPanel 
+                analysis={trendAnalysis[activeTab]} 
+                category={activeTab}
+              />
+            )}
+          </motion.div>
+        )}
 
         {/* Trends Grid */}
         {isGenerating ? (
