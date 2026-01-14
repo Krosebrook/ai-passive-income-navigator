@@ -8,11 +8,19 @@ import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ErrorBoundary from '@/components/ErrorBoundary';
+import { Suspense } from 'react';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
 const MainPage = mainPageKey ? Pages[mainPageKey] : <></>;
 
+// Safe addition: Loading spinner for lazy-loaded pages
+// Shows while code-split pages are being loaded
+const LoadingSpinner = () => (
+  <div className="fixed inset-0 flex items-center justify-center">
+    <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
+  </div>
+);
 // Safe addition: Route-level error boundaries for each page
 // Catches errors within individual pages without crashing entire app
 // Allows other routes to work even if one route has an error
@@ -26,7 +34,11 @@ const LayoutWrapper = ({ children, currentPageName }) => {
       title={`Error in ${currentPageName || 'Page'}`}
       message="This page encountered an error. Try navigating to another page."
     >
-      {content}
+      {/* Safe addition: Suspense wrapper for lazy-loaded pages */}
+      {/* Shows loading spinner while code-split chunks are loading */}
+      <Suspense fallback={<LoadingSpinner />}>
+        {content}
+      </Suspense>
     </ErrorBoundary>
   );
 };
