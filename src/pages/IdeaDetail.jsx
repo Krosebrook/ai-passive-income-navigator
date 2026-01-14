@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { 
   ArrowLeft, Bookmark, BookmarkCheck, Plus, Star,
-  Clock, DollarSign, Zap, ExternalLink, Sparkles,
+  Clock, DollarSign, Zap, Sparkles,
   ChevronRight, LineChart
 } from 'lucide-react';
 

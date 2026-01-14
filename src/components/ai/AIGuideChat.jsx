@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { 
   Send, Sparkles, Bot, User, Loader2, 
-  Lightbulb, RefreshCw, X
+  Lightbulb, X
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { base44 } from '@/api/base44Client';

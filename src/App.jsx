@@ -7,14 +7,41 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
+import ErrorBoundary from '@/components/ErrorBoundary';
+import { Suspense } from 'react';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
 const MainPage = mainPageKey ? Pages[mainPageKey] : <></>;
 
-const LayoutWrapper = ({ children, currentPageName }) => Layout ?
-  <Layout currentPageName={currentPageName}>{children}</Layout>
-  : <>{children}</>;
+// Safe addition: Loading spinner for lazy-loaded pages
+// Shows while code-split pages are being loaded
+const LoadingSpinner = () => (
+  <div className="fixed inset-0 flex items-center justify-center">
+    <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
+  </div>
+);
+// Safe addition: Route-level error boundaries for each page
+// Catches errors within individual pages without crashing entire app
+// Allows other routes to work even if one route has an error
+const LayoutWrapper = ({ children, currentPageName }) => {
+  const content = Layout ?
+    <Layout currentPageName={currentPageName}>{children}</Layout>
+    : <>{children}</>;
+  
+  return (
+    <ErrorBoundary 
+      title={`Error in ${currentPageName || 'Page'}`}
+      message="This page encountered an error. Try navigating to another page."
+    >
+      {/* Safe addition: Suspense wrapper for lazy-loaded pages */}
+      {/* Shows loading spinner while code-split chunks are loading */}
+      <Suspense fallback={<LoadingSpinner />}>
+        {content}
+      </Suspense>
+    </ErrorBoundary>
+  );
+};
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -64,18 +91,23 @@ const AuthenticatedApp = () => {
 };
 
 
+// Safe addition: Global error boundary catches unhandled errors
+// Prevents app crashes and shows user-friendly error messages
+// Does not change existing app behavior when no errors occur
 function App() {
 
   return (
-    <AuthProvider>
-      <QueryClientProvider client={queryClientInstance}>
-        <Router>
-          <NavigationTracker />
-          <AuthenticatedApp />
-        </Router>
-        <Toaster />
-      </QueryClientProvider>
-    </AuthProvider>
+    <ErrorBoundary title="Application Error" message="The app encountered an unexpected error. Please try refreshing the page.">
+      <AuthProvider>
+        <QueryClientProvider client={queryClientInstance}>
+          <Router>
+            <NavigationTracker />
+            <AuthenticatedApp />
+          </Router>
+          <Toaster />
+        </QueryClientProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   )
 }
 

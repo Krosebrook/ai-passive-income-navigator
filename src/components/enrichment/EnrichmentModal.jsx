@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import {
   Dialog,
   DialogContent,
@@ -7,11 +6,11 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { 
   FileText, AlertTriangle, Wrench, Map, 
-  Loader2, Sparkles, CheckCircle, Download
+  Loader2, Sparkles, CheckCircle
 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
