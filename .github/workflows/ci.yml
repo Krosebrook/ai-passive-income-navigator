@@ -37,9 +37,12 @@ jobs:
       - name: Security audit
         run: npm audit --audit-level=critical
         continue-on-error: false
-        # Fails build on critical vulnerabilities only
-        # Moderate/high vulnerabilities are logged but don't block PRs
-        # Run `npm audit --audit-level=high` locally for full report
+        # Only fails on CRITICAL vulnerabilities
+        # Rationale: This is a pre-MVP app (v0.0.0) with existing moderate/high vulnerabilities
+        # that are not introduced by this refactoring. Blocking on critical only allows
+        # development to continue while surfacing the most severe issues.
+        # TODO: Address existing moderate/high vulnerabilities before production release
+        # Run `npm audit` locally to see full vulnerability report
       
       - name: Build check
         run: npm run build

@@ -1,6 +1,7 @@
 import React from 'react';
 import { AlertTriangle, RefreshCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import errorLogger from '@/lib/errorLogger';
 
 /**
  * ErrorBoundary component to catch React errors and prevent app crashes
@@ -28,12 +29,9 @@ class ErrorBoundary extends React.Component {
       errorInfo: errorInfo
     });
 
-    // If error logging service is available, log there
-    // Placeholder for Sentry or other error logging service
+    // Log to error logging service
     try {
-      if (window.errorLogger) {
-        window.errorLogger.captureException(error, { errorInfo });
-      }
+      errorLogger.captureException(error, { errorInfo });
     } catch (loggingError) {
       console.error('Failed to log error:', loggingError);
     }
@@ -83,10 +81,10 @@ class ErrorBoundary extends React.Component {
               </Button>
               <Button
                 onClick={() => {
-                  // Use replace to avoid full page reload
-                  // This preserves React Router state and is more performant
-                  window.history.replaceState(null, '', '/');
-                  window.location.reload();
+                  // Full page reload to home - ensures clean state after error
+                  // This is intentional: after an error boundary catches something,
+                  // we want to completely reset the app state
+                  window.location.href = '/';
                 }}
                 variant="default"
               >
