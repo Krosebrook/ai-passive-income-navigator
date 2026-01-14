@@ -1,0 +1,61 @@
+name: CI Pipeline
+
+# Safe addition: Runs only on pull requests, doesn't affect development flow
+# Performs basic checks: linting, testing, and security audits
+# Helps catch issues before merging without blocking development
+
+on:
+  pull_request:
+    branches: [ main, master, develop ]
+
+jobs:
+  quality-checks:
+    name: Code Quality & Security
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run ESLint
+        run: npm run lint
+        continue-on-error: false
+      
+      - name: Run tests
+        run: npm test
+        continue-on-error: false
+      
+      - name: Security audit
+        run: npm audit --audit-level=high
+        continue-on-error: true
+        # Continue on error to not block PRs on vulnerability reports
+        # but still shows them in the CI output
+      
+      - name: Build check
+        run: npm run build
+        continue-on-error: false
+
+  summary:
+    name: CI Summary
+    runs-on: ubuntu-latest
+    needs: quality-checks
+    if: always()
+    
+    steps:
+      - name: Check results
+        run: |
+          if [ "${{ needs.quality-checks.result }}" == "success" ]; then
+            echo "✅ All quality checks passed!"
+          else
+            echo "❌ Some quality checks failed. Please review the logs above."
+            exit 1
+          fi
