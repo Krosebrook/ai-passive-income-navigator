@@ -19,6 +19,7 @@ import {
 
 import PageHeader from '@/components/ui/PageHeader';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import RecommendedIdeas from '@/components/dashboard/RecommendedIdeas';
 import { CATEGORIES, STATUS_COLORS } from '@/components/data/ideasCatalog';
 
 const CHART_COLORS = ['#8b5cf6', '#06b6d4', '#10b981', '#f59e0b', '#ef4444'];
@@ -271,11 +272,21 @@ export default function Dashboard() {
           </Link>
         </motion.div>
 
-        {/* Recent Portfolio Ideas */}
+        {/* Recommended Ideas Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
+          className="mb-8"
+        >
+          <RecommendedIdeas />
+        </motion.div>
+
+        {/* Recent Portfolio Ideas */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
         >
           <Card className="bg-white border-0 shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between">
