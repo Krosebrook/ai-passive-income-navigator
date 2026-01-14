@@ -20,14 +20,19 @@ import {
 import PageHeader from '@/components/ui/PageHeader';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import EmptyState from '@/components/ui/EmptyState';
+import StorySubmissionForm from '@/components/community/StorySubmissionForm';
+import SuccessStoriesBrowser from '@/components/community/SuccessStoriesBrowser';
+import CommunityInsights from '@/components/community/CommunityInsights';
 import { GRADIENT_OPTIONS } from '@/components/data/ideasCatalog';
 
 export default function Community() {
   const queryClient = useQueryClient();
+  const [activeTab, setActiveTab] = useState('ideas'); // ideas, stories, insights
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedIdea, setSelectedIdea] = useState(null);
   const [newComment, setNewComment] = useState('');
   const [showShareModal, setShowShareModal] = useState(false);
+  const [showStoryForm, setShowStoryForm] = useState(false);
   const [shareForm, setShareForm] = useState({
     idea_title: '',
     idea_description: '',
@@ -73,6 +78,14 @@ export default function Community() {
     }
   });
 
+  const storyMutation = useMutation({
+    mutationFn: (data) => base44.entities.SuccessStory.create(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['successStories'] });
+      setShowStoryForm(false);
+    }
+  });
+
   const commentMutation = useMutation({
     mutationFn: async () => {
       await base44.entities.IdeaComment.create({
@@ -101,47 +114,72 @@ export default function Community() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <PageHeader
           title="Community"
-          subtitle="Discover and share passive income ideas"
+          subtitle="Discover success stories and share your journey"
           gradient="from-pink-600 to-rose-600"
-          action={
-            <Button
-              onClick={() => setShowShareModal(true)}
-              className="bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 gap-2"
-            >
-              <Plus className="w-5 h-5" />
-              Share Idea
-            </Button>
-          }
         />
 
-        {/* Search */}
+        {/* Tab Navigation */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
+          className="flex gap-2 mb-8 flex-wrap"
         >
-          <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-            <Input
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search community ideas..."
-              className="pl-12 h-12 bg-white rounded-xl"
-            />
-          </div>
+          {[
+            { id: 'ideas', label: '💡 Ideas' },
+            { id: 'stories', label: '🏆 Success Stories' },
+            { id: 'insights', label: '📊 Community Insights' }
+          ].map(tab => (
+            <Button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              variant={activeTab === tab.id ? 'default' : 'outline'}
+              className={activeTab === tab.id ? 'bg-pink-600 hover:bg-pink-700' : ''}
+            >
+              {tab.label}
+            </Button>
+          ))}
         </motion.div>
 
-        {/* Ideas Grid */}
-        {filteredIdeas.length === 0 ? (
-          <EmptyState
-            icon={Users}
-            title="No community ideas yet"
-            description="Be the first to share your passive income idea with the community!"
-            action={() => setShowShareModal(true)}
-            actionLabel="Share Your Idea"
-          />
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Content Sections */}
+        {activeTab === 'ideas' && (
+          <>
+            {/* Search */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-8"
+            >
+              <div className="relative flex gap-2">
+                <div className="relative flex-1">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <Input
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search community ideas..."
+                    className="pl-12 h-12 bg-white rounded-xl"
+                  />
+                </div>
+                <Button
+                  onClick={() => setShowShareModal(true)}
+                  className="bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 gap-2"
+                >
+                  <Plus className="w-5 h-5" />
+                  Share Idea
+                </Button>
+              </div>
+            </motion.div>
+
+            {/* Ideas Grid */}
+            {filteredIdeas.length === 0 ? (
+              <EmptyState
+                icon={Users}
+                title="No community ideas yet"
+                description="Be the first to share your passive income idea with the community!"
+                action={() => setShowShareModal(true)}
+                actionLabel="Share Your Idea"
+              />
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {filteredIdeas.map((idea, index) => (
               <motion.div
                 key={idea.id}
@@ -186,7 +224,19 @@ export default function Community() {
                 </Card>
               </motion.div>
             ))}
-          </div>
+              </div>
+            )}
+          </>
+        )}
+
+        {/* Success Stories Tab */}
+        {activeTab === 'stories' && (
+          <SuccessStoriesBrowser onSubmitStory={() => setShowStoryForm(true)} />
+        )}
+
+        {/* Community Insights Tab */}
+        {activeTab === 'insights' && (
+          <CommunityInsights category={null} />
         )}
       </div>
 
@@ -227,6 +277,14 @@ export default function Community() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Story Submission Form */}
+      <StorySubmissionForm
+        open={showStoryForm}
+        onClose={() => setShowStoryForm(false)}
+        onSubmit={(story) => storyMutation.mutate(story)}
+        isLoading={storyMutation.isPending}
+      />
 
       {/* Idea Detail Modal */}
       <Dialog open={!!selectedIdea} onOpenChange={() => setSelectedIdea(null)}>
