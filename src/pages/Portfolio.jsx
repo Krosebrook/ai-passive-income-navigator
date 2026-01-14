@@ -29,6 +29,9 @@ import EmptyState from '@/components/ui/EmptyState';
 import PortfolioCard from '@/components/portfolio/PortfolioCard';
 import EnrichmentModal from '@/components/enrichment/EnrichmentModal';
 import MonetizationModal from '@/components/monetization/MonetizationModal';
+import FinancialEntry from '@/components/finance/FinancialEntry';
+import PerformanceCharts from '@/components/finance/PerformanceCharts';
+import ViabilityScore from '@/components/enrichment/ViabilityScore';
 import { GRADIENT_OPTIONS } from '@/components/data/ideasCatalog';
 
 const STATUS_OPTIONS = ['all', 'exploring', 'planning', 'in_progress', 'launched', 'paused'];
@@ -41,6 +44,7 @@ export default function Portfolio() {
   const [editingIdea, setEditingIdea] = useState(null);
   const [enrichingIdea, setEnrichingIdea] = useState(null);
   const [analyzingIdea, setAnalyzingIdea] = useState(null);
+  const [selectedIdea, setSelectedIdea] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [newIdea, setNewIdea] = useState({
     title: '',
@@ -84,6 +88,22 @@ export default function Portfolio() {
         priority: 'medium'
       });
     }
+  });
+
+  const { data: financialData = [] } = useQuery({
+    queryKey: ['financialData', selectedIdea?.id],
+    queryFn: () => selectedIdea ? base44.entities.FinancialData.filter({ portfolio_idea_id: selectedIdea.id }, '-date', 100) : Promise.resolve([]),
+    enabled: !!selectedIdea
+  });
+
+  const financialMutation = useMutation({
+    mutationFn: (data) => base44.entities.FinancialData.create({
+      ...data,
+      portfolio_idea_id: selectedIdea.id,
+      date: new Date().toISOString().split('T')[0],
+      profit: (data.revenue || 0) - (data.expenses || 0)
+    }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['financialData', selectedIdea?.id] })
   });
 
   const filteredIdeas = ideas.filter(idea => {
@@ -189,8 +209,40 @@ export default function Portfolio() {
           </div>
         </motion.div>
 
+        {/* Idea Detail Panel */}
+        {selectedIdea && (
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="mb-8 bg-white rounded-2xl p-6 border border-gray-200"
+          >
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">{selectedIdea.title}</h2>
+                <p className="text-gray-500 mt-1">{selectedIdea.description}</p>
+              </div>
+              <Button variant="ghost" onClick={() => setSelectedIdea(null)}>
+                Close
+              </Button>
+            </div>
+
+            {/* Financial Tracking */}
+            <div className="space-y-6">
+              <FinancialEntry
+                idea={selectedIdea}
+                onSave={financialMutation.mutate}
+                isLoading={financialMutation.isPending}
+              />
+
+              {financialData.length > 0 && (
+                <PerformanceCharts metrics={financialData} />
+              )}
+            </div>
+          </motion.div>
+        )}
+
         {/* Ideas Grid/List */}
-        {filteredIdeas.length === 0 ? (
+         {filteredIdeas.length === 0 ? (
           <EmptyState
             icon={FolderHeart}
             title="No ideas yet"
@@ -215,6 +267,7 @@ export default function Portfolio() {
                   onDelete={(idea) => deleteMutation.mutate(idea.id)}
                   onEnrich={(idea) => setEnrichingIdea(idea)}
                   onAnalyze={(idea) => setAnalyzingIdea(idea)}
+                  onSelectTracking={(idea) => setSelectedIdea(idea)}
                 />
               ))}
             </AnimatePresence>
