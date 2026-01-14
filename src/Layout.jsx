@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import {
   Home, FolderHeart, Bookmark, TrendingUp, 
   LayoutDashboard, Users, Settings, Menu, X,
-  Sparkles
+  Sparkles, BookOpen
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -14,6 +14,7 @@ const NAV_ITEMS = [
   { name: 'Portfolio', icon: FolderHeart, page: 'Portfolio' },
   { name: 'Bookmarks', icon: Bookmark, page: 'Bookmarks' },
   { name: 'Trends', icon: TrendingUp, page: 'Trends' },
+  { name: 'Learn', icon: BookOpen, page: 'Learn' },
   { name: 'Dashboard', icon: LayoutDashboard, page: 'Dashboard' },
   { name: 'Community', icon: Users, page: 'Community' },
   { name: 'Settings', icon: Settings, page: 'ProfileSettings' }
@@ -55,7 +56,7 @@ export default function Layout({ children, currentPageName }) {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-1">
-              {NAV_ITEMS.slice(0, 5).map((item) => {
+              {NAV_ITEMS.slice(0, 6).map((item) => {
                 const Icon = item.icon;
                 const isActive = currentPageName === item.page;
                 return (
