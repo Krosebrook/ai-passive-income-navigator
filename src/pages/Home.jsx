@@ -14,6 +14,7 @@ import CategoryFilter from '@/components/ideas/CategoryFilter';
 import SearchBar from '@/components/ideas/SearchBar';
 import OnboardingModal from '@/components/onboarding/OnboardingModal';
 import AIGuideChat from '@/components/ai/AIGuideChat';
+import IdeaGeneratorModal from '@/components/ideas/IdeaGeneratorModal';
 import { IDEAS_CATALOG, CATEGORIES } from '@/components/data/ideasCatalog';
 
 export default function Home() {
@@ -22,6 +23,7 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showAIChat, setShowAIChat] = useState(false);
+  const [showIdeaGenerator, setShowIdeaGenerator] = useState(false);
   const [user, setUser] = useState(null);
 
   // Fetch user and preferences
@@ -247,6 +249,13 @@ export default function Home() {
       <AIGuideChat 
         isOpen={showAIChat}
         onClose={() => setShowAIChat(false)}
+        userPreferences={preferences}
+      />
+
+      {/* Idea Generator */}
+      <IdeaGeneratorModal
+        open={showIdeaGenerator}
+        onClose={() => setShowIdeaGenerator(false)}
         userPreferences={preferences}
       />
 
