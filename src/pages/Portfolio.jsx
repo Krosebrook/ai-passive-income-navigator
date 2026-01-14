@@ -33,6 +33,8 @@ import FinancialEntry from '@/components/finance/FinancialEntry';
 import PerformanceCharts from '@/components/finance/PerformanceCharts';
 import ViabilityScore from '@/components/enrichment/ViabilityScore';
 import IdeaGeneratorModal from '@/components/ideas/IdeaGeneratorModal';
+import PortfolioAnalyticsDashboard from '@/components/portfolio/PortfolioAnalyticsDashboard';
+import IdeaValidator from '@/components/ideas/IdeaValidator';
 import { GRADIENT_OPTIONS } from '@/components/data/ideasCatalog';
 
 const STATUS_OPTIONS = ['all', 'exploring', 'planning', 'in_progress', 'launched', 'paused'];
@@ -48,6 +50,8 @@ export default function Portfolio() {
   const [selectedIdea, setSelectedIdea] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showIdeaGenerator, setShowIdeaGenerator] = useState(false);
+  const [showValidator, setShowValidator] = useState(false);
+  const [showAnalytics, setShowAnalytics] = useState(false);
   const [newIdea, setNewIdea] = useState({
     title: '',
     description: '',
@@ -140,7 +144,20 @@ export default function Portfolio() {
           title="My Portfolio"
           subtitle="Manage and track your passive income ideas"
           action={
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
+              <Button
+                onClick={() => setShowAnalytics(true)}
+                variant="outline"
+                className="gap-2"
+              >
+                📊 Analytics
+              </Button>
+              <Button
+                onClick={() => setShowValidator(true)}
+                className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 gap-2"
+              >
+                ✓ Validate Idea
+              </Button>
               <Button
                 onClick={() => setShowIdeaGenerator(true)}
                 className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 gap-2"
@@ -158,6 +175,26 @@ export default function Portfolio() {
             </div>
           }
         />
+
+        {/* Analytics Dashboard */}
+        {showAnalytics && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8"
+          >
+            <div className="flex justify-end mb-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowAnalytics(false)}
+              >
+                ✕ Close
+              </Button>
+            </div>
+            <PortfolioAnalyticsDashboard />
+          </motion.div>
+        )}
 
         {/* Stats */}
         <motion.div
@@ -421,6 +458,23 @@ export default function Portfolio() {
         onClose={() => setShowIdeaGenerator(false)}
         userPreferences={preferences}
       />
-    </div>
-  );
-}
+
+      {/* Idea Validator Modal */}
+      <IdeaValidator
+        open={showValidator}
+        onClose={() => setShowValidator(false)}
+        onAddToPortfolio={(idea) => {
+          createMutation.mutate({
+            title: idea.title,
+            description: idea.description,
+            category: 'digital_products',
+            status: 'exploring',
+            priority: 'medium',
+            notes: idea.notes
+          });
+          setShowValidator(false);
+        }}
+      />
+      </div>
+      );
+      }
