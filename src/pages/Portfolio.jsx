@@ -35,6 +35,7 @@ import ViabilityScore from '@/components/enrichment/ViabilityScore';
 import IdeaGeneratorModal from '@/components/ideas/IdeaGeneratorModal';
 import PortfolioAnalyticsDashboard from '@/components/portfolio/PortfolioAnalyticsDashboard';
 import IdeaValidator from '@/components/ideas/IdeaValidator';
+import MarketingContentGenerator from '@/components/marketing/MarketingContentGenerator';
 import { GRADIENT_OPTIONS } from '@/components/data/ideasCatalog';
 
 const STATUS_OPTIONS = ['all', 'exploring', 'planning', 'in_progress', 'launched', 'paused'];
@@ -52,6 +53,7 @@ export default function Portfolio() {
   const [showIdeaGenerator, setShowIdeaGenerator] = useState(false);
   const [showValidator, setShowValidator] = useState(false);
   const [showAnalytics, setShowAnalytics] = useState(false);
+  const [showMarketing, setShowMarketing] = useState(false);
   const [newIdea, setNewIdea] = useState({
     title: '',
     description: '',
@@ -151,6 +153,12 @@ export default function Portfolio() {
                 className="gap-2"
               >
                 📊 Analytics
+              </Button>
+              <Button
+                onClick={() => setShowMarketing(true)}
+                className="bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 gap-2"
+              >
+                📢 Marketing
               </Button>
               <Button
                 onClick={() => setShowValidator(true)}
@@ -475,6 +483,15 @@ export default function Portfolio() {
           setShowValidator(false);
         }}
       />
+
+      {/* Marketing Content Generator */}
+      {selectedIdea && (
+        <MarketingContentGenerator
+          open={showMarketing}
+          onClose={() => setShowMarketing(false)}
+          idea={selectedIdea}
+        />
+      )}
       </div>
       );
       }
