@@ -1,0 +1,231 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* FlashFusion Brand Color System */
+:root {
+  /* Primary Colors */
+  --primary: 139 133 247; /* #8b85f7 - Purple */
+  --primary-dark: 88 58 240; /* #583cf0 - Deep Purple */
+  --primary-light: 154 149 255; /* #9a95ff - Light Purple */
+
+  /* Secondary Colors */
+  --secondary: 15 6 24; /* #0f0618 - Deep Navy Background */
+  --secondary-light: 45 30 80; /* #2d1e50 - Lighter Navy */
+
+  /* Accent Colors */
+  --accent-cyan: 0 183 235; /* #00b7eb - Cyan */
+  --accent-orange: 255 142 66; /* #ff8e42 - Orange */
+  --accent-orange-dark: 240 171 101; /* #f0ab65 - Warm Orange */
+  --accent-pink: 255 105 180; /* #ff69b4 - Pink */
+
+  /* Semantic Colors */
+  --success: 16 185 129; /* #10b981 - Emerald */
+  --warning: 251 146 60; /* #fb923c - Orange */
+  --error: 239 68 68; /* #ef4444 - Red */
+  --info: 59 130 246; /* #3b82f6 - Blue */
+
+  /* Backgrounds */
+  --bg-dark: 15 6 24;
+  --bg-darker: 10 4 16;
+  --surface: 30 20 50;
+  --surface-light: 45 30 80;
+
+  /* Text Colors */
+  --text-primary: 255 255 255;
+  --text-secondary: 148 163 184;
+  --text-tertiary: 100 116 139;
+
+  /* Borders */
+  --border: 51 38 94;
+  --border-light: 75 60 120;
+
+  /* Glow Effects */
+  --glow-purple: 0 0 20px rgba(139, 133, 247, 0.3);
+  --glow-cyan: 0 0 20px rgba(0, 183, 235, 0.3);
+  --glow-orange: 0 0 20px rgba(255, 142, 66, 0.3);
+  --glow-pink: 0 0 20px rgba(255, 105, 180, 0.3);
+}
+
+/* Base Styles */
+* {
+  @apply transition-colors duration-200;
+}
+
+html,
+body {
+  @apply bg-[#0f0618] text-[#ffffff];
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  @apply w-2 h-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-[#1a0f2e];
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-[#8b85f7] rounded-full hover:bg-[#a89eff];
+}
+
+/* Selection */
+::selection {
+  @apply bg-[#8b85f7] text-[#ffffff];
+}
+
+/* Gradient Classes */
+.gradient-primary {
+  @apply bg-gradient-to-r from-[#8b85f7] via-[#00b7eb] to-[#ff8e42];
+}
+
+.gradient-purple-cyan {
+  @apply bg-gradient-to-r from-[#8b85f7] to-[#00b7eb];
+}
+
+.gradient-purple-pink {
+  @apply bg-gradient-to-r from-[#8b85f7] to-[#ff69b4];
+}
+
+.gradient-cyan-orange {
+  @apply bg-gradient-to-r from-[#00b7eb] to-[#ff8e42];
+}
+
+/* Text Gradients */
+.text-gradient {
+  @apply bg-gradient-to-r from-[#8b85f7] to-[#00b7eb] bg-clip-text text-transparent;
+}
+
+.text-gradient-warm {
+  @apply bg-gradient-to-r from-[#8b85f7] via-[#ff69b4] to-[#ff8e42] bg-clip-text text-transparent;
+}
+
+/* Glow Effects */
+.glow-primary {
+  @apply shadow-[0_0_20px_rgba(139,133,247,0.5)];
+}
+
+.glow-cyan {
+  @apply shadow-[0_0_20px_rgba(0,183,235,0.5)];
+}
+
+.glow-orange {
+  @apply shadow-[0_0_20px_rgba(255,142,66,0.5)];
+}
+
+.glow-pink {
+  @apply shadow-[0_0_20px_rgba(255,105,180,0.5)];
+}
+
+/* Neon Border */
+.border-neon-purple {
+  @apply border border-[#8b85f7] shadow-[inset_0_0_10px_rgba(139,133,247,0.2)];
+}
+
+.border-neon-cyan {
+  @apply border border-[#00b7eb] shadow-[inset_0_0_10px_rgba(0,183,235,0.2)];
+}
+
+/* Card Styles */
+.card-dark {
+  @apply bg-[#1a0f2e] border border-[#2d1e50] rounded-xl;
+}
+
+.card-darker {
+  @apply bg-[#0f0618] border border-[#1a0f2e] rounded-xl;
+}
+
+/* Button Base Styles */
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white px-4 py-2 rounded-lg font-medium hover:from-[#9a95ff] hover:to-[#6b4fff] transition-all duration-200 shadow-lg hover:shadow-[0_0_20px_rgba(139,133,247,0.5)];
+  }
+
+  .btn-secondary {
+    @apply bg-[#00b7eb] text-[#0f0618] px-4 py-2 rounded-lg font-medium hover:bg-[#00d4ff] transition-all duration-200 shadow-lg hover:shadow-[0_0_20px_rgba(0,183,235,0.5)];
+  }
+
+  .btn-tertiary {
+    @apply bg-[#ff8e42] text-white px-4 py-2 rounded-lg font-medium hover:bg-[#ffaa66] transition-all duration-200 shadow-lg hover:shadow-[0_0_20px_rgba(255,142,66,0.5)];
+  }
+
+  .btn-ghost {
+    @apply bg-transparent border border-[#2d1e50] text-[#8b85f7] px-4 py-2 rounded-lg font-medium hover:bg-[#2d1e50] hover:border-[#8b85f7] transition-all duration-200;
+  }
+
+  .btn-sm {
+    @apply px-3 py-1 text-sm;
+  }
+
+  .btn-lg {
+    @apply px-6 py-3 text-lg;
+  }
+}
+
+/* Form Elements */
+input,
+textarea,
+select {
+  @apply bg-[#1a0f2e] border border-[#2d1e50] text-white rounded-lg px-3 py-2 focus:border-[#8b85f7] focus:outline-none focus:ring-2 focus:ring-[#8b85f7]/20 transition-all;
+}
+
+input::placeholder,
+textarea::placeholder {
+  @apply text-[#64748b];
+}
+
+/* Badge Styles */
+.badge-primary {
+  @apply bg-[#8b85f7]/20 text-[#8b85f7] border border-[#8b85f7]/50 px-2 py-1 rounded-full text-xs font-medium;
+}
+
+.badge-success {
+  @apply bg-[#10b981]/20 text-[#10b981] border border-[#10b981]/50 px-2 py-1 rounded-full text-xs font-medium;
+}
+
+.badge-warning {
+  @apply bg-[#ff8e42]/20 text-[#ff8e42] border border-[#ff8e42]/50 px-2 py-1 rounded-full text-xs font-medium;
+}
+
+.badge-error {
+  @apply bg-[#ef4444]/20 text-[#ef4444] border border-[#ef4444]/50 px-2 py-1 rounded-full text-xs font-medium;
+}
+
+/* Animation Classes */
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(139, 133, 247, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(139, 133, 247, 0.6);
+  }
+}
+
+@keyframes neon-flicker {
+  0%, 100% {
+    text-shadow: 0 0 10px #8b85f7;
+  }
+  50% {
+    text-shadow: 0 0 20px #8b85f7, 0 0 30px #00b7eb;
+  }
+}
+
+.animate-glow {
+  @apply animate-pulse;
+}
+
+.animate-neon {
+  animation: neon-flicker 3s infinite;
+}
+
+/* Loading Spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  @apply w-6 h-6 border-2 border-[#2d1e50] border-t-[#8b85f7] rounded-full animate-spin;
+}

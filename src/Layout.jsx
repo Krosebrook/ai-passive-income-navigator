@@ -33,24 +33,24 @@ export default function Layout({ children, currentPageName }) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#0f0618]">
       {/* Top Navigation */}
       <header 
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
           scrolled 
-            ? 'bg-white/80 backdrop-blur-xl shadow-sm' 
-            : 'bg-transparent'
+            ? 'bg-[#0f0618]/80 backdrop-blur-xl border-[#2d1e50] shadow-lg shadow-[#8b85f7]/20' 
+            : 'bg-transparent border-transparent'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link to={createPageUrl('Home')} className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#8b85f7] via-[#00b7eb] to-[#ff8e42] flex items-center justify-center glow-primary">
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
-              <span className="font-bold text-xl text-gray-900 hidden sm:block">
-                AI Passive Income
+              <span className="font-bold text-xl text-gradient hidden sm:block">
+                FlashFusion
               </span>
             </Link>
 
@@ -62,11 +62,11 @@ export default function Layout({ children, currentPageName }) {
                 return (
                   <Link key={item.name} to={createPageUrl(item.page)}>
                     <Button
-                      variant={isActive ? 'secondary' : 'ghost'}
+                      variant={isActive ? 'default' : 'ghost'}
                       className={`gap-2 ${
                         isActive 
-                          ? 'bg-violet-100 text-violet-700 hover:bg-violet-100' 
-                          : 'text-gray-600 hover:text-gray-900'
+                          ? 'bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:from-[#9a95ff] hover:to-[#6b4fff] glow-primary' 
+                          : 'text-[#64748b] hover:text-[#8b85f7] hover:bg-[#2d1e50]'
                       }`}
                     >
                       <Icon className="w-4 h-4" />
@@ -115,11 +115,11 @@ export default function Layout({ children, currentPageName }) {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 20 }}
-              className="fixed right-0 top-0 bottom-0 w-72 bg-white z-50 md:hidden shadow-2xl"
+              className="fixed right-0 top-0 bottom-0 w-72 bg-[#1a0f2e] border-l border-[#2d1e50] z-50 md:hidden shadow-2xl shadow-[#8b85f7]/20"
             >
               <div className="p-4">
-                <div className="flex items-center justify-between mb-8">
-                  <span className="font-bold text-xl text-gray-900">Menu</span>
+              <div className="flex items-center justify-between mb-8">
+                <span className="font-bold text-xl text-gradient">Menu</span>
                   <Button
                     variant="ghost"
                     size="icon"
@@ -141,8 +141,8 @@ export default function Layout({ children, currentPageName }) {
                         <div
                           className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
                             isActive 
-                              ? 'bg-violet-100 text-violet-700' 
-                              : 'text-gray-600 hover:bg-gray-100'
+                              ? 'bg-[#8b85f7]/20 text-[#8b85f7] border border-[#8b85f7]/50' 
+                              : 'text-[#64748b] hover:bg-[#2d1e50] hover:text-[#8b85f7]'
                           }`}
                         >
                           <Icon className="w-5 h-5" />
@@ -164,17 +164,17 @@ export default function Layout({ children, currentPageName }) {
       </main>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-gray-100 py-8 mt-16">
+      <footer className="bg-[#1a0f2e] border-t border-[#2d1e50] py-8 mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#8b85f7] to-[#00b7eb] flex items-center justify-center glow-primary">
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
-              <span className="font-semibold text-gray-900">AI Passive Income</span>
+              <span className="font-semibold text-gradient">FlashFusion</span>
             </div>
-            <p className="text-sm text-gray-500">
-              Discover AI-powered passive income opportunities
+            <p className="text-sm text-[#64748b]">
+              AI-powered passive income platform with FlashFusion technology
             </p>
           </div>
         </div>
