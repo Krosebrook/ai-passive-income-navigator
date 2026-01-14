@@ -39,6 +39,7 @@ export default function PortfolioCard({
   onDelete,
   onEnrich,
   onAnalyze,
+  onSelectTracking,
   index = 0
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -90,6 +91,10 @@ export default function PortfolioCard({
                 <DropdownMenuItem onClick={() => onAnalyze?.(idea)}>
                   <LineChart className="w-4 h-4 mr-2" />
                   Monetization
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onSelectTracking?.(idea)}>
+                  <LineChart className="w-4 h-4 mr-2" />
+                  Track Performance
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem 
