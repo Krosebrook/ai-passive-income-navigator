@@ -34,7 +34,8 @@ export const base44 = createClient({
 
 **Action:**
 ```bash
-cd /home/runner/work/ai-passive-income-navigator/ai-passive-income-navigator
+# Navigate to your project directory
+cd /path/to/ai-passive-income-navigator
 
 # Fix non-breaking issues
 npm audit fix
