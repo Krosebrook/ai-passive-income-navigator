@@ -1,39 +1,174 @@
-**Welcome to your Base44 project** 
+# AI Passive Income Navigator
 
-**About**
+**An AI-powered platform to discover, track, and manage passive income opportunities**
 
-View and Edit  your app on [Base44.com](http://Base44.com) 
+View and edit your app on [Base44.com](http://Base44.com)
 
-This project contains everything you need to run your app locally.
+## 📋 Documentation
 
-**Edit the code in your local development environment**
+**Important:** Before launching to production, please review the comprehensive audit and roadmap:
 
-Any change pushed to the repo will also be reflected in the Base44 Builder.
+- 📊 **[PRODUCT_AUDIT.md](./PRODUCT_AUDIT.md)** - Complete technical and business audit
+- 🗺️ **[PRODUCT_ROADMAP.md](./PRODUCT_ROADMAP.md)** - 3-month roadmap to production
+- 🔧 **[TECHNICAL_RECOMMENDATIONS.md](./TECHNICAL_RECOMMENDATIONS.md)** - Recommended tools and libraries
+- 🚀 **[IMPLEMENTATION_GUIDE.md](./IMPLEMENTATION_GUIDE.md)** - Quick start guide for immediate actions
 
-**Prerequisites:** 
+## Features
 
-1. Clone the repository using the project's Git URL 
-2. Navigate to the project directory
-3. Install dependencies: `npm install`
-4. Create an `.env.local` file and set the right environment variables
+- 🎯 **Idea Discovery** - Browse 30+ curated passive income opportunities
+- 📁 **Portfolio Management** - Track and manage your income ideas
+- 🔖 **Bookmarks** - Save favorite ideas for later
+- 📊 **Dashboard** - Analytics and performance tracking
+- 📈 **Market Trends** - AI-powered trend analysis
+- 🤖 **AI Guide** - Personalized recommendations and insights
+- 👥 **Community** - Share and discuss ideas with others
+
+## 🚀 Getting Started
+
+### Prerequisites 
+
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd ai-passive-income-navigator
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+   
+   Create a `.env.local` file in the root directory:
+   ```bash
+   VITE_BASE44_APP_ID=your_app_id
+   VITE_BASE44_APP_BASE_URL=your_backend_url
+   ```
+   
+   Example:
+   ```bash
+   VITE_BASE44_APP_ID=cbef744a8545c389ef439ea6
+   VITE_BASE44_APP_BASE_URL=https://my-app.base44.app
+   ```
+
+4. **Run the development server**
+   ```bash
+   npm run dev
+   ```
+
+5. **Open your browser**
+   
+   Navigate to `http://localhost:5173`
+
+## 📝 Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+- `npm run lint:fix` - Fix ESLint issues
+- `npm run typecheck` - Run TypeScript type checking
+
+## 🔒 Security Notice
+
+**⚠️ CRITICAL:** Before deploying to production:
+
+1. Enable authentication in `src/api/base44Client.js` (set `requiresAuth: true`)
+2. Fix security vulnerabilities: `npm audit fix`
+3. Review the [PRODUCT_AUDIT.md](./PRODUCT_AUDIT.md) for all security concerns
+
+## 🏗️ Tech Stack
+
+- **Frontend:** React 18, Vite, Tailwind CSS
+- **Backend:** Base44 Platform
+- **UI Components:** Radix UI, Shadcn/ui
+- **State Management:** React Query (TanStack Query)
+- **Animations:** Framer Motion
+- **Charts:** Recharts
+- **Forms:** React Hook Form + Zod
+
+## 📂 Project Structure
 
 ```
-VITE_BASE44_APP_ID=your_app_id
-VITE_BASE44_APP_BASE_URL=your_backend_url
-
-e.g.
-VITE_BASE44_APP_ID=cbef744a8545c389ef439ea6
-VITE_BASE44_APP_BASE_URL=https://my-to-do-list-81bfaad7.base44.app
+ai-passive-income-navigator/
+├── src/
+│   ├── api/              # API clients and configurations
+│   ├── components/       # React components
+│   │   ├── ai/          # AI chat components
+│   │   ├── data/        # Data catalogs
+│   │   ├── ideas/       # Idea-related components
+│   │   ├── portfolio/   # Portfolio components
+│   │   ├── ui/          # Reusable UI components
+│   │   └── ...
+│   ├── hooks/           # Custom React hooks
+│   ├── lib/             # Utilities and helpers
+│   ├── pages/           # Page components
+│   └── utils/           # Utility functions
+├── public/              # Static assets
+├── PRODUCT_AUDIT.md     # Technical audit report
+├── PRODUCT_ROADMAP.md   # Development roadmap
+├── TECHNICAL_RECOMMENDATIONS.md
+└── IMPLEMENTATION_GUIDE.md
 ```
 
-Run the app: `npm run dev`
+## 🚀 Deployment
 
-**Publish your changes**
+### Base44 Platform
 
-Open [Base44.com](http://Base44.com) and click on Publish.
+Any changes pushed to the repository will be reflected in the Base44 Builder.
 
-**Docs & Support**
+1. Commit and push your changes
+2. Open [Base44.com](http://Base44.com)
+3. Click on "Publish" to deploy
 
-Documentation: [https://docs.base44.com/Integrations/Using-GitHub](https://docs.base44.com/Integrations/Using-GitHub)
+### Alternative Deployment (Vercel/Netlify)
 
-Support: [https://app.base44.com/support](https://app.base44.com/support)
+See [TECHNICAL_RECOMMENDATIONS.md](./TECHNICAL_RECOMMENDATIONS.md) for deployment options.
+
+## 🐛 Known Issues
+
+See [PRODUCT_AUDIT.md](./PRODUCT_AUDIT.md) for a complete list of:
+- Security vulnerabilities (11 npm packages)
+- Missing features
+- Technical debt
+- Performance concerns
+
+## 📊 Current Status
+
+**Version:** 0.0.0 (Prototype)  
+**Production Ready:** ❌ No  
+**Test Coverage:** 0%  
+**Security Issues:** 11 vulnerabilities
+
+**Required before production:**
+- Enable authentication
+- Fix security vulnerabilities
+- Add test coverage (minimum 40%)
+- Implement monitoring/logging
+- Add legal pages (Privacy Policy, Terms)
+
+See [PRODUCT_ROADMAP.md](./PRODUCT_ROADMAP.md) for the 3-month plan to production.
+
+## 🤝 Contributing
+
+1. Read the [IMPLEMENTATION_GUIDE.md](./IMPLEMENTATION_GUIDE.md)
+2. Review the [PRODUCT_ROADMAP.md](./PRODUCT_ROADMAP.md)
+3. Create a feature branch
+4. Make your changes
+5. Submit a pull request
+
+## 📚 Documentation & Support
+
+- **Base44 Documentation:** [https://docs.base44.com/Integrations/Using-GitHub](https://docs.base44.com/Integrations/Using-GitHub)
+- **Base44 Support:** [https://app.base44.com/support](https://app.base44.com/support)
+- **Project Audit:** [PRODUCT_AUDIT.md](./PRODUCT_AUDIT.md)
+- **Roadmap:** [PRODUCT_ROADMAP.md](./PRODUCT_ROADMAP.md)
+
+## 📄 License
+
+[Your License Here]
+
+---
+
+**⚠️ Important:** This application is currently in prototype stage. Please review all documentation before deploying to production.
