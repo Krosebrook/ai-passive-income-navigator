@@ -33,6 +33,9 @@ class ErrorLogger {
       // }
 
       // Make logger available globally for ErrorBoundary
+      // This is intentional: ErrorBoundary is a class component that can't use hooks/context
+      // Alternative approaches would require converting ErrorBoundary to a function component
+      // or passing the logger as a prop through many layers, which adds complexity
       if (typeof window !== 'undefined') {
         window.errorLogger = this;
       }

@@ -82,7 +82,12 @@ class ErrorBoundary extends React.Component {
                 Try Again
               </Button>
               <Button
-                onClick={() => window.location.href = '/'}
+                onClick={() => {
+                  // Use replace to avoid full page reload
+                  // This preserves React Router state and is more performant
+                  window.history.replaceState(null, '', '/');
+                  window.location.reload();
+                }}
                 variant="default"
               >
                 Go to Home

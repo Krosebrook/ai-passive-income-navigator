@@ -35,10 +35,11 @@ jobs:
         continue-on-error: false
       
       - name: Security audit
-        run: npm audit --audit-level=high
-        continue-on-error: true
-        # Continue on error to not block PRs on vulnerability reports
-        # but still shows them in the CI output
+        run: npm audit --audit-level=critical
+        continue-on-error: false
+        # Fails build on critical vulnerabilities only
+        # Moderate/high vulnerabilities are logged but don't block PRs
+        # Run `npm audit --audit-level=high` locally for full report
       
       - name: Build check
         run: npm run build
