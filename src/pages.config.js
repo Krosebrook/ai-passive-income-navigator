@@ -8,6 +8,7 @@ import Portfolio from './pages/Portfolio';
 import ProfileSettings from './pages/ProfileSettings';
 import Trends from './pages/Trends';
 import Admin from './pages/Admin';
+import Documentation from './pages/Documentation';
 import __Layout from './Layout.jsx';
 
 
@@ -22,6 +23,7 @@ export const PAGES = {
     "ProfileSettings": ProfileSettings,
     "Trends": Trends,
     "Admin": Admin,
+    "Documentation": Documentation,
 }
 
 export const pagesConfig = {
