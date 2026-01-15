@@ -53,7 +53,7 @@ export default function Portfolio() {
   const [showIdeaGenerator, setShowIdeaGenerator] = useState(false);
   const [showValidator, setShowValidator] = useState(false);
   const [showAnalytics, setShowAnalytics] = useState(false);
-  const [showMarketing, setShowMarketing] = useState(false);
+  const [marketingIdea, setMarketingIdea] = useState(null);
   const [newIdea, setNewIdea] = useState({
     title: '',
     description: '',
@@ -153,12 +153,6 @@ export default function Portfolio() {
                 className="gap-2"
               >
                 📊 Analytics
-              </Button>
-              <Button
-                onClick={() => setShowMarketing(true)}
-                className="bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 gap-2"
-              >
-                📢 Marketing
               </Button>
               <Button
                 onClick={() => setShowValidator(true)}
@@ -332,6 +326,7 @@ export default function Portfolio() {
                   onEnrich={(idea) => setEnrichingIdea(idea)}
                   onAnalyze={(idea) => setAnalyzingIdea(idea)}
                   onSelectTracking={(idea) => setSelectedIdea(idea)}
+                  onGenerateMarketing={(idea) => setMarketingIdea(idea)}
                 />
               ))}
             </AnimatePresence>
@@ -485,13 +480,11 @@ export default function Portfolio() {
       />
 
       {/* Marketing Content Generator */}
-      {selectedIdea && (
-        <MarketingContentGenerator
-          open={showMarketing}
-          onClose={() => setShowMarketing(false)}
-          idea={selectedIdea}
-        />
-      )}
+      <MarketingContentGenerator
+        open={!!marketingIdea}
+        onClose={() => setMarketingIdea(null)}
+        idea={marketingIdea}
+      />
       </div>
       );
       }
