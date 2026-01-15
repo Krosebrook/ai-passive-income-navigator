@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import TaskManager from '@/components/portfolio/TaskManager';
 import { 
   MoreVertical, Trash2, Edit2, Sparkles, LineChart, 
-  ChevronDown, Clock, DollarSign 
+  ChevronDown, Clock, DollarSign, Megaphone
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -41,6 +41,7 @@ export default function PortfolioCard({
   onEnrich,
   onAnalyze,
   onSelectTracking,
+  onGenerateMarketing,
   index = 0
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -92,6 +93,10 @@ export default function PortfolioCard({
                 <DropdownMenuItem onClick={() => onAnalyze?.(idea)}>
                   <LineChart className="w-4 h-4 mr-2" />
                   Monetization
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onGenerateMarketing?.(idea)}>
+                  <Megaphone className="w-4 h-4 mr-2" />
+                  Marketing Content
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onSelectTracking?.(idea)}>
                   <LineChart className="w-4 h-4 mr-2" />
