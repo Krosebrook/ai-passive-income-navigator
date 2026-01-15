@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import { base44 } from '@/api/base44Client';
 import {
   Home, FolderHeart, Bookmark, TrendingUp, 
   LayoutDashboard, Users, Settings, Menu, X,
-  Sparkles, BookOpen
+  Sparkles, BookOpen, Shield
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -20,9 +21,12 @@ const NAV_ITEMS = [
   { name: 'Settings', icon: Settings, page: 'ProfileSettings' }
 ];
 
+const ADMIN_NAV_ITEM = { name: 'Admin', icon: Shield, page: 'Admin' };
+
 export default function Layout({ children, currentPageName }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,6 +34,18 @@ export default function Layout({ children, currentPageName }) {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const userData = await base44.auth.me();
+        setUser(userData);
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    };
+    fetchUser();
   }, []);
 
   return (
@@ -75,6 +91,21 @@ export default function Layout({ children, currentPageName }) {
                   </Link>
                 );
               })}
+              {user?.role === 'admin' && (
+                <Link to={createPageUrl(ADMIN_NAV_ITEM.page)}>
+                  <Button
+                    variant={currentPageName === ADMIN_NAV_ITEM.page ? 'default' : 'ghost'}
+                    className={`gap-2 ${
+                      currentPageName === ADMIN_NAV_ITEM.page
+                        ? 'bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:from-[#9a95ff] hover:to-[#6b4fff] glow-primary' 
+                        : 'text-[#64748b] hover:text-[#8b85f7] hover:bg-[#2d1e50]'
+                    }`}
+                  >
+                    <Shield className="w-4 h-4" />
+                    {ADMIN_NAV_ITEM.name}
+                  </Button>
+                </Link>
+              )}
             </nav>
 
             {/* Right Side */}
@@ -151,6 +182,23 @@ export default function Layout({ children, currentPageName }) {
                       </Link>
                     );
                   })}
+                  {user?.role === 'admin' && (
+                    <Link 
+                      to={createPageUrl(ADMIN_NAV_ITEM.page)}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <div
+                        className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+                          currentPageName === ADMIN_NAV_ITEM.page
+                            ? 'bg-[#8b85f7]/20 text-[#8b85f7] border border-[#8b85f7]/50' 
+                            : 'text-[#64748b] hover:bg-[#2d1e50] hover:text-[#8b85f7]'
+                        }`}
+                      >
+                        <Shield className="w-5 h-5" />
+                        <span className="font-medium">{ADMIN_NAV_ITEM.name}</span>
+                      </div>
+                    </Link>
+                  )}
                 </nav>
               </div>
             </motion.div>
