@@ -32,6 +32,27 @@ const STATUS_OPTIONS = [
   { value: 'paused', label: 'Paused' }
 ];
 
+/**
+ * Portfolio Card Component
+ * 
+ * Displays a portfolio idea with status tracking, task management, and quick actions.
+ * Includes dropdown menu for enrichment, monetization analysis, and marketing content generation.
+ * 
+ * @component
+ * @param {Object} props - Component props
+ * @param {Object} props.idea - Portfolio idea object
+ * @param {string} props.idea.id - Unique identifier
+ * @param {string} props.idea.title - Idea title
+ * @param {string} props.idea.status - Current status (exploring|planning|in_progress|launched|paused)
+ * @param {Function} props.onStatusChange - Callback for status changes
+ * @param {Function} props.onEdit - Callback to edit notes
+ * @param {Function} props.onDelete - Callback to remove idea
+ * @param {Function} props.onEnrich - Callback for AI enrichment
+ * @param {Function} props.onAnalyze - Callback for monetization analysis
+ * @param {Function} props.onSelectTracking - Callback for performance tracking
+ * @param {Function} props.onGenerateMarketing - Callback for marketing content generation
+ * @param {number} [props.index=0] - Card index for staggered animations
+ */
 export default function PortfolioCard({ 
   idea, 
   onStatusChange,

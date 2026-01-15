@@ -20,6 +20,26 @@ Deno.serve(async (req) => {
 
     const { ideaTitle, ideaDescription, targetAudience, contentType } = await req.json();
 
+    // Input validation
+    if (!ideaTitle || !targetAudience || !contentType) {
+      return Response.json({ 
+        error: 'Missing required fields: ideaTitle, targetAudience, contentType' 
+      }, { status: 400 });
+    }
+
+    if (targetAudience.length < 10) {
+      return Response.json({ 
+        error: 'Target audience description must be at least 10 characters' 
+      }, { status: 400 });
+    }
+
+    const validContentTypes = ['ads', 'social', 'email', 'blog'];
+    if (!validContentTypes.includes(contentType)) {
+      return Response.json({ 
+        error: `Invalid content type. Must be one of: ${validContentTypes.join(', ')}` 
+      }, { status: 400 });
+    }
+
     let prompt = '';
     let responseSchema = {};
 

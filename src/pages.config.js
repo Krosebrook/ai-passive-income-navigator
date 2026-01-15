@@ -9,6 +9,7 @@ import ProfileSettings from './pages/ProfileSettings';
 import Trends from './pages/Trends';
 import Admin from './pages/Admin';
 import Documentation from './pages/Documentation';
+import README from './pages/README';
 import __Layout from './Layout.jsx';
 
 
@@ -24,6 +25,7 @@ export const PAGES = {
     "Trends": Trends,
     "Admin": Admin,
     "Documentation": Documentation,
+    "README": README,
 }
 
 export const pagesConfig = {

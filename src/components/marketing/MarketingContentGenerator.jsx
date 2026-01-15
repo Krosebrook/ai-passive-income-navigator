@@ -17,8 +17,25 @@ import { Loader2, Copy, Download } from 'lucide-react';
 import { toast } from 'sonner';
 
 /**
- * AI-powered marketing content generator
- * Generates ad copy, social media content, email sequences, and SEO blog outlines
+ * AI-powered marketing content generator component
+ * 
+ * Generates targeted marketing content for passive income ideas using AI.
+ * Supports multiple content types: ad copy, social media, email campaigns, and blog outlines.
+ * 
+ * @component
+ * @param {Object} props - Component props
+ * @param {boolean} props.open - Controls dialog visibility
+ * @param {Function} props.onClose - Callback when dialog closes
+ * @param {Object} props.idea - Portfolio idea object
+ * @param {string} props.idea.title - Idea title
+ * @param {string} props.idea.description - Idea description
+ * 
+ * @example
+ * <MarketingContentGenerator 
+ *   open={isOpen} 
+ *   onClose={() => setIsOpen(false)}
+ *   idea={{ title: "AI Course", description: "..." }}
+ * />
  */
 export default function MarketingContentGenerator({ open, onClose, idea }) {
   const [contentType, setContentType] = useState('ads');
@@ -29,25 +46,55 @@ export default function MarketingContentGenerator({ open, onClose, idea }) {
   });
 
   const handleGenerate = async () => {
-    if (!formData.targetAudience) {
+    if (!formData.targetAudience?.trim()) {
       toast.error('Please describe your target audience');
       return;
     }
 
-    setIsLoading(true);
-    const response = await base44.functions.invoke('generateMarketingContent', {
-      ideaTitle: idea?.title || '',
-      ideaDescription: idea?.description || '',
-      targetAudience: formData.targetAudience,
-      contentType
-    });
-    setGeneratedContent(response.data);
-    setIsLoading(false);
+    if (formData.targetAudience.length < 10) {
+      toast.error('Please provide a more detailed audience description (at least 10 characters)');
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      setGeneratedContent(null);
+      
+      const response = await base44.functions.invoke('generateMarketingContent', {
+        ideaTitle: idea?.title || 'Passive Income Idea',
+        ideaDescription: idea?.description || '',
+        targetAudience: formData.targetAudience.trim(),
+        contentType
+      });
+      
+      if (!response?.data) {
+        throw new Error('No content generated');
+      }
+      
+      setGeneratedContent(response.data);
+      toast.success('Content generated successfully!');
+    } catch (error) {
+      console.error('Content generation error:', error);
+      toast.error(error.message || 'Failed to generate content. Please try again.');
+      setGeneratedContent(null);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const copyToClipboard = (text) => {
-    navigator.clipboard.writeText(text);
-    toast.success('Copied to clipboard!');
+  const copyToClipboard = async (text) => {
+    if (!text) {
+      toast.error('No content to copy');
+      return;
+    }
+    
+    try {
+      await navigator.clipboard.writeText(text);
+      toast.success('Copied to clipboard!');
+    } catch (error) {
+      console.error('Copy failed:', error);
+      toast.error('Failed to copy. Please try manually.');
+    }
   };
 
   return (

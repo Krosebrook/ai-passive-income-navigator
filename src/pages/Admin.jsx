@@ -4,6 +4,18 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Shield, Users, Database, Activity } from 'lucide-react';
 import PageHeader from '@/components/ui/PageHeader';
 
+/**
+ * Admin Dashboard Page
+ * 
+ * Platform administration dashboard with user statistics, data overview,
+ * activity monitoring, and system health indicators.
+ * 
+ * Access is restricted to users with role === 'admin'.
+ * Non-admin users are automatically redirected to home page.
+ * 
+ * @component
+ * @requires Admin role
+ */
 export default function AdminPage() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
