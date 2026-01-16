@@ -3,22 +3,35 @@ export function createPageUrl(pageName: string) {
 }
 
 /**
- * Sanitize user input to prevent XSS attacks
- * NOTE: For production use, consider using DOMPurify library for more comprehensive sanitization
- * This is a basic sanitization that removes common XSS vectors
+ * IMPORTANT SECURITY NOTE:
+ * This is a BASIC sanitization function for demonstration purposes.
+ * For PRODUCTION use, you MUST use a dedicated HTML sanitization library like DOMPurify.
+ * 
+ * Install DOMPurify:
+ *   npm install dompurify
+ * 
+ * Usage with DOMPurify:
+ *   import DOMPurify from 'dompurify';
+ *   const clean = DOMPurify.sanitize(dirtyInput);
+ * 
+ * This basic implementation has known limitations and should NOT be used for security-critical operations.
+ * It does not protect against all XSS vectors and should be replaced with a proper library.
  */
 export function sanitizeInput(input: string): string {
     if (!input) return '';
     
-    // Remove script tags and their content (handles multiple variations)
+    console.warn('[SECURITY] Using basic sanitization. For production, use DOMPurify library.');
+    
+    // BASIC sanitization - NOT production-ready
+    // Remove script tags and their content
     let sanitized = input.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script\s*>/gi, '');
     
-    // Remove on* event handlers (handles various formats)
+    // Remove on* event handlers
     sanitized = sanitized.replace(/\s*on\w+\s*=\s*["'][^"']*["']/gi, '');
     sanitized = sanitized.replace(/\s*on\w+\s*=\s*[^\s>]*/gi, '');
     
-    // Remove javascript: protocols
-    sanitized = sanitized.replace(/javascript:/gi, '');
+    // Remove dangerous URL schemes
+    sanitized = sanitized.replace(/(javascript|data|vbscript):/gi, '');
     
     return sanitized.trim();
 }
