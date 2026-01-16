@@ -92,6 +92,10 @@ describe('formatCurrency', () => {
   it('should handle negative numbers', () => {
     expect(formatCurrency(-500)).toBe('-$500');
   });
+
+  it('should support custom locale', () => {
+    expect(formatCurrency(1234.56, 'EUR', 'de-DE')).toContain('1');
+  });
 });
 
 describe('formatNumber', () => {

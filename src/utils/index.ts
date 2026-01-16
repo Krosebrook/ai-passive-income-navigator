@@ -14,13 +14,19 @@ export function createPageUrl(pageName: string) {
  *   import DOMPurify from 'dompurify';
  *   const clean = DOMPurify.sanitize(dirtyInput);
  * 
- * This basic implementation has known limitations and should NOT be used for security-critical operations.
- * It does not protect against all XSS vectors and should be replaced with a proper library.
+ * Known limitations of this basic implementation:
+ * - Does not handle nested or malformed script tags
+ * - Does not handle encoded characters (e.g., &lt;script&gt;)
+ * - Does not handle all XSS vectors (data URIs, SVG, etc.)
+ * - Should NOT be used for security-critical operations
  */
 export function sanitizeInput(input: string): string {
     if (!input) return '';
     
-    console.warn('[SECURITY] Using basic sanitization. For production, use DOMPurify library.');
+    // Development-only warning
+    if (import.meta.env.DEV) {
+        console.warn('[SECURITY] Using basic sanitization. For production, use DOMPurify library.');
+    }
     
     // BASIC sanitization - NOT production-ready
     // Remove script tags and their content
@@ -61,9 +67,12 @@ export function debounce<T extends (...args: any[]) => any>(
 
 /**
  * Format currency with proper locale and symbol
+ * @param amount - The amount to format
+ * @param currency - Currency code (default: 'USD')
+ * @param locale - Locale for formatting (default: 'en-US')
  */
-export function formatCurrency(amount: number, currency: string = 'USD'): string {
-    return new Intl.NumberFormat('en-US', {
+export function formatCurrency(amount: number, currency: string = 'USD', locale: string = 'en-US'): string {
+    return new Intl.NumberFormat(locale, {
         style: 'currency',
         currency,
         minimumFractionDigits: 0,
@@ -87,15 +96,19 @@ export function formatNumber(num: number): string {
     return num.toString();
 }
 
+// Comprehensive email validation regex (RFC 5322 simplified)
+// Matches: local-part@domain
+// - Local part: alphanumeric, dots, plus, hyphens, underscores
+// - Domain: alphanumeric with hyphens, can have subdomains
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
 /**
  * Validate email address
- * Uses a more comprehensive regex pattern that handles common email formats
- * For production, consider using a dedicated email validation library
+ * Uses a comprehensive regex pattern that handles most valid email formats
+ * For production, consider using a dedicated email validation library for edge cases
  */
 export function isValidEmail(email: string): boolean {
-    // More comprehensive email regex that handles most valid formats
-    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-    return emailRegex.test(email);
+    return EMAIL_REGEX.test(email);
 }
 
 /**

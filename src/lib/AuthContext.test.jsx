@@ -161,11 +161,9 @@ describe('AuthContext', () => {
       expect(screen.getByText('User: Test User')).toBeInTheDocument();
     });
 
-    // Click logout
+    // Click logout - state updates will be handled by waitFor
     const logoutButton = getByRole('button', { name: /logout/i });
-    await act(async () => {
-      logoutButton.click();
-    });
+    logoutButton.click();
 
     await waitFor(() => {
       expect(base44.auth.logout).toHaveBeenCalled();
@@ -185,9 +183,7 @@ describe('AuthContext', () => {
     );
 
     const loginButton = getByRole('button', { name: /login/i });
-    await act(async () => {
-      loginButton.click();
-    });
+    loginButton.click();
 
     await waitFor(() => {
       expect(base44.auth.redirectToLogin).toHaveBeenCalled();
