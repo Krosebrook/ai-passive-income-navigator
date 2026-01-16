@@ -9,7 +9,8 @@ import {
   isValidUrl,
   truncateText,
   generateId,
-  storage
+  storage,
+  sleep
 } from '../utils';
 
 /**
@@ -42,8 +43,13 @@ describe('sanitizeInput', () => {
     expect(sanitizeInput(input)).toBe('Hello  World');
   });
 
-  it('should remove event handlers', () => {
+  it('should remove event handlers with quotes', () => {
     const input = '<div onclick="alert()">Click me</div>';
+    expect(sanitizeInput(input)).toBe('<div>Click me</div>');
+  });
+
+  it('should remove event handlers without quotes', () => {
+    const input = '<div onclick=alert()>Click me</div>';
     expect(sanitizeInput(input)).toBe('<div>Click me</div>');
   });
 
@@ -68,7 +74,7 @@ describe('debounce', () => {
     
     expect(callCount).toBe(0);
     
-    await new Promise(resolve => setTimeout(resolve, 150));
+    await sleep(150);
     expect(callCount).toBe(1);
   });
 });
@@ -109,12 +115,15 @@ describe('formatNumber', () => {
 describe('isValidEmail', () => {
   it('should validate correct email', () => {
     expect(isValidEmail('test@example.com')).toBe(true);
+    expect(isValidEmail('user+tag@example.com')).toBe(true);
+    expect(isValidEmail('user.name@example.co.uk')).toBe(true);
   });
 
   it('should reject invalid email', () => {
     expect(isValidEmail('invalid-email')).toBe(false);
     expect(isValidEmail('test@')).toBe(false);
     expect(isValidEmail('@example.com')).toBe(false);
+    expect(isValidEmail('test @example.com')).toBe(false);
   });
 });
 

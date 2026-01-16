@@ -4,16 +4,18 @@ export function createPageUrl(pageName: string) {
 
 /**
  * Sanitize user input to prevent XSS attacks
- * Removes script tags and dangerous attributes
+ * NOTE: For production use, consider using DOMPurify library for more comprehensive sanitization
+ * This is a basic sanitization that removes common XSS vectors
  */
 export function sanitizeInput(input: string): string {
     if (!input) return '';
     
-    // Remove script tags and their content
-    let sanitized = input.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+    // Remove script tags and their content (handles multiple variations)
+    let sanitized = input.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script\s*>/gi, '');
     
-    // Remove on* event handlers
-    sanitized = sanitized.replace(/\son\w+\s*=\s*["'][^"']*["']/gi, '');
+    // Remove on* event handlers (handles various formats)
+    sanitized = sanitized.replace(/\s*on\w+\s*=\s*["'][^"']*["']/gi, '');
+    sanitized = sanitized.replace(/\s*on\w+\s*=\s*[^\s>]*/gi, '');
     
     // Remove javascript: protocols
     sanitized = sanitized.replace(/javascript:/gi, '');
@@ -74,9 +76,12 @@ export function formatNumber(num: number): string {
 
 /**
  * Validate email address
+ * Uses a more comprehensive regex pattern that handles common email formats
+ * For production, consider using a dedicated email validation library
  */
 export function isValidEmail(email: string): boolean {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // More comprehensive email regex that handles most valid formats
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     return emailRegex.test(email);
 }
 
@@ -102,8 +107,14 @@ export function truncateText(text: string, maxLength: number): string {
 
 /**
  * Generate a random ID
+ * Uses crypto.randomUUID() if available (modern browsers), falls back to timestamp-based ID
  */
 export function generateId(): string {
+    // Use crypto.randomUUID() for better uniqueness if available
+    if (isBrowser() && typeof crypto !== 'undefined' && crypto.randomUUID) {
+        return crypto.randomUUID();
+    }
+    // Fallback for older browsers
     return Math.random().toString(36).substring(2) + Date.now().toString(36);
 }
 
