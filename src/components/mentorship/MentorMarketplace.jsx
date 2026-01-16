@@ -16,14 +16,14 @@ import {
  * Mentor Marketplace Component
  * Browse and connect with verified passive income experts
  */
-export default function MentorMarketplace({ portfolioIdeaId = null, onSelect = null }) {
+export default function MentorMarketplace({ portfolioIdeaId = null, onSelect: _onSelect = null }) {
   const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSpecialization, setSelectedSpecialization] = useState('all');
   const [selectedMentor, setSelectedMentor] = useState(null);
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
 
-  const { data: mentors = [], isLoading } = useQuery({
+  const { data: mentors = [] } = useQuery({
     queryKey: ['mentors'],
     queryFn: () => base44.entities.Mentor.list()
   });

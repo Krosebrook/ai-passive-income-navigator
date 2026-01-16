@@ -22,7 +22,7 @@ export default function SuccessStoriesBrowser({ onSubmitStory }) {
   const [selectedStory, setSelectedStory] = useState(null);
   const [filterCategory, setFilterCategory] = useState('all');
 
-  const { data: stories = [], isLoading } = useQuery({
+  const { data: stories = [] } = useQuery({
     queryKey: ['successStories'],
     queryFn: () => base44.entities.SuccessStory.list('-created_date', 50)
   });

@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus, X } from 'lucide-react';
 
-export default function FinancialEntry({ idea, onSave, isLoading }) {
+export default function FinancialEntry({ idea: _idea, onSave, isLoading }) {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     revenue: '',

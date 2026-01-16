@@ -146,7 +146,7 @@ export default function TaskManager({ ideaId }) {
           </div>
         ) : (
           <div className="space-y-2">
-            {filteredTasks.map((task, idx) => {
+            {filteredTasks.map((task) => {
               const StatusIcon = STATUS_CONFIG[task.status].icon;
               return (
                 <motion.div

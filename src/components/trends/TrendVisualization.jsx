@@ -7,7 +7,7 @@ import { TrendingUp, DollarSign, Users, Zap } from 'lucide-react';
  * Trend Visualization Component
  * Displays interactive charts for trend analysis and growth projections
  */
-export default function TrendVisualization({ trends, category }) {
+export default function TrendVisualization({ trends, category: _category }) {
   // Generate mock growth data based on current growth rates
   const generateGrowthData = () => {
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];

@@ -16,7 +16,7 @@ const QUICK_PROMPTS = [
   "Best AI tools for passive income"
 ];
 
-export default function AIGuideChat({ isOpen, onClose, userPreferences }) {
+export default function AIGuideChat({ isOpen, onClose, userPreferences: _userPreferences }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);

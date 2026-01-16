@@ -22,7 +22,6 @@ import { TrendingUp, Target, Flame } from 'lucide-react';
  */
 export default function PortfolioAnalyticsDashboard() {
   const [timeframe, setTimeframe] = useState('30'); // days
-  const [selectedIdea, setSelectedIdea] = useState(null);
 
   const { data: portfolioIdeas = [] } = useQuery({
     queryKey: ['portfolioIdeas'],

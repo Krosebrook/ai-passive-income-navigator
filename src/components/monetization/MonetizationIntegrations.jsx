@@ -33,7 +33,7 @@ export default function MonetizationIntegrations({ portfolioIdeaId }) {
   const [selectedPlatform, setSelectedPlatform] = useState(null);
   const [platformUrl, setPlatformUrl] = useState('');
 
-  const { data: integrations = [], isLoading } = useQuery({
+  const { data: integrations = [] } = useQuery({
     queryKey: ['integrations', portfolioIdeaId],
     queryFn: () => base44.entities.MonetizationIntegration.filter({ 
       portfolio_idea_id: portfolioIdeaId 

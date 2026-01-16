@@ -24,7 +24,6 @@ export default function Home() {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showAIChat, setShowAIChat] = useState(false);
   const [showIdeaGenerator, setShowIdeaGenerator] = useState(false);
-  const [user, setUser] = useState(null);
 
   // Fetch user and preferences
   useEffect(() => {

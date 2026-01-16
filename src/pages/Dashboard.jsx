@@ -306,7 +306,7 @@ export default function Dashboard() {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {portfolioIdeas.slice(0, 5).map((idea, i) => (
+                  {portfolioIdeas.slice(0, 5).map((idea) => (
                     <div key={idea.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
                       <div className="flex items-center gap-4">
                         <div className={`w-3 h-3 rounded-full bg-gradient-to-r ${idea.color || 'from-violet-500 to-purple-500'}`} />

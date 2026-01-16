@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -18,7 +18,6 @@ const COLORS = ['#8b5cf6', '#06b6d4', '#10b981', '#f59e0b', '#ef4444'];
 
 export default function FinancialDashboard({ portfolioIdea }) {
   const [activeModal, setActiveModal] = useState(null);
-  const queryClient = useQueryClient();
 
   const { data: financialData = [] } = useQuery({
     queryKey: ['financialData', portfolioIdea.id],

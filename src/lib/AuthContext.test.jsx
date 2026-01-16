@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, act } from '@testing-library/react';
 import { renderHook } from '@testing-library/react';
 import { AuthProvider, useAuth } from './AuthContext';
 import { base44 } from '@/api/base44Client';
@@ -163,7 +163,9 @@ describe('AuthContext', () => {
 
     // Click logout
     const logoutButton = getByRole('button', { name: /logout/i });
-    logoutButton.click();
+    await act(async () => {
+      logoutButton.click();
+    });
 
     await waitFor(() => {
       expect(base44.auth.logout).toHaveBeenCalled();
@@ -183,7 +185,9 @@ describe('AuthContext', () => {
     );
 
     const loginButton = getByRole('button', { name: /login/i });
-    loginButton.click();
+    await act(async () => {
+      loginButton.click();
+    });
 
     await waitFor(() => {
       expect(base44.auth.redirectToLogin).toHaveBeenCalled();

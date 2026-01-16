@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Calculator, TrendingUp } from 'lucide-react';
 
-export default function ROICalculator({ portfolioIdea, open, onClose }) {
+export default function ROICalculator({ portfolioIdea: _portfolioIdea, open, onClose }) {
   const [formData, setFormData] = useState({
     initial_investment: '',
     monthly_revenue: '',
