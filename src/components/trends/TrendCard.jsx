@@ -17,6 +17,7 @@ export default function TrendCard({
   isFollowed, 
   onFollow, 
   onUnfollow,
+  onSetupAlert,
   index = 0 
 }) {
   const categoryStyle = CATEGORY_STYLES[trend.category] || CATEGORY_STYLES.opportunity;
@@ -79,14 +80,25 @@ export default function TrendCard({
             </div>
           )}
 
-          {/* Action */}
-          <Button 
-            variant="outline"
-            className="w-full group"
-          >
-            Learn More
-            <ArrowUpRight className="w-4 h-4 ml-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </Button>
+          {/* Actions */}
+          <div className="grid grid-cols-2 gap-2">
+            <Button 
+              variant="outline"
+              size="sm"
+              onClick={() => onSetupAlert?.(trend)}
+            >
+              <Bell className="w-3 h-3 mr-1" />
+              Alert
+            </Button>
+            <Button 
+              variant="outline"
+              size="sm"
+              className="group"
+            >
+              Details
+              <ArrowUpRight className="w-3 h-3 ml-1 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </motion.div>

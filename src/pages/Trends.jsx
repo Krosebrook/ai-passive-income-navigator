@@ -7,12 +7,15 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { 
   TrendingUp, Lightbulb, Zap, Wrench, RefreshCw,
-  Loader2, Bell
+  Loader2, Bell, Sparkles
 } from 'lucide-react';
 
 import PageHeader from '@/components/ui/PageHeader';
 import TrendCard from '@/components/trends/TrendCard';
 import TrendAnalysisPanel from '@/components/trends/TrendAnalysisPanel';
+import TrendVisualization from '@/components/trends/TrendVisualization';
+import AlertSetupModal from '@/components/trends/AlertSetupModal';
+import EmergingNiches from '@/components/trends/EmergingNiches';
 
 const TREND_CATEGORIES = [
   { id: 'opportunity', label: 'Opportunities', icon: TrendingUp, analysisKey: 'opportunities' },
@@ -29,6 +32,10 @@ export default function Trends() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(null);
+  const [alertModalOpen, setAlertModalOpen] = useState(false);
+  const [selectedTrendForAlert, setSelectedTrendForAlert] = useState(null);
+  const [emergingNiches, setEmergingNiches] = useState([]);
+  const [isPredicting, setIsPredicting] = useState(false);
 
   const { data: followedTrends = [] } = useQuery({
     queryKey: ['followedTrends'],
@@ -128,9 +135,27 @@ export default function Trends() {
     setIsAnalyzing(false);
   };
 
+  const predictEmergingNiches = async () => {
+    setIsPredicting(true);
+    try {
+      const response = await base44.functions.invoke('analyzeMarketTrends', { category: 'niches' });
+      setEmergingNiches(response.data.niches || []);
+    } catch (error) {
+      console.error('Failed to predict niches:', error);
+    } finally {
+      setIsPredicting(false);
+    }
+  };
+
+  const handleSetupAlert = (trend) => {
+    setSelectedTrendForAlert(trend);
+    setAlertModalOpen(true);
+  };
+
   useEffect(() => {
     if (Object.keys(trends).length === 0) {
       generateTrends();
+      predictEmergingNiches();
     }
   }, []);
 
@@ -151,19 +176,34 @@ export default function Trends() {
           subtitle="AI-powered insights on passive income opportunities"
           gradient="from-emerald-600 to-teal-600"
           action={
-            <Button
-              onClick={generateTrends}
-              disabled={isGenerating}
-              variant="outline"
-              className="gap-2"
-            >
-              {isGenerating ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <RefreshCw className="w-4 h-4" />
-              )}
-              Refresh Trends
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                onClick={predictEmergingNiches}
+                disabled={isPredicting}
+                variant="outline"
+                className="gap-2"
+              >
+                {isPredicting ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Sparkles className="w-4 h-4" />
+                )}
+                <span className="hidden sm:inline">Predict Niches</span>
+              </Button>
+              <Button
+                onClick={generateTrends}
+                disabled={isGenerating}
+                variant="outline"
+                className="gap-2"
+              >
+                {isGenerating ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <RefreshCw className="w-4 h-4" />
+                )}
+                Refresh
+              </Button>
+            </div>
           }
         />
 
@@ -207,6 +247,28 @@ export default function Trends() {
           </TabsList>
         </Tabs>
 
+        {/* Emerging Niches AI Predictions */}
+        {!isPredicting && emergingNiches.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8"
+          >
+            <EmergingNiches niches={emergingNiches} />
+          </motion.div>
+        )}
+
+        {/* Data Visualization */}
+        {!isGenerating && currentTrends.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8"
+          >
+            <TrendVisualization trends={currentTrends} category={activeTab} />
+          </motion.div>
+        )}
+
         {/* AI Analysis */}
         {!isGenerating && Object.keys(trends).length > 0 && (
           <motion.div
@@ -249,6 +311,7 @@ export default function Trends() {
                 isFollowed={isFollowed(trend)}
                 onFollow={() => followMutation.mutate(trend)}
                 onUnfollow={() => unfollowMutation.mutate(trend)}
+                onSetupAlert={() => handleSetupAlert(trend)}
               />
             ))}
           </div>
@@ -261,6 +324,16 @@ export default function Trends() {
           </p>
         )}
       </div>
+
+      {/* Alert Setup Modal */}
+      <AlertSetupModal
+        open={alertModalOpen}
+        onClose={() => {
+          setAlertModalOpen(false);
+          setSelectedTrendForAlert(null);
+        }}
+        trend={selectedTrendForAlert}
+      />
     </div>
   );
 }
