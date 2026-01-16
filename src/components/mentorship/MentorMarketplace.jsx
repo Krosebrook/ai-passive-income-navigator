@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
 import { 
-  User, Star, CheckCircle, Clock, DollarSign, Search,
+  User, Star, CheckCircle, DollarSign, Search,
   Calendar, MessageSquare, Award, TrendingUp 
 } from 'lucide-react';
 

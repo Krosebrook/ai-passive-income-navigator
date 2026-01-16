@@ -9,7 +9,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Badge } from '@/components/ui/badge';
 import { Loader2 } from 'lucide-react';
 
 /**

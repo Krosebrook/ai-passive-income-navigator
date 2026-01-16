@@ -21,7 +21,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import {
   CheckCircle2, Circle, AlertCircle, Plus, Trash2, Zap,
-  Clock, Flag, Layers
+  Clock, Layers
 } from 'lucide-react';
 
 const STATUS_CONFIG = {

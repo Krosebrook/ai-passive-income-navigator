@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { 
   DollarSign, TrendingUp, TrendingDown, PieChart, 
   Calculator, Plus, Brain, AlertCircle
 } from 'lucide-react';
-import { LineChart, Line, BarChart, Bar, PieChart as RechartsPie, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, PieChart as RechartsPie, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import ExpenseTracker from './ExpenseTracker';
 import RevenueForecast from './RevenueForecast';
 import ROICalculator from './ROICalculator';
