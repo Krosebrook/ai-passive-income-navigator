@@ -14,7 +14,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import {
-  Loader2, CheckCircle2, AlertCircle, TrendingUp, Target,
+  Loader2, CheckCircle2, TrendingUp, Target,
   AlertTriangle, Lightbulb
 } from 'lucide-react';
 

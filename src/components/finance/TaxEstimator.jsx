@@ -16,7 +16,7 @@ import { toast } from 'sonner';
 
 const US_STATES = ['CA', 'NY', 'TX', 'FL', 'IL', 'PA', 'OH', 'Other'];
 
-export default function TaxEstimator({ portfolioIdea, financialData, open, onClose }) {
+export default function TaxEstimator({ portfolioIdea: _portfolioIdea, financialData, open, onClose }) {
   const [formData, setFormData] = useState({
     year: new Date().getFullYear(),
     business_structure: 'sole_proprietorship',

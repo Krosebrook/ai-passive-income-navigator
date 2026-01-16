@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   DollarSign, Users, Scale, Megaphone, Target, 
-  Loader2, Copy, CheckCircle, TrendingUp, Calendar, FileCheck
+  Loader2, Copy, CheckCircle, TrendingUp, Calendar
 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';

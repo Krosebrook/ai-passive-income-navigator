@@ -17,7 +17,6 @@ import PageHeader from '@/components/ui/PageHeader';
  * @requires Admin role
  */
 export default function AdminPage() {
-  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

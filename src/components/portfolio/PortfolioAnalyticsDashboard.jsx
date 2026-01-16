@@ -6,10 +6,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
-  LineChart, Line, AreaChart, Area, BarChart, Bar, 
-  XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ScatterChart, Scatter
+  LineChart, Line, BarChart, Bar, 
+  XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
-import { TrendingUp, Target, AlertCircle, CheckCircle, Flame } from 'lucide-react';
+import { TrendingUp, Target, Flame } from 'lucide-react';
 
 /**
  * Portfolio Analytics Dashboard Component
@@ -22,7 +22,6 @@ import { TrendingUp, Target, AlertCircle, CheckCircle, Flame } from 'lucide-reac
  */
 export default function PortfolioAnalyticsDashboard() {
   const [timeframe, setTimeframe] = useState('30'); // days
-  const [selectedIdea, setSelectedIdea] = useState(null);
 
   const { data: portfolioIdeas = [] } = useQuery({
     queryKey: ['portfolioIdeas'],

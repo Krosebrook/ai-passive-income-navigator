@@ -30,7 +30,6 @@ export default function PersonalizedRoadmapModal({ open, onClose, idea }) {
   });
   const [skillInput, setSkillInput] = useState('');
   const [roadmap, setRoadmap] = useState(null);
-  const [isGenerating, setIsGenerating] = useState(false);
 
   const addSkill = () => {
     if (skillInput.trim() && !userProfile.skills.includes(skillInput.trim())) {

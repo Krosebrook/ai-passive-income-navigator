@@ -31,7 +31,6 @@ import EnrichmentModal from '@/components/enrichment/EnrichmentModal';
 import MonetizationModal from '@/components/monetization/MonetizationModal';
 import FinancialEntry from '@/components/finance/FinancialEntry';
 import PerformanceCharts from '@/components/finance/PerformanceCharts';
-import ViabilityScore from '@/components/enrichment/ViabilityScore';
 import IdeaGeneratorModal from '@/components/ideas/IdeaGeneratorModal';
 import PortfolioAnalyticsDashboard from '@/components/portfolio/PortfolioAnalyticsDashboard';
 import IdeaValidator from '@/components/ideas/IdeaValidator';

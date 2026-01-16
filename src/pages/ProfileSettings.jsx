@@ -37,7 +37,6 @@ const INDUSTRIES = [
 export default function ProfileSettings() {
   const queryClient = useQueryClient();
   const [user, setUser] = useState(null);
-  const [isSaving, setIsSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {

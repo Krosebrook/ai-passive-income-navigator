@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
 import { 
-  ShoppingCart, ExternalLink, DollarSign, TrendingUp, 
+  ShoppingCart, ExternalLink, DollarSign, 
   Link as LinkIcon, CheckCircle, XCircle, Loader2 
 } from 'lucide-react';
 
@@ -33,7 +33,7 @@ export default function MonetizationIntegrations({ portfolioIdeaId }) {
   const [selectedPlatform, setSelectedPlatform] = useState(null);
   const [platformUrl, setPlatformUrl] = useState('');
 
-  const { data: integrations = [], isLoading } = useQuery({
+  const { data: integrations = [] } = useQuery({
     queryKey: ['integrations', portfolioIdeaId],
     queryFn: () => base44.entities.MonetizationIntegration.filter({ 
       portfolio_idea_id: portfolioIdeaId 

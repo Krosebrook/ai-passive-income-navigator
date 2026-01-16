@@ -56,7 +56,7 @@ const STATUS_OPTIONS = [
 export default function PortfolioCard({ 
   idea, 
   onStatusChange,
-  onPriorityChange,
+  onPriorityChange: _onPriorityChange,
   onEdit,
   onDelete,
   onEnrich,

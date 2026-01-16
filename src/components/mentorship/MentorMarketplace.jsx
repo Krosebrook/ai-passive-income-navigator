@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
 import { 
-  User, Star, CheckCircle, Clock, DollarSign, Search,
+  User, Star, CheckCircle, DollarSign, Search,
   Calendar, MessageSquare, Award, TrendingUp 
 } from 'lucide-react';
 
@@ -16,14 +16,14 @@ import {
  * Mentor Marketplace Component
  * Browse and connect with verified passive income experts
  */
-export default function MentorMarketplace({ portfolioIdeaId = null, onSelect = null }) {
+export default function MentorMarketplace({ portfolioIdeaId = null, onSelect: _onSelect = null }) {
   const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSpecialization, setSelectedSpecialization] = useState('all');
   const [selectedMentor, setSelectedMentor] = useState(null);
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
 
-  const { data: mentors = [], isLoading } = useQuery({
+  const { data: mentors = [] } = useQuery({
     queryKey: ['mentors'],
     queryFn: () => base44.entities.Mentor.list()
   });

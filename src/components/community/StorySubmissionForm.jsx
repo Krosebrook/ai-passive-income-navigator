@@ -9,13 +9,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Badge } from '@/components/ui/badge';
 import { Loader2 } from 'lucide-react';
 
 /**
  * Form for users to submit success stories with metrics and learnings
  */
-export default function StorySubmissionForm({ open, onClose, onSubmit, isLoading, ideas }) {
+export default function StorySubmissionForm({ open, onClose, onSubmit, isLoading, ideas: _ideas }) {
   const [formData, setFormData] = useState({
     idea_title: '',
     idea_category: '',

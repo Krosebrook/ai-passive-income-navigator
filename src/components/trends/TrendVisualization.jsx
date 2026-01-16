@@ -1,13 +1,13 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { LineChart, Line, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { TrendingUp, DollarSign, Users, Zap } from 'lucide-react';
 
 /**
  * Trend Visualization Component
  * Displays interactive charts for trend analysis and growth projections
  */
-export default function TrendVisualization({ trends, category }) {
+export default function TrendVisualization({ trends, category: _category }) {
   // Generate mock growth data based on current growth rates
   const generateGrowthData = () => {
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];

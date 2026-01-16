@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, act } from '@testing-library/react';
 import { renderHook } from '@testing-library/react';
 import { AuthProvider, useAuth } from './AuthContext';
 import { base44 } from '@/api/base44Client';
@@ -161,7 +161,7 @@ describe('AuthContext', () => {
       expect(screen.getByText('User: Test User')).toBeInTheDocument();
     });
 
-    // Click logout
+    // Click logout - state updates will be handled by waitFor
     const logoutButton = getByRole('button', { name: /logout/i });
     logoutButton.click();
 

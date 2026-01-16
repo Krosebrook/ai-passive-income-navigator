@@ -21,7 +21,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import {
   CheckCircle2, Circle, AlertCircle, Plus, Trash2, Zap,
-  Clock, Flag, Layers
+  Clock, Layers
 } from 'lucide-react';
 
 const STATUS_CONFIG = {
@@ -146,7 +146,7 @@ export default function TaskManager({ ideaId }) {
           </div>
         ) : (
           <div className="space-y-2">
-            {filteredTasks.map((task, idx) => {
+            {filteredTasks.map((task) => {
               const StatusIcon = STATUS_CONFIG[task.status].icon;
               return (
                 <motion.div
