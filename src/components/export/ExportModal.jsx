@@ -10,7 +10,7 @@ import {
   DialogFooter
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { AlertCircle, CheckCircle } from 'lucide-react';
 
 const EXPORT_CONFIGS = {
