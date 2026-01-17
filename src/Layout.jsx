@@ -19,6 +19,7 @@ const NAV_ITEMS = [
   { name: 'Dashboard', icon: LayoutDashboard, page: 'Dashboard' },
   { name: 'Community', icon: Users, page: 'Community' },
   { name: 'Forum', icon: Users, page: 'Forum' },
+  { name: 'Pipeline', icon: TrendingUp, page: 'DealPipeline' },
   { name: 'Settings', icon: Settings, page: 'ProfileSettings' }
 ];
 

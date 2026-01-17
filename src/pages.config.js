@@ -11,6 +11,7 @@ import ProfileSettings from './pages/ProfileSettings';
 import Trends from './pages/Trends';
 import Forum from './pages/Forum';
 import ForumPost from './pages/ForumPost';
+import DealPipeline from './pages/DealPipeline';
 import __Layout from './Layout.jsx';
 
 
@@ -28,6 +29,7 @@ export const PAGES = {
     "Trends": Trends,
     "Forum": Forum,
     "ForumPost": ForumPost,
+    "DealPipeline": DealPipeline,
 }
 
 export const pagesConfig = {
