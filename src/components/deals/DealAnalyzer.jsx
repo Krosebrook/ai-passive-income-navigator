@@ -7,11 +7,13 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { Tabs, TabsList, TabsContent, TabsTrigger } from '@/components/ui/tabs';
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
 import { 
   TrendingUp, AlertTriangle, Target, DollarSign, 
-  Users, Clock, Lightbulb, CheckCircle, XCircle, Loader2 
+  Users, Clock, Lightbulb, CheckCircle, XCircle, Loader2,
+  Upload, FileText, Cloud, BarChart3
 } from 'lucide-react';
 
 /**
@@ -35,6 +37,29 @@ export default function DealAnalyzer() {
   });
   const [analysis, setAnalysis] = useState(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [isUploading, setIsUploading] = useState(false);
+  const [runScenarios, setRunScenarios] = useState(true);
+
+  const handleFileUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+
+    setIsUploading(true);
+    try {
+      const uploadedUrls = [];
+      for (const file of files) {
+        const { file_url } = await base44.integrations.Core.UploadFile({ file });
+        uploadedUrls.push(file_url);
+      }
+      setUploadedFiles([...uploadedFiles, ...uploadedUrls]);
+      toast.success(`${files.length} document(s) uploaded`);
+    } catch (error) {
+      toast.error('Failed to upload documents');
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const handleAnalyze = async () => {
     if (!dealData.dealName || !dealData.dealDescription) {
@@ -50,12 +75,14 @@ export default function DealAnalyzer() {
         dealName: dealData.dealName,
         dealDescription: dealData.dealDescription,
         dealCategory: dealData.dealCategory,
-        userCriteria: criteria
+        userCriteria: criteria,
+        documentUrls: uploadedFiles,
+        runScenarios
       });
 
       setAnalysis(response.data);
       setStep('results');
-      toast.success('Analysis complete!');
+      toast.success('Enhanced analysis complete with real-time data!');
     } catch (error) {
       console.error('Analysis failed:', error);
       toast.error('Failed to analyze deal');
@@ -200,10 +227,67 @@ export default function DealAnalyzer() {
             </CardContent>
           </Card>
 
+          {/* Document Upload & Analysis Options */}
+          <Card className="md:col-span-2 bg-gradient-to-r from-blue-50 to-cyan-50 border-blue-200">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Cloud className="w-5 h-5 text-blue-600" />
+                Enhanced Analysis Options
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label className="flex items-center gap-2 mb-2">
+                  <Upload className="w-4 h-4" />
+                  Upload Supporting Documents (Business Plans, Financial Statements, etc.)
+                </Label>
+                <div className="flex gap-2">
+                  <Input
+                    type="file"
+                    multiple
+                    accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.png,.jpg,.jpeg"
+                    onChange={handleFileUpload}
+                    disabled={isUploading}
+                  />
+                  {isUploading && <Loader2 className="w-5 h-5 animate-spin" />}
+                </div>
+                {uploadedFiles.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {uploadedFiles.map((url, idx) => (
+                      <Badge key={idx} variant="secondary" className="flex items-center gap-1">
+                        <FileText className="w-3 h-3" />
+                        Document {idx + 1}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="scenarios"
+                  checked={runScenarios}
+                  onChange={(e) => setRunScenarios(e.target.checked)}
+                  className="w-4 h-4"
+                />
+                <Label htmlFor="scenarios" className="flex items-center gap-2 cursor-pointer">
+                  <BarChart3 className="w-4 h-4 text-violet-600" />
+                  Run Economic Scenario Simulations (Optimistic, Base, Pessimistic)
+                </Label>
+              </div>
+
+              <div className="text-sm text-blue-700 bg-blue-100 p-3 rounded-lg">
+                ✨ <strong>Enhanced with Real-Time Data:</strong> Market trends, competitor analysis, 
+                keyword search volumes, and current economic indicators
+              </div>
+            </CardContent>
+          </Card>
+
           <div className="md:col-span-2">
             <Button onClick={handleAnalyze} className="w-full" size="lg">
               <TrendingUp className="w-5 h-5 mr-2" />
-              Analyze Deal
+              Run Enhanced Analysis with Real-Time Data
             </Button>
           </div>
         </div>
@@ -214,8 +298,14 @@ export default function DealAnalyzer() {
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-16">
             <Loader2 className="w-16 h-16 text-violet-600 animate-spin mb-4" />
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Analyzing Deal...</h3>
-            <p className="text-gray-600">Evaluating market, competition, profitability, and risks</p>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Running Enhanced Analysis...</h3>
+            <div className="text-center space-y-2 text-sm text-gray-600">
+              <p>✓ Fetching real-time market data...</p>
+              <p>✓ Analyzing competition and trends...</p>
+              {uploadedFiles.length > 0 && <p>✓ Processing uploaded documents...</p>}
+              {runScenarios && <p>✓ Simulating economic scenarios...</p>}
+              <p className="text-xs text-gray-500 mt-4">This may take 30-60 seconds</p>
+            </div>
           </CardContent>
         </Card>
       )}
@@ -451,6 +541,99 @@ export default function DealAnalyzer() {
               </ul>
             </CardContent>
           </Card>
+
+          {/* Economic Scenarios */}
+          {analysis?.analysis_results?.scenarios && (
+            <Card className="border-violet-200">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <BarChart3 className="w-5 h-5 text-violet-600" />
+                  Economic Scenario Simulations
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Tabs defaultValue="0">
+                  <TabsList className="grid w-full grid-cols-3">
+                    {analysis.analysis_results.scenarios.map((scenario, idx) => (
+                      <TabsTrigger key={idx} value={idx.toString()}>
+                        {scenario.scenario_name}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+                  {analysis.analysis_results.scenarios.map((scenario, idx) => (
+                    <TabsContent key={idx} value={idx.toString()} className="space-y-4">
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <p className="text-sm text-gray-600">Revenue Impact</p>
+                          <p className="text-2xl font-bold text-gray-900">
+                            {scenario.revenue_impact_pct > 0 ? '+' : ''}{scenario.revenue_impact_pct}%
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-600">Profit Margin Impact</p>
+                          <p className="text-2xl font-bold text-gray-900">
+                            {scenario.profit_margin_impact > 0 ? '+' : ''}{scenario.profit_margin_impact}%
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-600">Timeline Adjustment</p>
+                          <p className="text-2xl font-bold text-gray-900">
+                            {scenario.timeline_adjustment_months > 0 ? '+' : ''}{scenario.timeline_adjustment_months} months
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-600">Risk Level</p>
+                          <Badge className={scenario.risk_level === 'high' ? 'bg-red-500' : scenario.risk_level === 'medium' ? 'bg-yellow-500' : 'bg-green-500'}>
+                            {scenario.risk_level}
+                          </Badge>
+                        </div>
+                      </div>
+
+                      <div>
+                        <p className="text-sm text-gray-600 mb-2">Key Triggers</p>
+                        <ul className="space-y-1">
+                          {scenario.key_triggers?.map((trigger, i) => (
+                            <li key={i} className="text-sm flex items-start gap-2">
+                              <AlertTriangle className="w-4 h-4 text-orange-500 flex-shrink-0 mt-0.5" />
+                              {trigger}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div>
+                        <p className="text-sm text-gray-600 mb-2">Recommended Actions</p>
+                        <ul className="space-y-1">
+                          {scenario.recommended_actions?.map((action, i) => (
+                            <li key={i} className="text-sm flex items-start gap-2">
+                              <CheckCircle className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
+                              {action}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </TabsContent>
+                  ))}
+                </Tabs>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Data Source Badge */}
+          {analysis?.analysis_results?.market_data_timestamp && (
+            <div className="text-center text-sm text-gray-500">
+              <Badge variant="outline" className="gap-2">
+                <Cloud className="w-3 h-3" />
+                Real-time data as of {new Date(analysis.analysis_results.market_data_timestamp).toLocaleString()}
+              </Badge>
+              {analysis.analysis_results.document_analysis_included && (
+                <Badge variant="outline" className="gap-2 ml-2">
+                  <FileText className="w-3 h-3" />
+                  {uploadedFiles.length} document(s) analyzed
+                </Badge>
+              )}
+            </div>
+          )}
 
           {/* Actions */}
           <div className="flex gap-4">

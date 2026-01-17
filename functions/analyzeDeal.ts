@@ -1,9 +1,10 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
 
 /**
- * AI Deal Analyzer
- * Evaluates passive income opportunities based on user-defined criteria
- * Provides comprehensive risk/reward scoring and market analysis
+ * Enhanced AI Deal Analyzer
+ * - Real-time market data integration
+ * - Document analysis capability
+ * - Economic scenario simulation
  */
 Deno.serve(async (req) => {
   try {
@@ -14,7 +15,14 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { dealName, dealDescription, dealCategory, userCriteria } = await req.json();
+    const { 
+      dealName, 
+      dealDescription, 
+      dealCategory, 
+      userCriteria,
+      documentUrls = [],
+      runScenarios = false
+    } = await req.json();
 
     if (!dealName || !dealDescription) {
       return Response.json({ 
@@ -22,12 +30,57 @@ Deno.serve(async (req) => {
       }, { status: 400 });
     }
 
-    const prompt = `Analyze this passive income opportunity and provide a comprehensive evaluation:
+    // Step 1: Gather real-time market intelligence
+    const marketDataPrompt = `Fetch real-time market data for this opportunity:
+- Deal: ${dealName}
+- Category: ${dealCategory || 'Not specified'}
+- Description: ${dealDescription}
+
+Search for:
+1. Current market size and growth trends (2024-2026 data)
+2. Recent news and market sentiment
+3. Top competitors and their market share
+4. Keyword search volume and trending topics
+5. Industry benchmark profit margins
+6. Economic indicators affecting this market
+
+Return structured market intelligence.`;
+
+    const marketData = await base44.integrations.Core.InvokeLLM({
+      prompt: marketDataPrompt,
+      add_context_from_internet: true
+    });
+
+    // Step 2: Analyze uploaded documents if provided
+    let documentInsights = '';
+    if (documentUrls.length > 0) {
+      const docPrompt = `Analyze these business documents and extract key insights:
+- Financial projections
+- Revenue models
+- Cost structures
+- Market assumptions
+- Competitive positioning
+
+Provide a summary of strengths, weaknesses, and key numbers.`;
+
+      documentInsights = await base44.integrations.Core.InvokeLLM({
+        prompt: docPrompt,
+        file_urls: documentUrls
+      });
+    }
+
+    // Step 3: Main comprehensive analysis
+    const prompt = `Analyze this passive income opportunity with REAL-TIME MARKET DATA:
 
 DEAL DETAILS:
 Name: ${dealName}
 Category: ${dealCategory || 'Not specified'}
 Description: ${dealDescription}
+
+REAL-TIME MARKET INTELLIGENCE:
+${marketData}
+
+${documentInsights ? `UPLOADED DOCUMENT ANALYSIS:\n${documentInsights}\n` : ''}
 
 USER CRITERIA:
 - Minimum Market Size: $${userCriteria?.min_market_size || 100000}
@@ -37,7 +90,7 @@ USER CRITERIA:
 - Initial Investment Available: $${userCriteria?.required_initial_investment || 5000}
 - Risk Tolerance: ${userCriteria?.risk_tolerance || 'medium'}
 
-Provide a detailed analysis with:
+Use the REAL-TIME data to provide an accurate, current analysis with:
 
 1. MARKET ANALYSIS
    - Market size estimate and growth rate
@@ -136,27 +189,87 @@ Be realistic and data-driven. Use current market trends and real-world examples.
     });
 
     // Calculate criteria match
+    const matches = [];
+    if (userCriteria?.max_competition_level) {
+      const compLevels = { low: 1, medium: 2, high: 3 };
+      matches.push(compLevels[analysis.competition_analysis.competition_level] <= compLevels[userCriteria.max_competition_level]);
+    }
+    if (userCriteria?.max_profitability_timeline_months) {
+      matches.push(analysis.profitability_analysis.estimated_timeline_months <= userCriteria.max_profitability_timeline_months);
+    }
+    if (userCriteria?.min_profit_margin) {
+      matches.push(analysis.profitability_analysis.expected_profit_margin >= userCriteria.min_profit_margin);
+    }
+    
     const criteriaMatch = {
-      market_size_match: true, // Would need actual market data to validate
-      competition_match: userCriteria?.max_competition_level 
-        ? analysis.competition_analysis.competition_level === userCriteria.max_competition_level 
-        : true,
-      timeline_match: userCriteria?.max_profitability_timeline_months
-        ? analysis.profitability_analysis.estimated_timeline_months <= userCriteria.max_profitability_timeline_months
-        : true,
-      profit_margin_match: userCriteria?.min_profit_margin
-        ? analysis.profitability_analysis.expected_profit_margin >= userCriteria.min_profit_margin
-        : true,
-      overall_match_percentage: 85 // Calculated based on criteria met
+      market_size_match: true,
+      competition_match: matches[0] !== undefined ? matches[0] : true,
+      timeline_match: matches[1] !== undefined ? matches[1] : true,
+      profit_margin_match: matches[2] !== undefined ? matches[2] : true,
+      overall_match_percentage: Math.round((matches.filter(Boolean).length / Math.max(matches.length, 1)) * 100)
     };
 
-    // Save analysis
+    // Step 4: Run economic scenario simulations if requested
+    let scenarios = null;
+    if (runScenarios) {
+      const scenarioPrompt = `Based on the deal analysis, simulate 3 economic scenarios and their impact:
+
+DEAL: ${dealName}
+BASE ANALYSIS: ${JSON.stringify(analysis.profitability_analysis)}
+
+Simulate these scenarios:
+1. OPTIMISTIC: Bull market, high consumer spending, favorable regulations
+2. BASE CASE: Normal market conditions, steady growth
+3. PESSIMISTIC: Economic downturn, reduced spending, increased competition
+
+For each scenario, provide:
+- Revenue impact (% change from base)
+- Profit margin impact
+- Timeline to profitability adjustment
+- Risk level change
+- Key triggers and indicators
+- Recommended actions
+
+Return as JSON array with structured scenario objects.`;
+
+      scenarios = await base44.integrations.Core.InvokeLLM({
+        prompt: scenarioPrompt,
+        response_json_schema: {
+          type: 'object',
+          properties: {
+            scenarios: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  scenario_name: { type: 'string' },
+                  probability: { type: 'string' },
+                  revenue_impact_pct: { type: 'number' },
+                  profit_margin_impact: { type: 'number' },
+                  timeline_adjustment_months: { type: 'number' },
+                  risk_level: { type: 'string' },
+                  key_triggers: { type: 'array', items: { type: 'string' } },
+                  recommended_actions: { type: 'array', items: { type: 'string' } }
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Save comprehensive analysis
     const savedAnalysis = await base44.entities.DealAnalysis.create({
       deal_name: dealName,
       deal_description: dealDescription,
       deal_category: dealCategory,
       user_criteria: userCriteria,
-      analysis_results: analysis,
+      analysis_results: {
+        ...analysis,
+        market_data_timestamp: new Date().toISOString(),
+        document_analysis_included: documentUrls.length > 0,
+        scenarios: scenarios?.scenarios || null
+      },
       criteria_match: criteriaMatch
     });
 
