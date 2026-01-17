@@ -1,3 +1,4 @@
+import AICoach from './pages/AICoach';
 import Admin from './pages/Admin';
 import Bookmarks from './pages/Bookmarks';
 import Collaborate from './pages/Collaborate';
@@ -14,11 +15,12 @@ import Learn from './pages/Learn';
 import Portfolio from './pages/Portfolio';
 import ProfileSettings from './pages/ProfileSettings';
 import Trends from './pages/Trends';
-import AICoach from './pages/AICoach';
+import Integrations from './pages/Integrations';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
+    "AICoach": AICoach,
     "Admin": Admin,
     "Bookmarks": Bookmarks,
     "Collaborate": Collaborate,
@@ -35,7 +37,7 @@ export const PAGES = {
     "Portfolio": Portfolio,
     "ProfileSettings": ProfileSettings,
     "Trends": Trends,
-    "AICoach": AICoach,
+    "Integrations": Integrations,
 }
 
 export const pagesConfig = {
