@@ -28,6 +28,12 @@ export default function MentorMarketplace({ portfolioIdeaId = null, onSelect: _o
     queryFn: () => base44.entities.Mentor.list()
   });
 
+  // Fetch community metrics for mentors
+  const { data: forumAnswers = [] } = useQuery({
+    queryKey: ['mentor-forum-stats'],
+    queryFn: () => base44.entities.ForumAnswer.list()
+  });
+
   const bookSession = useMutation({
     mutationFn: async (sessionData) => {
       return await base44.entities.MentorshipSession.create(sessionData);
