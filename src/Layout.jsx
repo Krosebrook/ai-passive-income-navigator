@@ -8,7 +8,7 @@ import OnboardingNudges from '@/components/deals/OnboardingNudges';
 import {
   Home, FolderHeart, Bookmark, TrendingUp, 
   LayoutDashboard, Users, Settings, Menu, X,
-  Sparkles, BookOpen, Shield
+  Sparkles, BookOpen, Shield, Zap
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -16,6 +16,7 @@ const NAV_ITEMS = [
   { name: 'Portfolio', icon: FolderHeart, page: 'Portfolio' },
   { name: 'AI Coach', icon: Sparkles, page: 'AICoach' },
   { name: 'Pipeline', icon: TrendingUp, page: 'DealPipeline' },
+  { name: 'Integrations', icon: Zap, page: 'Integrations' },
   { name: 'Community', icon: Users, page: 'Community' },
   { name: 'Docs', icon: BookOpen, page: 'Documentation' }
 ];
