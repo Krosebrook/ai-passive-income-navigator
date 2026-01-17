@@ -20,6 +20,7 @@ import ActivationGuideWrapper from '@/components/activation/ActivationGuideWrapp
 import RetentionHubWrapper from '@/components/retention/RetentionHubWrapper';
 import PowerUserHub from '@/components/poweruser/PowerUserHub';
 import LifecycleAdaptiveUI from '@/components/lifecycle/LifecycleAdaptiveUI';
+import AIDealsAdvisor from '@/components/deals/AIDealsAdvisor';
 import { IDEAS_CATALOG, CATEGORIES } from '@/components/data/ideasCatalog';
 
 export default function Home() {
@@ -236,6 +237,9 @@ export default function Home() {
 
         {/* Power-User System */}
         <PowerUserHub />
+
+        {/* AI Deal Sourcing */}
+        <AIDealsAdvisor />
 
         {/* Ideas Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
