@@ -4,6 +4,7 @@ import Bookmarks from './pages/Bookmarks';
 import Collaborate from './pages/Collaborate';
 import Community from './pages/Community';
 import Dashboard from './pages/Dashboard';
+import DataManagement from './pages/DataManagement';
 import DealDiscovery from './pages/DealDiscovery';
 import DealPipeline from './pages/DealPipeline';
 import Documentation from './pages/Documentation';
@@ -16,7 +17,7 @@ import Learn from './pages/Learn';
 import Portfolio from './pages/Portfolio';
 import ProfileSettings from './pages/ProfileSettings';
 import Trends from './pages/Trends';
-import DataManagement from './pages/DataManagement';
+import Landing from './pages/Landing';
 import __Layout from './Layout.jsx';
 
 
@@ -27,6 +28,7 @@ export const PAGES = {
     "Collaborate": Collaborate,
     "Community": Community,
     "Dashboard": Dashboard,
+    "DataManagement": DataManagement,
     "DealDiscovery": DealDiscovery,
     "DealPipeline": DealPipeline,
     "Documentation": Documentation,
@@ -39,11 +41,11 @@ export const PAGES = {
     "Portfolio": Portfolio,
     "ProfileSettings": ProfileSettings,
     "Trends": Trends,
-    "DataManagement": DataManagement,
+    "Landing": Landing,
 }
 
 export const pagesConfig = {
-    mainPage: "Dashboard",
+    mainPage: "Community",
     Pages: PAGES,
     Layout: __Layout,
 };
