@@ -12,6 +12,7 @@ import Trends from './pages/Trends';
 import Forum from './pages/Forum';
 import ForumPost from './pages/ForumPost';
 import DealPipeline from './pages/DealPipeline';
+import Collaborate from './pages/Collaborate';
 import __Layout from './Layout.jsx';
 
 
@@ -30,6 +31,7 @@ export const PAGES = {
     "Forum": Forum,
     "ForumPost": ForumPost,
     "DealPipeline": DealPipeline,
+    "Collaborate": Collaborate,
 }
 
 export const pagesConfig = {

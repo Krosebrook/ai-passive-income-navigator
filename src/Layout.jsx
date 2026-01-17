@@ -20,6 +20,7 @@ const NAV_ITEMS = [
   { name: 'Community', icon: Users, page: 'Community' },
   { name: 'Forum', icon: Users, page: 'Forum' },
   { name: 'Pipeline', icon: TrendingUp, page: 'DealPipeline' },
+  { name: 'Collaborate', icon: Users, page: 'Collaborate' },
   { name: 'Settings', icon: Settings, page: 'ProfileSettings' }
 ];
 
