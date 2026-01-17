@@ -51,7 +51,7 @@ const STATUS_OPTIONS = [
  * @param {Function} props.onEdit - Callback to edit notes
  * @param {Function} props.onDelete - Callback to remove idea
  * @param {Function} props.onEnrich - Callback for AI enrichment
- * @param {Function} props.onAnalyze - Callback for monetization analysis
+
  * @param {Function} props.onSelectTracking - Callback for performance tracking
  * @param {Function} props.onGenerateMarketing - Callback for marketing content generation
  * @param {number} [props.index=0] - Card index for staggered animations
@@ -115,10 +115,6 @@ export default function PortfolioCard({
                 <DropdownMenuItem onClick={() => onEnrich?.(idea)}>
                   <Sparkles className="w-4 h-4 mr-2" />
                   AI Enrich
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => onAnalyze?.(idea)}>
-                  <LineChart className="w-4 h-4 mr-2" />
-                  Monetization
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onGenerateMarketing?.(idea)}>
                   <Megaphone className="w-4 h-4 mr-2" />
