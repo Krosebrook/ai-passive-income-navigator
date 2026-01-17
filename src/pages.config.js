@@ -16,6 +16,7 @@ import Learn from './pages/Learn';
 import Portfolio from './pages/Portfolio';
 import ProfileSettings from './pages/ProfileSettings';
 import Trends from './pages/Trends';
+import DataManagement from './pages/DataManagement';
 import __Layout from './Layout.jsx';
 
 
@@ -38,10 +39,11 @@ export const PAGES = {
     "Portfolio": Portfolio,
     "ProfileSettings": ProfileSettings,
     "Trends": Trends,
+    "DataManagement": DataManagement,
 }
 
 export const pagesConfig = {
-    mainPage: "Dashboard",
+    mainPage: "Community",
     Pages: PAGES,
     Layout: __Layout,
 };
