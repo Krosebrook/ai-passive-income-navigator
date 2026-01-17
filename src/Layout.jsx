@@ -14,7 +14,7 @@ import {
 const NAV_ITEMS = [
   { name: 'Home', icon: Home, page: 'Home' },
   { name: 'Portfolio', icon: FolderHeart, page: 'Portfolio' },
-  { name: 'Discover', icon: Sparkles, page: 'DealDiscovery' },
+  { name: 'AI Coach', icon: Sparkles, page: 'AICoach' },
   { name: 'Pipeline', icon: TrendingUp, page: 'DealPipeline' },
   { name: 'Community', icon: Users, page: 'Community' },
   { name: 'Docs', icon: BookOpen, page: 'Documentation' }
