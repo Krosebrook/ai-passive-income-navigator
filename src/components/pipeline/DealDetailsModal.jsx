@@ -11,6 +11,7 @@ import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
 import { Plus, CheckCircle, Clock, Bell, MessageSquare } from 'lucide-react';
 import CommentSection from '@/components/collaboration/CommentSection';
+import WorkflowBuilder from '@/components/pipeline/WorkflowBuilder';
 
 export default function DealDetailsModal({ open, onClose, deal }) {
   const queryClient = useQueryClient();
@@ -75,12 +76,17 @@ export default function DealDetailsModal({ open, onClose, deal }) {
         </DialogHeader>
 
         <Tabs defaultValue="overview">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="workflow">Workflow</TabsTrigger>
             <TabsTrigger value="tasks">Tasks ({tasks.length})</TabsTrigger>
             <TabsTrigger value="reminders">Reminders ({reminders.length})</TabsTrigger>
             <TabsTrigger value="discussion">Discussion</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="workflow">
+            <WorkflowBuilder dealId={deal?.id} />
+          </TabsContent>
 
           <TabsContent value="overview" className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
