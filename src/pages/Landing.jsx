@@ -1,647 +1,326 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Zap, TrendingUp, Shield, Users, Download, X, Menu, Check } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { ArrowRight, Zap, TrendingUp, Shield, Users, Download, X, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { createPageUrl } from '@/utils';
-
-// Performance note: Landing page optimized for LCP, INP, CLS
-// - Hero image uses fetchPriority="high" and loading="eager"
-// - All media containers have aspect-ratio to prevent CLS
-// - Non-essential JS deferred via useCallback
-// - Semantic HTML (section, article, header, footer)
 
 export default function Landing() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [installPrompt, setInstallPrompt] = useState(null);
   const [isInstalled, setIsInstalled] = useState(false);
-  const [activeTab, setActiveTab] = useState(0);
 
-  // PWA install detection (deferred)
+  // Detect if app is installed
   useEffect(() => {
-    const handleBeforeInstall = (e) => {
+    window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       setInstallPrompt(e);
-    };
+    });
 
-    const checkStandalone = () => {
-      if (window.matchMedia('(display-mode: standalone)').matches) {
-        setIsInstalled(true);
-      }
-    };
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      setIsInstalled(true);
+    }
 
-    const handleAppInstalled = () => setIsInstalled(true);
-
-    window.addEventListener('beforeinstallprompt', handleBeforeInstall);
-    window.addEventListener('appinstalled', handleAppInstalled);
-    checkStandalone();
-
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
-      window.removeEventListener('appinstalled', handleAppInstalled);
-    };
+    window.addEventListener('appinstalled', () => {
+      setIsInstalled(true);
+    });
   }, []);
 
-  // Memoized install handler to prevent unnecessary re-renders
-  const handleInstall = useCallback(async () => {
+  const handleInstall = async () => {
     if (!installPrompt) return;
     installPrompt.prompt();
     const choiceResult = await installPrompt.userChoice;
     if (choiceResult.outcome === 'accepted') {
       setInstallPrompt(null);
     }
-  }, [installPrompt]);
+  };
 
-  // Feature cards optimized for CRO (Conversion Rate Optimization)
   const features = [
-    {
-      icon: Zap,
-      title: 'AI-Sourced Deals',
-      desc: 'Wake up to 5+ vetted passive income opportunities every morning—pre-analyzed and ranked by AI for your risk profile.',
-    },
-    {
-      icon: TrendingUp,
-      title: 'Scenario Modeling',
-      desc: 'Test "what-if" scenarios in seconds. See projected returns, tax impact, and exit strategies before you commit.',
-    },
-    {
-      icon: Shield,
-      title: 'Fort Knox Data Security',
-      desc: 'Military-grade encryption. Automated daily backups. You own your data. Export anytime, no lock-in.',
-    },
-    {
-      icon: Users,
-      title: 'Founder Network',
-      desc: 'Co-invest with vetted founders. Share deal flow. Learn from deal breakdowns and tax strategies.',
-    },
+    { icon: Zap, title: 'AI Deal Discovery', desc: 'Daily sourced passive income opportunities matched to your profile' },
+    { icon: TrendingUp, title: 'Smart Analytics', desc: 'AI-powered ROI analysis and scenario modeling for every deal' },
+    { icon: Shield, title: 'Secure Backups', desc: 'Automated encrypted backups and full data export on-demand' },
+    { icon: Users, title: 'Community Network', desc: 'Connect with other investors, share watchlists, discuss strategies' },
   ];
 
-  // Pricing tiers optimized for CRO (psychological triggers, anchoring)
   const pricingTiers = [
     {
       name: 'Free',
       price: '$0',
       period: 'forever',
-      desc: 'Perfect to test the waters',
+      desc: 'Get started with daily deal discovery',
       features: [
-        { text: '1 premium deal per day', included: true },
-        { text: 'Basic portfolio dashboard', included: true },
-        { text: 'Read-only community', included: true },
-        { text: 'Email deal alerts', included: true },
-        { text: 'Scenario modeling', included: false },
-        { text: 'Data exports', included: false },
+        '1 AI deal per day',
+        'Basic portfolio tracking',
+        'Read-only community access',
+        'Email alerts',
       ],
-      cta: 'Get Started Free',
+      cta: 'Start Free',
       highlight: false,
-      riskReversal: 'No card required',
     },
     {
       name: 'Pro',
       price: '$9.99',
       period: '/month',
-      desc: 'For active builders (most popular)',
+      desc: 'For serious passive income builders',
       features: [
-        { text: '20 premium deals per month', included: true },
-        { text: 'Advanced scenario modeling', included: true },
-        { text: 'CSV/JSON data exports', included: true },
-        { text: 'Community posting & discussions', included: true },
-        { text: 'Performance analytics dashboard', included: true },
-        { text: 'Deal comparison side-by-side', included: true },
+        '20 AI deals per month',
+        'Advanced scenario modeling',
+        'Data exports & backups',
+        'Community posting & discussions',
+        'Performance analytics',
+        'Deal comparison tools',
       ],
-      cta: 'Start Free Trial',
+      cta: 'Upgrade to Pro',
       highlight: true,
-      riskReversal: '14-day free trial, cancel anytime',
     },
     {
       name: 'Enterprise',
       price: 'Custom',
       period: 'pricing',
-      desc: 'For teams, offices, institutions',
+      desc: 'For teams & institutions',
       features: [
-        { text: 'Unlimited deal analysis', included: true },
-        { text: 'Team workspaces & SSO', included: true },
-        { text: 'Custom ML scoring models', included: true },
-        { text: 'Audit-ready compliance exports', included: true },
-        { text: '24/7 dedicated support', included: true },
-        { text: 'REST API access', included: true },
+        'Unlimited deal analysis',
+        'Team workspaces & SSO',
+        'Custom scoring & integrations',
+        'Audit-ready exports',
+        'Dedicated support',
+        'API access',
       ],
-      cta: 'Schedule Demo',
+      cta: 'Contact Sales',
       highlight: false,
-      riskReversal: 'Volume discounts available',
     },
   ];
 
-  // FAQ with CRO-optimized answers (addresses common objections)
   const faqs = [
     {
-      q: 'How long does it take to find my first deal?',
-      a: 'Most users find their first deal within 2–5 minutes. Log in, set your investment criteria (risk, size, geography), and AI instantly surfaces matches from 50+ global platforms. Free users get 1 curated deal daily via email.',
+      q: 'How does AI deal matching work?',
+      a: 'Our AI analyzes your investment criteria, risk tolerance, and portfolio goals to surface opportunities from 50+ global sources daily. Each deal includes viability scoring and market analysis.',
     },
     {
-      q: 'Will I actually make money with this?',
-      a: 'FlashFusion surfaces opportunities and validates them. Execution is on you. But by cutting research time from 40 hours to 2 hours per deal, you can evaluate 10x more options and find the winner faster. Many users report 50–300% ROI on their first deal within 12–24 months.',
-    },
-    {
-      q: 'Is my data secure? Can you sell my portfolio to others?',
-      a: 'No. Data is end-to-end encrypted (AES-256). We never sell, share, or even access your portfolio without your explicit consent. Compliance: SOC 2 Type II, GDPR-ready. See our full Privacy Policy.',
+      q: 'Can I export my portfolio data?',
+      a: 'Yes. Pro and Enterprise users can export all portfolio data as CSV, JSON, or PDF. Free users can export once per month. All data is encrypted and backed up daily.',
     },
     {
       q: 'What if I want to cancel?',
-      a: 'Cancel anytime in Settings → Billing. Your subscription continues through the end of your billing cycle. No early termination fees, no surprise charges.',
+      a: 'Cancel anytime. Your access continues through the end of your billing period. No penalties or questions asked.',
     },
     {
-      q: 'Do you offer annual pricing?',
-      a: 'Yes. Pro annual ($99/yr) saves you 20% vs monthly. Enterprise has custom annual plans with volume discounts.',
+      q: 'Do you offer annual discounts?',
+      a: 'Yes. Pay annually and save 20% on Pro plans. Reach out to sales for Enterprise annual pricing.',
     },
     {
-      q: 'Which countries/geographies do you support?',
-      a: 'AI sourcing is global (100+ countries). Market data strongest in US, UK, EU, Canada, Australia. If your target is outside these regions, email support—we may have custom integrations.',
+      q: 'Is my investment data private?',
+      a: 'Completely. Data is end-to-end encrypted. We never share or sell portfolio information. See our privacy policy for full details.',
+    },
+    {
+      q: 'What countries do you serve?',
+      a: 'We support deals and market data globally, with strongest coverage in US, UK, EU, and Commonwealth markets.',
     },
   ];
 
   return (
-    <div className="min-h-screen bg-[#0f0618] text-white overflow-x-hidden">
-      {/* 
-        Mesh gradient background (GPU accelerated)
-        No heavy images—pure CSS creates depth without perf cost
-      */}
-      <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#1a0f2e] via-[#0f0618] to-[#0f0618]" />
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#8b85f7] rounded-full blur-3xl opacity-5 will-change-transform" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#00b7eb] rounded-full blur-3xl opacity-5 will-change-transform" />
+    <div className="min-h-screen bg-[#0f0618] text-white overflow-hidden">
+      {/* Fixed Background */}
+      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-[#1a0f2e] via-[#0f0618] to-[#0f0618]">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-[#8b85f7] rounded-full blur-3xl opacity-10" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#00b7eb] rounded-full blur-3xl opacity-10" />
+        </div>
       </div>
 
-      {/* 
-        Navigation: Glassmorphism (backdrop-blur), minimal links for fast scanning
-        Sticky on scroll for persistent CTA access
-      */}
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-white/[0.02] backdrop-blur-2xl">
+      {/* Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-[#2d1e50]/30 bg-[#0f0618]/80 backdrop-blur-xl">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          {/* Logo + Brand */}
-          <a href="#hero" className="flex items-center gap-2.5 group cursor-pointer">
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[#8b85f7] to-[#00b7eb] flex items-center justify-center glow-primary group-hover:shadow-lg group-hover:shadow-[#8b85f7]/40 transition-shadow">
-              <Zap className="w-4 h-4 text-white" aria-hidden="true" />
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#8b85f7] to-[#00b7eb] flex items-center justify-center glow-primary">
+              <Zap className="w-4 h-4 text-white" />
             </div>
-            <span className="font-bold text-base text-gradient hidden sm:inline-block">FlashFusion</span>
-          </a>
+            <span className="font-bold text-lg text-gradient hidden sm:block">FlashFusion</span>
+          </div>
 
-          {/* Desktop Nav (F-Pattern: top-left to center-right) */}
-          <nav className="hidden md:flex items-center gap-1">
-            {[
-              { label: 'How it Works', href: '#how' },
-              { label: 'Pricing', href: '#pricing' },
-              { label: 'FAQ', href: '#faq' },
-            ].map(({ label, href }) => (
-              <a
-                key={href}
-                href={href}
-                className="px-3 py-2 text-sm text-[#64748b] hover:text-[#8b85f7] transition-colors"
-                aria-label={label}
-              >
-                {label}
-              </a>
-            ))}
-          </nav>
-
-          {/* CTA Buttons (Sticky for high intent) */}
-          <div className="hidden md:flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-[#64748b] hover:text-[#8b85f7] hover:bg-white/5"
-              onClick={() => window.location.href = createPageUrl('Home')}
-              aria-label="Sign in to your account"
-            >
-              Sign In
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center gap-6">
+            <a href="#features" className="text-[#64748b] hover:text-[#8b85f7] text-sm">Features</a>
+            <a href="#pricing" className="text-[#64748b] hover:text-[#8b85f7] text-sm">Pricing</a>
+            <a href="#faq" className="text-[#64748b] hover:text-[#8b85f7] text-sm">FAQ</a>
+            <Button variant="ghost" size="sm" className="text-[#64748b] hover:text-[#8b85f7]" onClick={() => window.location.href = createPageUrl('Home')}>
+              Log In
             </Button>
             {!isInstalled && installPrompt && (
-              <Button
-                onClick={handleInstall}
-                className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:from-[#9a95ff] hover:to-[#6b4fff] hover:shadow-lg hover:shadow-[#8b85f7]/30 active:scale-95 transition-all"
-                aria-label="Add FlashFusion to your home screen"
-              >
+              <Button onClick={handleInstall} className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:from-[#9a95ff] hover:to-[#6b4fff]">
                 <Download className="w-4 h-4 mr-2" />
-                Install App
+                Add to Home
               </Button>
             )}
           </div>
 
-          {/* Mobile Menu Toggle */}
-          <button
-            className="md:hidden p-2 hover:bg-white/5 rounded-lg transition-colors"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={mobileMenuOpen}
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          {/* Mobile Menu Button */}
+          <button className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </nav>
 
-        {/* Mobile Menu (Collapse animation) */}
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="md:hidden border-t border-white/5 bg-white/[0.02] backdrop-blur-xl"
-            >
-              <div className="px-4 py-3 space-y-2">
-                {[
-                  { label: 'How it Works', href: '#how' },
-                  { label: 'Pricing', href: '#pricing' },
-                  { label: 'FAQ', href: '#faq' },
-                ].map(({ label, href }) => (
-                  <a
-                    key={href}
-                    href={href}
-                    className="block px-3 py-2 text-sm text-[#64748b] hover:text-[#8b85f7] hover:bg-white/5 rounded-lg transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {label}
-                  </a>
-                ))}
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start text-[#64748b] hover:text-[#8b85f7] hover:bg-white/5"
-                  onClick={() => {
-                    window.location.href = createPageUrl('Home');
-                    setMobileMenuOpen(false);
-                  }}
-                >
-                  Sign In
-                </Button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="md:hidden border-t border-[#2d1e50]/30 bg-[#1a0f2e]/95 backdrop-blur-xl">
+            <div className="px-4 py-4 space-y-3">
+              <a href="#features" className="block text-[#64748b] hover:text-[#8b85f7]">Features</a>
+              <a href="#pricing" className="block text-[#64748b] hover:text-[#8b85f7]">Pricing</a>
+              <a href="#faq" className="block text-[#64748b] hover:text-[#8b85f7]">FAQ</a>
+              <Button variant="ghost" className="w-full text-[#64748b] hover:text-[#8b85f7]" onClick={() => window.location.href = createPageUrl('Home')}>
+                Log In
+              </Button>
+            </div>
+          </motion.div>
+        )}
       </header>
 
-      {/* Hero Section (Z-Pattern: H1 → Subheading → CTA → Asset) */}
-      <section id="hero" className="relative pt-32 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="max-w-5xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center lg:text-left lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center"
-          >
-            {/* Left: H1 + Subheading + CTAs (Thumb zone friendly on mobile) */}
-            <div>
-              {/* H1: Semantic, unique, keyword-rich */}
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                <span className="text-gradient">
-                  Find passive income deals <br className="hidden sm:block" />
-                  in 2 minutes, not 2 months
-                </span>
-              </h1>
+      {/* Hero Section */}
+      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <h1 className="text-5xl sm:text-6xl font-bold mb-6 text-gradient">
+              Automated AI-Driven Passive Income Discovery
+            </h1>
+            <p className="text-xl text-[#64748b] mb-8">
+              Get daily AI-sourced investment opportunities, intelligent lifecycle guidance, and a thriving community of passive income builders. Find deals others miss. Validate faster. Build smarter.
+            </p>
 
-              {/* Subheading: Address pain point + value prop */}
-              <p className="text-base sm:text-lg text-[#a0aec0] mb-8 leading-relaxed max-w-xl">
-                AI analyzes 50+ deal platforms daily. Matches opportunities to your risk profile. Validates viability. You make the decision. Join 3,000+ passive income builders finding deals everyone else misses.
-              </p>
-
-              {/* Trust markers (CRO) */}
-              <div className="grid grid-cols-3 gap-4 mb-10 text-center lg:text-left text-xs sm:text-sm">
-                <div>
-                  <div className="text-lg sm:text-2xl font-bold text-[#8b85f7]">3,000+</div>
-                  <p className="text-[#64748b]">Active Builders</p>
-                </div>
-                <div>
-                  <div className="text-lg sm:text-2xl font-bold text-[#00b7eb]">$12.5M</div>
-                  <p className="text-[#64748b]">Invested</p>
-                </div>
-                <div>
-                  <div className="text-lg sm:text-2xl font-bold text-[#ff8e42]">48 hrs</div>
-                  <p className="text-[#64748b]">to First Deal</p>
-                </div>
-              </div>
-
-              {/* Primary CTA (High contrast, action-oriented) */}
-              <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
-                <Button
-                  onClick={handleInstall || (() => window.location.href = createPageUrl('Home'))}
-                  className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-xl hover:shadow-[#8b85f7]/30 active:scale-95 transition-all"
-                  size="lg"
-                  aria-label={installPrompt ? 'Install FlashFusion on your device' : 'Start finding deals today'}
-                >
-                  {installPrompt && !isInstalled ? (
-                    <>
-                      <Download className="w-5 h-5 mr-2" />
-                      Install Free
-                    </>
-                  ) : isInstalled ? (
-                    <>
-                      <ArrowRight className="w-5 h-5 mr-2" />
-                      Open App
-                    </>
-                  ) : (
-                    <>
-                      <ArrowRight className="w-5 h-5 mr-2" />
-                      Get Started Free
-                    </>
-                  )}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+              {!isInstalled && installPrompt && (
+                <Button onClick={handleInstall} size="lg" className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:from-[#9a95ff] hover:to-[#6b4fff] glow-primary">
+                  <Download className="w-5 h-5 mr-2" />
+                  Add to Home Screen
                 </Button>
-
-                {/* Secondary CTA (Lower contrast) */}
-                <Button
-                  variant="outline"
-                  className="border-white/10 text-[#a0aec0] hover:bg-white/5 hover:border-white/20 active:scale-95 transition-all"
-                  size="lg"
-                  onClick={() => document.getElementById('how')?.scrollIntoView({ behavior: 'smooth' })}
-                  aria-label="Watch how FlashFusion works"
-                >
-                  How It Works
-                  <ArrowRight className="w-4 h-4 ml-2" />
+              )}
+              {isInstalled && (
+                <Button size="lg" className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:from-[#9a95ff] hover:to-[#6b4fff]" onClick={() => window.location.href = createPageUrl('Home')}>
+                  Open App
+                  <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
-              </div>
-
-              {/* Risk reversal copy (CRO) */}
-              <p className="text-xs text-[#64748b] mt-6">
-                ✓ Free forever tier • No credit card • Cancel anytime
-              </p>
+              )}
+              {!isInstalled && !installPrompt && (
+                <Button size="lg" className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:from-[#9a95ff] hover:to-[#6b4fff]" onClick={() => window.location.href = createPageUrl('Home')}>
+                  Get Started
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+              )}
+              <Button size="lg" variant="outline" className="border-[#2d1e50] text-[#8b85f7] hover:bg-[#2d1e50]" onClick={() => window.location.href = createPageUrl('Home')}>
+                Log In
+              </Button>
             </div>
 
-            {/* Right: Hero visual (aspect-ratio locked for CLS prevention) */}
-            <div className="hidden lg:block mt-10 lg:mt-0">
-              <div className="relative aspect-square rounded-2xl overflow-hidden border border-white/10 bg-gradient-to-br from-[#2d1e50] to-[#1a0f2e] shadow-2xl shadow-[#8b85f7]/20">
-                {/* Placeholder: gradient mesh (prevents layout shift) */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[#8b85f7]/20 via-[#583cf0]/10 to-[#00b7eb]/10" />
-                
-                {/* Icon grid (high-fidelity visual) */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="grid grid-cols-2 gap-4 w-3/4">
-                    {[
-                      { icon: TrendingUp, color: '#00b7eb' },
-                      { icon: Zap, color: '#8b85f7' },
-                      { icon: Shield, color: '#ff8e42' },
-                      { icon: Users, color: '#10b981' },
-                    ].map(({ icon: Icon, color }, i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: i * 0.1 }}
-                        className="aspect-square rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 hover:border-white/20 transition-colors cursor-pointer"
-                      >
-                        <Icon className="w-8 h-8" style={{ color }} />
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
+            <p className="text-sm text-[#64748b]">Free tier available. No credit card required.</p>
           </motion.div>
         </div>
       </section>
 
-      {/* How It Works Section (3-step flow for comprehension) */}
-      <section id="how" className="py-20 px-4 sm:px-6 lg:px-8 border-t border-white/5">
+      {/* Features Section */}
+      <section id="features" className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">The 3-Minute Deal Flow</h2>
-            <p className="text-lg text-[#a0aec0] max-w-2xl mx-auto">See how 3,000+ builders find their next passive income opportunity</p>
-          </div>
+          <motion.h2 initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="text-3xl font-bold text-center mb-16">
+            Why Choose FlashFusion?
+          </motion.h2>
 
-          {/* Step-by-step cards (F-pattern reading) */}
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                num: '1',
-                title: 'Set Your Criteria',
-                desc: 'Risk tolerance, investment size, industry. 2 minutes.',
-                icon: Zap,
-              },
-              {
-                num: '2',
-                title: 'AI Finds Matches',
-                desc: 'Scans 50+ platforms daily. Scores by ROI. 1 minute.',
-                icon: TrendingUp,
-              },
-              {
-                num: '3',
-                title: 'Validate & Decide',
-                desc: 'Full analysis, scenario modeling, due diligence tools. You decide.',
-                icon: Check,
-              },
-            ].map(({ num, title, desc, icon: Icon }, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.15 }}
-                className="group relative"
-              >
-                {/* Card: Glassmorphism (white-opacity layer) */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/[0.02] rounded-2xl border border-white/10 group-hover:border-white/20 transition-all" />
-                
-                <div className="relative p-8">
-                  {/* Step number (visual hierarchy) */}
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-[#8b85f7] to-[#583cf0] mb-6">
-                    <span className="text-lg font-bold text-white">{num}</span>
-                  </div>
-
-                  {/* Icon */}
-                  <Icon className="w-8 h-8 text-[#00b7eb] mb-4 group-hover:scale-110 transition-transform will-change-transform" />
-
-                  {/* H3: Semantic (sub-heading) */}
-                  <h3 className="text-xl font-semibold mb-3">{title}</h3>
-                  <p className="text-[#a0aec0]">{desc}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section (4-column grid, CRO copy) */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 border-t border-white/5">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Built for Serious Builders</h2>
-            <p className="text-lg text-[#a0aec0]">Everything you need to find, validate, and manage passive income deals</p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 gap-8">
             {features.map((f, i) => {
               const Icon = f.icon;
               return (
-                <motion.article
+                <motion.div
                   key={i}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                  className="group relative"
+                  transition={{ delay: i * 0.1 }}
+                  className="bg-[#1a0f2e]/50 border border-[#2d1e50] rounded-xl p-6 backdrop-blur-sm"
                 >
-                  {/* Background: Glassmorphism */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/[0.02] rounded-xl border border-white/10 group-hover:border-white/20 group-hover:bg-gradient-to-br group-hover:from-white/8 group-hover:to-white/[0.03] transition-all" />
-
-                  <div className="relative p-6">
-                    {/* Icon */}
-                    <Icon className="w-8 h-8 text-[#8b85f7] mb-4 group-hover:scale-110 transition-transform will-change-transform" />
-
-                    {/* H3: Feature title */}
-                    <h3 className="text-sm font-semibold mb-2 text-white">{f.title}</h3>
-
-                    {/* Description: Short, benefit-focused */}
-                    <p className="text-xs text-[#a0aec0] leading-relaxed">{f.desc}</p>
-                  </div>
-                </motion.article>
+                  <Icon className="w-10 h-10 text-[#8b85f7] mb-4" />
+                  <h3 className="text-xl font-semibold mb-2">{f.title}</h3>
+                  <p className="text-[#64748b]">{f.desc}</p>
+                </motion.div>
               );
             })}
           </div>
         </div>
       </section>
 
-      {/* Pricing Section (3-column comparison, CRO optimized) */}
-      <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8 border-t border-white/5">
+      {/* Pricing Section */}
+      <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Pricing Built for Growth</h2>
-            <p className="text-lg text-[#a0aec0] max-w-2xl mx-auto">Start free. Upgrade when you're ready. Cancel anytime, no penalties.</p>
+            <h2 className="text-3xl font-bold mb-4">Simple, Transparent Pricing</h2>
+            <p className="text-[#64748b]">Choose the plan that fits your passive income journey.</p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+          <div className="grid md:grid-cols-3 gap-8">
             {pricingTiers.map((tier, i) => (
-              <motion.article
+              <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.12 }}
-                className="relative group h-full"
+                transition={{ delay: i * 0.1 }}
+                className={`rounded-xl p-8 border backdrop-blur-sm transition-all ${
+                  tier.highlight
+                    ? 'bg-gradient-to-b from-[#8b85f7]/20 to-[#583cf0]/10 border-[#8b85f7]/50 shadow-lg shadow-[#8b85f7]/20'
+                    : 'bg-[#1a0f2e]/50 border-[#2d1e50]'
+                }`}
               >
-                {/* Highlight border for popular tier */}
                 {tier.highlight && (
-                  <div className="absolute -inset-0.5 bg-gradient-to-br from-[#8b85f7] to-[#583cf0] rounded-2xl blur opacity-20 group-hover:opacity-40 transition-opacity" />
+                  <div className="inline-block bg-[#8b85f7]/30 text-[#8b85f7] text-xs font-semibold px-3 py-1 rounded-full mb-4">
+                    Most Popular
+                  </div>
                 )}
-
-                {/* Card background: Glassmorphism */}
-                <div
-                  className={`relative rounded-2xl border backdrop-blur-sm p-8 h-full flex flex-col transition-all ${
-                    tier.highlight
-                      ? 'bg-gradient-to-br from-white/8 to-white/[0.02] border-[#8b85f7]/50 shadow-xl shadow-[#8b85f7]/10'
-                      : 'bg-gradient-to-br from-white/5 to-white/[0.02] border-white/10 hover:border-white/20'
-                  }`}
-                >
-                  {/* Popular badge */}
-                  {tier.highlight && (
-                    <div className="inline-flex items-center gap-2 w-fit mb-4">
-                      <div className="relative w-2 h-2 rounded-full bg-[#8b85f7] animate-pulse" />
-                      <span className="text-xs font-semibold text-[#8b85f7] uppercase tracking-widest">Most Popular</span>
-                    </div>
-                  )}
-
-                  {/* Tier name + description */}
-                  <h3 className="text-2xl font-bold mb-2">{tier.name}</h3>
-                  <p className="text-sm text-[#a0aec0] mb-6">{tier.desc}</p>
-
-                  {/* Price (visual hierarchy) */}
-                  <div className="mb-8">
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-4xl sm:text-5xl font-bold">{tier.price}</span>
-                      {tier.period !== 'pricing' && <span className="text-[#a0aec0] text-sm">per {tier.period}</span>}
-                    </div>
-                    {tier.riskReversal && (
-                      <p className="text-xs text-[#a0aec0] mt-2">{tier.riskReversal}</p>
-                    )}
-                  </div>
-
-                  {/* CTA Button */}
-                  <Button
-                    className={`w-full mb-8 active:scale-95 transition-all ${
-                      tier.highlight
-                        ? 'bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-lg hover:shadow-[#8b85f7]/30'
-                        : 'border border-white/20 text-[#a0aec0] hover:bg-white/5 hover:border-white/40'
-                    }`}
-                    onClick={() => window.location.href = createPageUrl('Home')}
-                    aria-label={`Choose ${tier.name} plan`}
-                  >
-                    {tier.cta}
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
-
-                  {/* Feature list */}
-                  <div className="space-y-3 flex-1">
-                    {tier.features.map((feature, j) => (
-                      <div key={j} className="flex items-start gap-3">
-                        {feature.included ? (
-                          <Check className="w-4 h-4 text-[#10b981] mt-0.5 flex-shrink-0" />
-                        ) : (
-                          <div className="w-4 h-4 rounded border border-[#a0aec0]/30 mt-0.5 flex-shrink-0" />
-                        )}
-                        <span className={`text-sm ${feature.included ? 'text-[#a0aec0]' : 'text-[#64748b]'}`}>
-                          {feature.text}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
+                <h3 className="text-2xl font-bold mb-2">{tier.name}</h3>
+                <p className="text-[#64748b] text-sm mb-4">{tier.desc}</p>
+                <div className="mb-6">
+                  <span className="text-4xl font-bold">{tier.price}</span>
+                  <span className="text-[#64748b] text-sm">/{tier.period}</span>
                 </div>
-              </motion.article>
+                <Button
+                  className={`w-full mb-8 ${
+                    tier.highlight
+                      ? 'bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:from-[#9a95ff] hover:to-[#6b4fff]'
+                      : 'border border-[#2d1e50] text-[#8b85f7] hover:bg-[#2d1e50]'
+                  }`}
+                  onClick={() => window.location.href = createPageUrl('Home')}
+                >
+                  {tier.cta}
+                </Button>
+                <ul className="space-y-3">
+                  {tier.features.map((f, j) => (
+                    <li key={j} className="text-sm text-[#64748b] flex items-start">
+                      <span className="text-[#10b981] mr-3">✓</span>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
             ))}
-          </div>
-
-          {/* Note: Annual billing savings */}
-          <div className="mt-12 text-center">
-            <p className="text-sm text-[#a0aec0]">
-              💰 Pay annually and save 20% on Pro. <a href="#" className="text-[#8b85f7] hover:underline">Learn more</a>
-            </p>
           </div>
         </div>
       </section>
 
-      {/* FAQ Section (Semantic details/summary) */}
-      <section id="faq" className="py-20 px-4 sm:px-6 lg:px-8 border-t border-white/5">
+      {/* FAQ Section */}
+      <section id="faq" className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto">
-          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Questions? We've Got Answers</h2>
-            <p className="text-lg text-[#a0aec0]">Everything you need to know about FlashFusion</p>
-          </motion.div>
+          <motion.h2 initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="text-3xl font-bold text-center mb-16">
+            Frequently Asked Questions
+          </motion.h2>
 
-          <div className="space-y-3">
+          <div className="space-y-4">
             {faqs.map((faq, i) => (
               <motion.details
                 key={i}
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 transition={{ delay: i * 0.05 }}
-                className="group bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 rounded-lg overflow-hidden hover:border-white/20 transition-all"
+                className="group bg-[#1a0f2e]/50 border border-[#2d1e50] rounded-lg p-6 cursor-pointer"
               >
-                {/* Summary: Always visible, accessible */}
-                <summary className="flex items-center justify-between gap-4 p-6 cursor-pointer select-none hover:bg-white/[0.03] transition-colors">
-                  <h3 className="font-semibold text-left text-white pr-4">{faq.q}</h3>
-                  <motion.div
-                    animate={{ rotate: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="group-open:rotate-180 transition-transform flex-shrink-0"
-                  >
-                    <ArrowRight className="w-5 h-5 text-[#8b85f7] rotate-90" />
-                  </motion.div>
+                <summary className="flex items-center justify-between font-semibold text-lg">
+                  {faq.q}
+                  <span className="text-[#8b85f7] group-open:rotate-180 transition-transform">▼</span>
                 </summary>
-
-                {/* Hidden content (revealed on open) */}
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="overflow-hidden"
-                >
-                  <p className="px-6 pb-6 text-[#a0aec0] leading-relaxed border-t border-white/5">{faq.a}</p>
-                </motion.div>
+                <p className="text-[#64748b] mt-4">{faq.a}</p>
               </motion.details>
             ))}
-          </div>
-
-          {/* Fallback CTA */}
-          <div className="mt-12 text-center">
-            <p className="text-sm text-[#a0aec0] mb-4">Still have questions?</p>
-            <a
-              href="mailto:support@flashfusion.app"
-              className="inline-flex items-center gap-2 text-[#8b85f7] hover:text-[#9a95ff] transition-colors"
-              aria-label="Email support"
-            >
-              Email us
-              <ArrowRight className="w-4 h-4" />
-            </a>
           </div>
         </div>
       </section>
