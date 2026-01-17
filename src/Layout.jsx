@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { base44 } from '@/api/base44Client';
 import PersonalizedNudgeSystem from '@/components/onboarding/PersonalizedNudgeSystem';
+import PWAInstallPrompt from '@/components/pwa/PWAInstallPrompt';
 import {
   Home, FolderHeart, Bookmark, TrendingUp, 
   LayoutDashboard, Users, Settings, Menu, X,
@@ -230,6 +231,9 @@ export default function Layout({ children, currentPageName }) {
 
       {/* Personalized Nudges */}
       <PersonalizedNudgeSystem />
+
+      {/* PWA Install Prompt */}
+      <PWAInstallPrompt />
     </div>
   );
 }
