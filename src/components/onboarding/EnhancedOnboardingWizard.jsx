@@ -8,18 +8,18 @@ import { toast } from 'sonner';
 import { ChevronRight, ChevronLeft, Check, Sparkles, Loader2 } from 'lucide-react';
 
 import WelcomeStep from './steps/WelcomeStep';
-import DealSourcingStep from './steps/DealSourcingStep';
-import PortfolioGoalsStep from './steps/PortfolioGoalsStep';
-import CommunityPreferencesStep from './steps/CommunityPreferencesStep';
+import ComprehensiveDealSourcingStep from './steps/ComprehensiveDealSourcingStep';
+import ComprehensivePortfolioGoalsStep from './steps/ComprehensivePortfolioGoalsStep';
+import ComprehensiveCommunityStep from './steps/ComprehensiveCommunityStep';
 import AdvancedModulesStep from './steps/AdvancedModulesStep';
 import ReviewStep from './steps/ReviewStep';
 import CompleteStep from './steps/CompleteStep';
 
 const STEPS = [
   { id: 'welcome', title: 'Welcome!', component: WelcomeStep },
-  { id: 'deal_sourcing', title: 'Deal Sourcing Criteria', component: DealSourcingStep },
-  { id: 'portfolio_goals', title: 'Portfolio Goals', component: PortfolioGoalsStep },
-  { id: 'community', title: 'Community Preferences', component: CommunityPreferencesStep },
+  { id: 'deal_sourcing', title: 'Deal Sourcing Criteria', component: ComprehensiveDealSourcingStep },
+  { id: 'portfolio_goals', title: 'Portfolio Goals', component: ComprehensivePortfolioGoalsStep },
+  { id: 'community', title: 'Community Preferences', component: ComprehensiveCommunityStep },
   { id: 'advanced_modules', title: 'Advanced Learning (Optional)', component: AdvancedModulesStep, optional: true },
   { id: 'review', title: 'Review & Confirm', component: ReviewStep },
   { id: 'complete', title: 'All Set!', component: CompleteStep }
