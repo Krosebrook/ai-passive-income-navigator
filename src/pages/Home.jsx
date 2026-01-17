@@ -309,5 +309,6 @@ export default function Home() {
         </motion.button>
       )}
     </div>
+    </LifecycleAdaptiveUI>
   );
 }
