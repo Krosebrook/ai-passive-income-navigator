@@ -18,6 +18,7 @@ import IdeaGeneratorModal from '@/components/ideas/IdeaGeneratorModal';
 import TutorialSystem from '@/components/onboarding/TutorialSystem';
 import ActivationGuideWrapper from '@/components/activation/ActivationGuideWrapper';
 import RetentionHubWrapper from '@/components/retention/RetentionHubWrapper';
+import PowerUserHub from '@/components/poweruser/PowerUserHub';
 import { IDEAS_CATALOG, CATEGORIES } from '@/components/data/ideasCatalog';
 
 export default function Home() {
@@ -230,6 +231,9 @@ export default function Home() {
 
         {/* Retention Habit Loops */}
         <RetentionHubWrapper />
+
+        {/* Power-User System */}
+        <PowerUserHub />
 
         {/* Ideas Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
