@@ -3,6 +3,7 @@ import Bookmarks from './pages/Bookmarks';
 import Collaborate from './pages/Collaborate';
 import Community from './pages/Community';
 import Dashboard from './pages/Dashboard';
+import DealDiscovery from './pages/DealDiscovery';
 import DealPipeline from './pages/DealPipeline';
 import Documentation from './pages/Documentation';
 import Forum from './pages/Forum';
@@ -13,7 +14,6 @@ import Learn from './pages/Learn';
 import Portfolio from './pages/Portfolio';
 import ProfileSettings from './pages/ProfileSettings';
 import Trends from './pages/Trends';
-import DealDiscovery from './pages/DealDiscovery';
 import __Layout from './Layout.jsx';
 
 
@@ -23,6 +23,7 @@ export const PAGES = {
     "Collaborate": Collaborate,
     "Community": Community,
     "Dashboard": Dashboard,
+    "DealDiscovery": DealDiscovery,
     "DealPipeline": DealPipeline,
     "Documentation": Documentation,
     "Forum": Forum,
@@ -33,7 +34,6 @@ export const PAGES = {
     "Portfolio": Portfolio,
     "ProfileSettings": ProfileSettings,
     "Trends": Trends,
-    "DealDiscovery": DealDiscovery,
 }
 
 export const pagesConfig = {

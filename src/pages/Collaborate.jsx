@@ -2,6 +2,7 @@ import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import InvestmentGroups from '@/components/collaboration/InvestmentGroups';
 import SharedWatchlists from '@/components/collaboration/SharedWatchlists';
+import CollaborationSuggestions from '@/components/collaboration/CollaborationSuggestions';
 import { Users, Bookmark, Share2 } from 'lucide-react';
 
 export default function CollaboratePage() {
@@ -35,6 +36,10 @@ export default function CollaboratePage() {
             <SharedWatchlists />
           </TabsContent>
         </Tabs>
+
+        <div className="mt-6">
+          <CollaborationSuggestions />
+        </div>
       </div>
     </div>
   );

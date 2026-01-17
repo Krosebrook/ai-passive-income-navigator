@@ -3,11 +3,13 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import TaskManager from '@/components/portfolio/TaskManager';
 import SEOContentModal from '@/components/content/SEOContentModal';
+import AIFinancialAnalysis from '@/components/deals/AIFinancialAnalysis';
 import { 
   MoreVertical, Trash2, Edit2, Sparkles, LineChart, 
-  ChevronDown, Clock, DollarSign, Megaphone, Search
+  ChevronDown, Clock, DollarSign, Megaphone, Search, Brain
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -68,6 +70,7 @@ export default function PortfolioCard({
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showSEOModal, setShowSEOModal] = useState(false);
+  const [showAnalysisModal, setShowAnalysisModal] = useState(false);
 
   const gradient = idea.color || 'from-violet-500 to-purple-600';
 
@@ -124,6 +127,10 @@ export default function PortfolioCard({
                 <DropdownMenuItem onClick={() => setShowSEOModal(true)}>
                   <Search className="w-4 h-4 mr-2" />
                   SEO Content
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setShowAnalysisModal(true)}>
+                  <Brain className="w-4 h-4 mr-2" />
+                  AI Financial Analysis
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onSelectTracking?.(idea)}>
                   <LineChart className="w-4 h-4 mr-2" />
@@ -228,6 +235,16 @@ export default function PortfolioCard({
         onClose={() => setShowSEOModal(false)}
         portfolioIdea={idea}
       />
+
+      <Dialog open={showAnalysisModal} onOpenChange={setShowAnalysisModal}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <AIFinancialAnalysis
+            entityType="PortfolioIdea"
+            entityId={idea.id}
+            entityTitle={idea.title}
+          />
+        </DialogContent>
+      </Dialog>
     </motion.div>
   );
 }
