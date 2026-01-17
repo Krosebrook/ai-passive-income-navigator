@@ -16,6 +16,7 @@ const NAV_ITEMS = [
   { name: 'Bookmarks', icon: Bookmark, page: 'Bookmarks' },
   { name: 'Trends', icon: TrendingUp, page: 'Trends' },
   { name: 'Learn', icon: BookOpen, page: 'Learn' },
+  { name: 'Discover', icon: Sparkles, page: 'DealDiscovery' },
   { name: 'Dashboard', icon: LayoutDashboard, page: 'Dashboard' },
   { name: 'Community', icon: Users, page: 'Community' },
   { name: 'Forum', icon: Users, page: 'Forum' },

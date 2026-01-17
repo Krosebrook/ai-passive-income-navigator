@@ -13,6 +13,7 @@ import Learn from './pages/Learn';
 import Portfolio from './pages/Portfolio';
 import ProfileSettings from './pages/ProfileSettings';
 import Trends from './pages/Trends';
+import DealDiscovery from './pages/DealDiscovery';
 import __Layout from './Layout.jsx';
 
 
@@ -32,6 +33,7 @@ export const PAGES = {
     "Portfolio": Portfolio,
     "ProfileSettings": ProfileSettings,
     "Trends": Trends,
+    "DealDiscovery": DealDiscovery,
 }
 
 export const pagesConfig = {
