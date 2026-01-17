@@ -4,9 +4,10 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import TaskManager from '@/components/portfolio/TaskManager';
+import SEOContentModal from '@/components/content/SEOContentModal';
 import { 
   MoreVertical, Trash2, Edit2, Sparkles, LineChart, 
-  ChevronDown, Clock, DollarSign, Megaphone
+  ChevronDown, Clock, DollarSign, Megaphone, Search
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -66,6 +67,7 @@ export default function PortfolioCard({
   index = 0
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showSEOModal, setShowSEOModal] = useState(false);
 
   const gradient = idea.color || 'from-violet-500 to-purple-600';
 
@@ -118,6 +120,10 @@ export default function PortfolioCard({
                 <DropdownMenuItem onClick={() => onGenerateMarketing?.(idea)}>
                   <Megaphone className="w-4 h-4 mr-2" />
                   Marketing Content
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setShowSEOModal(true)}>
+                  <Search className="w-4 h-4 mr-2" />
+                  SEO Content
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onSelectTracking?.(idea)}>
                   <LineChart className="w-4 h-4 mr-2" />
@@ -214,8 +220,14 @@ export default function PortfolioCard({
           <div className="mt-4 pt-4 border-t border-gray-200">
             <TaskManager ideaId={idea.id} />
           </div>
-          </CardContent>
-          </Card>
-          </motion.div>
-          );
-          }
+        </CardContent>
+      </Card>
+
+      <SEOContentModal 
+        open={showSEOModal}
+        onClose={() => setShowSEOModal(false)}
+        portfolioIdea={idea}
+      />
+    </motion.div>
+  );
+}
