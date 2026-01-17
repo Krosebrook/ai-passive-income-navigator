@@ -492,85 +492,156 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8">
+      {/* Pricing Section (3-column comparison, CRO optimized) */}
+      <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8 border-t border-white/5">
         <div className="max-w-7xl mx-auto">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">Simple, Transparent Pricing</h2>
-            <p className="text-[#64748b]">Choose the plan that fits your passive income journey.</p>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Pricing Built for Growth</h2>
+            <p className="text-lg text-[#a0aec0] max-w-2xl mx-auto">Start free. Upgrade when you're ready. Cancel anytime, no penalties.</p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
             {pricingTiers.map((tier, i) => (
-              <motion.div
+              <motion.article
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className={`rounded-xl p-8 border backdrop-blur-sm transition-all ${
-                  tier.highlight
-                    ? 'bg-gradient-to-b from-[#8b85f7]/20 to-[#583cf0]/10 border-[#8b85f7]/50 shadow-lg shadow-[#8b85f7]/20'
-                    : 'bg-[#1a0f2e]/50 border-[#2d1e50]'
-                }`}
+                transition={{ delay: i * 0.12 }}
+                className="relative group h-full"
               >
+                {/* Highlight border for popular tier */}
                 {tier.highlight && (
-                  <div className="inline-block bg-[#8b85f7]/30 text-[#8b85f7] text-xs font-semibold px-3 py-1 rounded-full mb-4">
-                    Most Popular
-                  </div>
+                  <div className="absolute -inset-0.5 bg-gradient-to-br from-[#8b85f7] to-[#583cf0] rounded-2xl blur opacity-20 group-hover:opacity-40 transition-opacity" />
                 )}
-                <h3 className="text-2xl font-bold mb-2">{tier.name}</h3>
-                <p className="text-[#64748b] text-sm mb-4">{tier.desc}</p>
-                <div className="mb-6">
-                  <span className="text-4xl font-bold">{tier.price}</span>
-                  <span className="text-[#64748b] text-sm">/{tier.period}</span>
-                </div>
-                <Button
-                  className={`w-full mb-8 ${
+
+                {/* Card background: Glassmorphism */}
+                <div
+                  className={`relative rounded-2xl border backdrop-blur-sm p-8 h-full flex flex-col transition-all ${
                     tier.highlight
-                      ? 'bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:from-[#9a95ff] hover:to-[#6b4fff]'
-                      : 'border border-[#2d1e50] text-[#8b85f7] hover:bg-[#2d1e50]'
+                      ? 'bg-gradient-to-br from-white/8 to-white/[0.02] border-[#8b85f7]/50 shadow-xl shadow-[#8b85f7]/10'
+                      : 'bg-gradient-to-br from-white/5 to-white/[0.02] border-white/10 hover:border-white/20'
                   }`}
-                  onClick={() => window.location.href = createPageUrl('Home')}
                 >
-                  {tier.cta}
-                </Button>
-                <ul className="space-y-3">
-                  {tier.features.map((f, j) => (
-                    <li key={j} className="text-sm text-[#64748b] flex items-start">
-                      <span className="text-[#10b981] mr-3">✓</span>
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
+                  {/* Popular badge */}
+                  {tier.highlight && (
+                    <div className="inline-flex items-center gap-2 w-fit mb-4">
+                      <div className="relative w-2 h-2 rounded-full bg-[#8b85f7] animate-pulse" />
+                      <span className="text-xs font-semibold text-[#8b85f7] uppercase tracking-widest">Most Popular</span>
+                    </div>
+                  )}
+
+                  {/* Tier name + description */}
+                  <h3 className="text-2xl font-bold mb-2">{tier.name}</h3>
+                  <p className="text-sm text-[#a0aec0] mb-6">{tier.desc}</p>
+
+                  {/* Price (visual hierarchy) */}
+                  <div className="mb-8">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-4xl sm:text-5xl font-bold">{tier.price}</span>
+                      {tier.period !== 'pricing' && <span className="text-[#a0aec0] text-sm">per {tier.period}</span>}
+                    </div>
+                    {tier.riskReversal && (
+                      <p className="text-xs text-[#a0aec0] mt-2">{tier.riskReversal}</p>
+                    )}
+                  </div>
+
+                  {/* CTA Button */}
+                  <Button
+                    className={`w-full mb-8 active:scale-95 transition-all ${
+                      tier.highlight
+                        ? 'bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-lg hover:shadow-[#8b85f7]/30'
+                        : 'border border-white/20 text-[#a0aec0] hover:bg-white/5 hover:border-white/40'
+                    }`}
+                    onClick={() => window.location.href = createPageUrl('Home')}
+                    aria-label={`Choose ${tier.name} plan`}
+                  >
+                    {tier.cta}
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+
+                  {/* Feature list */}
+                  <div className="space-y-3 flex-1">
+                    {tier.features.map((feature, j) => (
+                      <div key={j} className="flex items-start gap-3">
+                        {feature.included ? (
+                          <Check className="w-4 h-4 text-[#10b981] mt-0.5 flex-shrink-0" />
+                        ) : (
+                          <div className="w-4 h-4 rounded border border-[#a0aec0]/30 mt-0.5 flex-shrink-0" />
+                        )}
+                        <span className={`text-sm ${feature.included ? 'text-[#a0aec0]' : 'text-[#64748b]'}`}>
+                          {feature.text}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </motion.article>
             ))}
+          </div>
+
+          {/* Note: Annual billing savings */}
+          <div className="mt-12 text-center">
+            <p className="text-sm text-[#a0aec0]">
+              💰 Pay annually and save 20% on Pro. <a href="#" className="text-[#8b85f7] hover:underline">Learn more</a>
+            </p>
           </div>
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section id="faq" className="py-20 px-4 sm:px-6 lg:px-8">
+      {/* FAQ Section (Semantic details/summary) */}
+      <section id="faq" className="py-20 px-4 sm:px-6 lg:px-8 border-t border-white/5">
         <div className="max-w-3xl mx-auto">
-          <motion.h2 initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="text-3xl font-bold text-center mb-16">
-            Frequently Asked Questions
-          </motion.h2>
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Questions? We've Got Answers</h2>
+            <p className="text-lg text-[#a0aec0]">Everything you need to know about FlashFusion</p>
+          </motion.div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             {faqs.map((faq, i) => (
               <motion.details
                 key={i}
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 transition={{ delay: i * 0.05 }}
-                className="group bg-[#1a0f2e]/50 border border-[#2d1e50] rounded-lg p-6 cursor-pointer"
+                className="group bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 rounded-lg overflow-hidden hover:border-white/20 transition-all"
               >
-                <summary className="flex items-center justify-between font-semibold text-lg">
-                  {faq.q}
-                  <span className="text-[#8b85f7] group-open:rotate-180 transition-transform">▼</span>
+                {/* Summary: Always visible, accessible */}
+                <summary className="flex items-center justify-between gap-4 p-6 cursor-pointer select-none hover:bg-white/[0.03] transition-colors">
+                  <h3 className="font-semibold text-left text-white pr-4">{faq.q}</h3>
+                  <motion.div
+                    animate={{ rotate: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="group-open:rotate-180 transition-transform flex-shrink-0"
+                  >
+                    <ArrowRight className="w-5 h-5 text-[#8b85f7] rotate-90" />
+                  </motion.div>
                 </summary>
-                <p className="text-[#64748b] mt-4">{faq.a}</p>
+
+                {/* Hidden content (revealed on open) */}
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="overflow-hidden"
+                >
+                  <p className="px-6 pb-6 text-[#a0aec0] leading-relaxed border-t border-white/5">{faq.a}</p>
+                </motion.div>
               </motion.details>
             ))}
+          </div>
+
+          {/* Fallback CTA */}
+          <div className="mt-12 text-center">
+            <p className="text-sm text-[#a0aec0] mb-4">Still have questions?</p>
+            <a
+              href="mailto:support@flashfusion.app"
+              className="inline-flex items-center gap-2 text-[#8b85f7] hover:text-[#9a95ff] transition-colors"
+              aria-label="Email support"
+            >
+              Email us
+              <ArrowRight className="w-4 h-4" />
+            </a>
           </div>
         </div>
       </section>
@@ -591,116 +662,7 @@ export default function Landing() {
         </motion.div>
       </section>
 
-      {/* Mobile Sticky CTA Bar (Thumb zone: fixed at bottom for easy access) */}
-      <div className="fixed bottom-0 left-0 right-0 md:hidden bg-gradient-to-t from-[#0f0618] via-[#0f0618]/95 to-[#0f0618]/0 backdrop-blur-xl border-t border-white/10 p-4 z-40">
-        <Button
-          onClick={handleInstall || (() => window.location.href = createPageUrl('Home'))}
-          className="w-full bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-xl hover:shadow-[#8b85f7]/30 active:scale-95 transition-all"
-          aria-label="Get started with FlashFusion"
-        >
-          {installPrompt && !isInstalled ? 'Install Free' : 'Get Started Free'}
-          <ArrowRight className="w-4 h-4 ml-2" />
-        </Button>
-      </div>
-
       {/* Footer */}
-      <footer className="border-t border-white/5 bg-white/[0.02] mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pb-24 md:pb-16">
-          {/* Footer grid: Brand, Product, Company, Legal, Social */}
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-8 mb-12">
-            {/* Brand column */}
-            <div className="col-span-2 sm:col-span-1">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#8b85f7] to-[#00b7eb] flex items-center justify-center">
-                  <Zap className="w-4 h-4 text-white" aria-hidden="true" />
-                </div>
-                <span className="font-bold text-gradient">FlashFusion</span>
-              </div>
-              <p className="text-xs text-[#64748b]">
-                AI-powered passive income for builders worldwide
-              </p>
-            </div>
-
-            {/* Product links */}
-            <div>
-              <h4 className="text-sm font-semibold mb-4">Product</h4>
-              <ul className="space-y-2 text-xs text-[#a0aec0]">
-                <li>
-                  <a href="#how" className="hover:text-[#8b85f7] transition-colors">
-                    How it Works
-                  </a>
-                </li>
-                <li>
-                  <a href="#pricing" className="hover:text-[#8b85f7] transition-colors">
-                    Pricing
-                  </a>
-                </li>
-                <li>
-                  <a href="#faq" className="hover:text-[#8b85f7] transition-colors">
-                    FAQ
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Company links */}
-            <div>
-              <h4 className="text-sm font-semibold mb-4">Company</h4>
-              <ul className="space-y-2 text-xs text-[#a0aec0]">
-                <li>
-                  <a href="https://blog.flashfusion.io" className="hover:text-[#8b85f7] transition-colors">
-                    Blog
-                  </a>
-                </li>
-                <li>
-                  <a href="https://twitter.com/flashfusion" className="hover:text-[#8b85f7] transition-colors">
-                    Twitter
-                  </a>
-                </li>
-                <li>
-                  <a href="https://discord.gg/flashfusion" className="hover:text-[#8b85f7] transition-colors">
-                    Community
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Legal links */}
-            <div>
-              <h4 className="text-sm font-semibold mb-4">Legal</h4>
-              <ul className="space-y-2 text-xs text-[#a0aec0]">
-                <li>
-                  <a href="/privacy" className="hover:text-[#8b85f7] transition-colors">
-                    Privacy
-                  </a>
-                </li>
-                <li>
-                  <a href="/terms" className="hover:text-[#8b85f7] transition-colors">
-                    Terms
-                  </a>
-                </li>
-                <li>
-                  <a href="/security" className="hover:text-[#8b85f7] transition-colors">
-                    Security
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Footer divider */}
-          <div className="border-t border-white/5 pt-12">
-            {/* Copyright + Status */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#64748b]">
-              <p>© 2025 FlashFusion. All rights reserved.</p>
-              <div className="flex items-center gap-2">
-                <span className="inline-block w-2 h-2 rounded-full bg-green-500" aria-hidden="true" />
-                <span>All systems operational</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
       <footer className="border-t border-[#2d1e50] bg-[#1a0f2e]/50 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-3 gap-8 mb-8">
