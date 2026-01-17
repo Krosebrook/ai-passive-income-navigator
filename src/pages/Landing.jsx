@@ -394,28 +394,98 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="py-20 px-4 sm:px-6 lg:px-8">
+      {/* How It Works Section (3-step flow for comprehension) */}
+      <section id="how" className="py-20 px-4 sm:px-6 lg:px-8 border-t border-white/5">
         <div className="max-w-6xl mx-auto">
-          <motion.h2 initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="text-3xl font-bold text-center mb-16">
-            Why Choose FlashFusion?
-          </motion.h2>
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">The 3-Minute Deal Flow</h2>
+            <p className="text-lg text-[#a0aec0] max-w-2xl mx-auto">See how 3,000+ builders find their next passive income opportunity</p>
+          </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          {/* Step-by-step cards (F-pattern reading) */}
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                num: '1',
+                title: 'Set Your Criteria',
+                desc: 'Risk tolerance, investment size, industry. 2 minutes.',
+                icon: Zap,
+              },
+              {
+                num: '2',
+                title: 'AI Finds Matches',
+                desc: 'Scans 50+ platforms daily. Scores by ROI. 1 minute.',
+                icon: TrendingUp,
+              },
+              {
+                num: '3',
+                title: 'Validate & Decide',
+                desc: 'Full analysis, scenario modeling, due diligence tools. You decide.',
+                icon: Check,
+              },
+            ].map(({ num, title, desc, icon: Icon }, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.15 }}
+                className="group relative"
+              >
+                {/* Card: Glassmorphism (white-opacity layer) */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/[0.02] rounded-2xl border border-white/10 group-hover:border-white/20 transition-all" />
+                
+                <div className="relative p-8">
+                  {/* Step number (visual hierarchy) */}
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-[#8b85f7] to-[#583cf0] mb-6">
+                    <span className="text-lg font-bold text-white">{num}</span>
+                  </div>
+
+                  {/* Icon */}
+                  <Icon className="w-8 h-8 text-[#00b7eb] mb-4 group-hover:scale-110 transition-transform will-change-transform" />
+
+                  {/* H3: Semantic (sub-heading) */}
+                  <h3 className="text-xl font-semibold mb-3">{title}</h3>
+                  <p className="text-[#a0aec0]">{desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section (4-column grid, CRO copy) */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 border-t border-white/5">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Built for Serious Builders</h2>
+            <p className="text-lg text-[#a0aec0]">Everything you need to find, validate, and manage passive income deals</p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((f, i) => {
               const Icon = f.icon;
               return (
-                <motion.div
+                <motion.article
                   key={i}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  className="bg-[#1a0f2e]/50 border border-[#2d1e50] rounded-xl p-6 backdrop-blur-sm"
+                  transition={{ delay: i * 0.05 }}
+                  className="group relative"
                 >
-                  <Icon className="w-10 h-10 text-[#8b85f7] mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">{f.title}</h3>
-                  <p className="text-[#64748b]">{f.desc}</p>
-                </motion.div>
+                  {/* Background: Glassmorphism */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/[0.02] rounded-xl border border-white/10 group-hover:border-white/20 group-hover:bg-gradient-to-br group-hover:from-white/8 group-hover:to-white/[0.03] transition-all" />
+
+                  <div className="relative p-6">
+                    {/* Icon */}
+                    <Icon className="w-8 h-8 text-[#8b85f7] mb-4 group-hover:scale-110 transition-transform will-change-transform" />
+
+                    {/* H3: Feature title */}
+                    <h3 className="text-sm font-semibold mb-2 text-white">{f.title}</h3>
+
+                    {/* Description: Short, benefit-focused */}
+                    <p className="text-xs text-[#a0aec0] leading-relaxed">{f.desc}</p>
+                  </div>
+                </motion.article>
               );
             })}
           </div>
