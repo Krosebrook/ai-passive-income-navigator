@@ -49,6 +49,16 @@ export default function MentorMarketplace({ portfolioIdeaId = null, onSelect: _o
     return matchesSearch && matchesSpec && mentor.verified;
   });
 
+  // Calculate community metrics per mentor
+  const getMentorMetrics = (mentorId) => {
+    const mentorAnswers = forumAnswers.filter(a => a.mentor_id === mentorId);
+    return {
+      answersGiven: mentorAnswers.length,
+      totalUpvotes: mentorAnswers.reduce((sum, a) => sum + (a.upvote_count || 0), 0),
+      acceptedAnswers: mentorAnswers.filter(a => a.is_accepted).length
+    };
+  };
+
   const handleBook = (mentor) => {
     setSelectedMentor(mentor);
     setBookingModalOpen(true);
@@ -149,6 +159,30 @@ export default function MentorMarketplace({ portfolioIdeaId = null, onSelect: _o
                   </div>
                 </div>
               </div>
+
+              {/* Community Metrics */}
+              {(() => {
+                const metrics = getMentorMetrics(mentor.id);
+                return metrics.answersGiven > 0 ? (
+                  <div className="mb-4 p-3 bg-violet-50 rounded-lg border border-violet-200">
+                    <p className="text-xs font-semibold text-violet-900 mb-2">Community Activity</p>
+                    <div className="grid grid-cols-3 gap-2 text-xs">
+                      <div>
+                        <p className="text-violet-600">Answers</p>
+                        <p className="font-semibold text-violet-900">{metrics.answersGiven}</p>
+                      </div>
+                      <div>
+                        <p className="text-violet-600">Upvotes</p>
+                        <p className="font-semibold text-violet-900">{metrics.totalUpvotes}</p>
+                      </div>
+                      <div>
+                        <p className="text-violet-600">Accepted</p>
+                        <p className="font-semibold text-violet-900">{metrics.acceptedAnswers}</p>
+                      </div>
+                    </div>
+                  </div>
+                ) : null;
+              })()}
 
               {/* Rate & Availability */}
               <div className="flex items-center justify-between mb-4 p-3 bg-gray-50 rounded-lg">

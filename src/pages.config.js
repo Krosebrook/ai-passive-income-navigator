@@ -9,6 +9,8 @@ import Learn from './pages/Learn';
 import Portfolio from './pages/Portfolio';
 import ProfileSettings from './pages/ProfileSettings';
 import Trends from './pages/Trends';
+import Forum from './pages/Forum';
+import ForumPost from './pages/ForumPost';
 import __Layout from './Layout.jsx';
 
 
@@ -24,6 +26,8 @@ export const PAGES = {
     "Portfolio": Portfolio,
     "ProfileSettings": ProfileSettings,
     "Trends": Trends,
+    "Forum": Forum,
+    "ForumPost": ForumPost,
 }
 
 export const pagesConfig = {

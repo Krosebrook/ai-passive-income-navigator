@@ -18,6 +18,7 @@ const NAV_ITEMS = [
   { name: 'Learn', icon: BookOpen, page: 'Learn' },
   { name: 'Dashboard', icon: LayoutDashboard, page: 'Dashboard' },
   { name: 'Community', icon: Users, page: 'Community' },
+  { name: 'Forum', icon: Users, page: 'Forum' },
   { name: 'Settings', icon: Settings, page: 'ProfileSettings' }
 ];
 
