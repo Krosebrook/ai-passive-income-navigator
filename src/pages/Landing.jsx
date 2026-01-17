@@ -492,58 +492,98 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8">
+      {/* Pricing Section (3-column comparison, CRO optimized) */}
+      <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8 border-t border-white/5">
         <div className="max-w-7xl mx-auto">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">Simple, Transparent Pricing</h2>
-            <p className="text-[#64748b]">Choose the plan that fits your passive income journey.</p>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Pricing Built for Growth</h2>
+            <p className="text-lg text-[#a0aec0] max-w-2xl mx-auto">Start free. Upgrade when you're ready. Cancel anytime, no penalties.</p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
             {pricingTiers.map((tier, i) => (
-              <motion.div
+              <motion.article
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className={`rounded-xl p-8 border backdrop-blur-sm transition-all ${
-                  tier.highlight
-                    ? 'bg-gradient-to-b from-[#8b85f7]/20 to-[#583cf0]/10 border-[#8b85f7]/50 shadow-lg shadow-[#8b85f7]/20'
-                    : 'bg-[#1a0f2e]/50 border-[#2d1e50]'
-                }`}
+                transition={{ delay: i * 0.12 }}
+                className="relative group h-full"
               >
+                {/* Highlight border for popular tier */}
                 {tier.highlight && (
-                  <div className="inline-block bg-[#8b85f7]/30 text-[#8b85f7] text-xs font-semibold px-3 py-1 rounded-full mb-4">
-                    Most Popular
-                  </div>
+                  <div className="absolute -inset-0.5 bg-gradient-to-br from-[#8b85f7] to-[#583cf0] rounded-2xl blur opacity-20 group-hover:opacity-40 transition-opacity" />
                 )}
-                <h3 className="text-2xl font-bold mb-2">{tier.name}</h3>
-                <p className="text-[#64748b] text-sm mb-4">{tier.desc}</p>
-                <div className="mb-6">
-                  <span className="text-4xl font-bold">{tier.price}</span>
-                  <span className="text-[#64748b] text-sm">/{tier.period}</span>
-                </div>
-                <Button
-                  className={`w-full mb-8 ${
+
+                {/* Card background: Glassmorphism */}
+                <div
+                  className={`relative rounded-2xl border backdrop-blur-sm p-8 h-full flex flex-col transition-all ${
                     tier.highlight
-                      ? 'bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:from-[#9a95ff] hover:to-[#6b4fff]'
-                      : 'border border-[#2d1e50] text-[#8b85f7] hover:bg-[#2d1e50]'
+                      ? 'bg-gradient-to-br from-white/8 to-white/[0.02] border-[#8b85f7]/50 shadow-xl shadow-[#8b85f7]/10'
+                      : 'bg-gradient-to-br from-white/5 to-white/[0.02] border-white/10 hover:border-white/20'
                   }`}
-                  onClick={() => window.location.href = createPageUrl('Home')}
                 >
-                  {tier.cta}
-                </Button>
-                <ul className="space-y-3">
-                  {tier.features.map((f, j) => (
-                    <li key={j} className="text-sm text-[#64748b] flex items-start">
-                      <span className="text-[#10b981] mr-3">✓</span>
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
+                  {/* Popular badge */}
+                  {tier.highlight && (
+                    <div className="inline-flex items-center gap-2 w-fit mb-4">
+                      <div className="relative w-2 h-2 rounded-full bg-[#8b85f7] animate-pulse" />
+                      <span className="text-xs font-semibold text-[#8b85f7] uppercase tracking-widest">Most Popular</span>
+                    </div>
+                  )}
+
+                  {/* Tier name + description */}
+                  <h3 className="text-2xl font-bold mb-2">{tier.name}</h3>
+                  <p className="text-sm text-[#a0aec0] mb-6">{tier.desc}</p>
+
+                  {/* Price (visual hierarchy) */}
+                  <div className="mb-8">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-4xl sm:text-5xl font-bold">{tier.price}</span>
+                      {tier.period !== 'pricing' && <span className="text-[#a0aec0] text-sm">per {tier.period}</span>}
+                    </div>
+                    {tier.riskReversal && (
+                      <p className="text-xs text-[#a0aec0] mt-2">{tier.riskReversal}</p>
+                    )}
+                  </div>
+
+                  {/* CTA Button */}
+                  <Button
+                    className={`w-full mb-8 active:scale-95 transition-all ${
+                      tier.highlight
+                        ? 'bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-lg hover:shadow-[#8b85f7]/30'
+                        : 'border border-white/20 text-[#a0aec0] hover:bg-white/5 hover:border-white/40'
+                    }`}
+                    onClick={() => window.location.href = createPageUrl('Home')}
+                    aria-label={`Choose ${tier.name} plan`}
+                  >
+                    {tier.cta}
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+
+                  {/* Feature list */}
+                  <div className="space-y-3 flex-1">
+                    {tier.features.map((feature, j) => (
+                      <div key={j} className="flex items-start gap-3">
+                        {feature.included ? (
+                          <Check className="w-4 h-4 text-[#10b981] mt-0.5 flex-shrink-0" />
+                        ) : (
+                          <div className="w-4 h-4 rounded border border-[#a0aec0]/30 mt-0.5 flex-shrink-0" />
+                        )}
+                        <span className={`text-sm ${feature.included ? 'text-[#a0aec0]' : 'text-[#64748b]'}`}>
+                          {feature.text}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </motion.article>
             ))}
+          </div>
+
+          {/* Note: Annual billing savings */}
+          <div className="mt-12 text-center">
+            <p className="text-sm text-[#a0aec0]">
+              💰 Pay annually and save 20% on Pro. <a href="#" className="text-[#8b85f7] hover:underline">Learn more</a>
+            </p>
           </div>
         </div>
       </section>
