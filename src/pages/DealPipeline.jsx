@@ -4,11 +4,13 @@ import { base44 } from '@/api/base44Client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
-import { Plus, MoreVertical, TrendingUp } from 'lucide-react';
+import { Plus, MoreVertical, TrendingUp, Zap } from 'lucide-react';
 import DealCard from '@/components/pipeline/DealCard';
 import AddDealModal from '@/components/pipeline/AddDealModal';
 import DealDetailsModal from '@/components/pipeline/DealDetailsModal';
+import AutomationRulesManager from '@/components/pipeline/AutomationRulesManager';
 
 const STAGES = [
   { id: 'research', label: 'Research', color: 'bg-blue-100 text-blue-700' },
@@ -81,7 +83,17 @@ export default function DealPipelinePage() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <Tabs defaultValue="pipeline" className="w-full">
+          <TabsList className="mb-6">
+            <TabsTrigger value="pipeline">Pipeline View</TabsTrigger>
+            <TabsTrigger value="automation">
+              <Zap className="w-4 h-4 mr-2" />
+              Automation Rules
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="pipeline">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
           {STAGES.map(stage => {
             const stageDeals = getDealsByStage(stage.id);
             const stageValue = stageDeals.reduce((sum, d) => sum + (d.estimated_value || 0), 0);
@@ -124,7 +136,13 @@ export default function DealPipelinePage() {
               </div>
             );
           })}
-        </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="automation">
+            <AutomationRulesManager />
+          </TabsContent>
+        </Tabs>
 
         <AddDealModal 
           open={addModalOpen} 
