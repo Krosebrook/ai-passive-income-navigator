@@ -11,11 +11,11 @@ import Forum from './pages/Forum';
 import ForumPost from './pages/ForumPost';
 import Home from './pages/Home';
 import IdeaDetail from './pages/IdeaDetail';
+import Integrations from './pages/Integrations';
 import Learn from './pages/Learn';
 import Portfolio from './pages/Portfolio';
 import ProfileSettings from './pages/ProfileSettings';
 import Trends from './pages/Trends';
-import Integrations from './pages/Integrations';
 import __Layout from './Layout.jsx';
 
 
@@ -33,11 +33,11 @@ export const PAGES = {
     "ForumPost": ForumPost,
     "Home": Home,
     "IdeaDetail": IdeaDetail,
+    "Integrations": Integrations,
     "Learn": Learn,
     "Portfolio": Portfolio,
     "ProfileSettings": ProfileSettings,
     "Trends": Trends,
-    "Integrations": Integrations,
 }
 
 export const pagesConfig = {

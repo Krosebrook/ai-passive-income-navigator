@@ -12,9 +12,10 @@ import {
 import IdeaCard from '@/components/ideas/IdeaCard';
 import CategoryFilter from '@/components/ideas/CategoryFilter';
 import SearchBar from '@/components/ideas/SearchBar';
-import OnboardingModal from '@/components/onboarding/OnboardingModal';
+import AdvancedOnboardingWizard from '@/components/onboarding/AdvancedOnboardingWizard';
 import AIGuideChat from '@/components/ai/AIGuideChat';
 import IdeaGeneratorModal from '@/components/ideas/IdeaGeneratorModal';
+import TutorialSystem from '@/components/onboarding/TutorialSystem';
 import { IDEAS_CATALOG, CATEGORIES } from '@/components/data/ideasCatalog';
 
 export default function Home() {
@@ -24,27 +25,41 @@ export default function Home() {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showAIChat, setShowAIChat] = useState(false);
   const [showIdeaGenerator, setShowIdeaGenerator] = useState(false);
+  const [activeTutorial, setActiveTutorial] = useState(null);
 
-  // Fetch user and preferences
-  useEffect(() => {
-    const fetchUser = async () => {
-      const currentUser = await base44.auth.me();
-      setUser(currentUser);
-    };
-    fetchUser();
-  }, []);
+  // Fetch onboarding profile
+  const { data: onboardingProfile } = useQuery({
+    queryKey: ['onboarding-profile'],
+    queryFn: async () => {
+      try {
+        const user = await base44.auth.me();
+        const profiles = await base44.entities.UserOnboardingProfile.filter({ 
+          user_email: user.email 
+        });
+        return profiles[0] || null;
+      } catch {
+        return null;
+      }
+    }
+  });
 
   const { data: preferences } = useQuery({
     queryKey: ['userPreferences'],
     queryFn: async () => {
       const prefs = await base44.entities.UserPreferences.list();
       if (prefs.length === 0) {
-        setShowOnboarding(true);
         return null;
       }
       return prefs[0];
     }
   });
+
+  // Trigger tutorials contextually
+  useEffect(() => {
+    if (onboardingProfile?.activation_metrics?.first_portfolio_idea_added_at === undefined) {
+      setActiveTutorial('quick_tour');
+    }
+  }, [onboardingProfile]);
 
   const { data: bookmarks = [] } = useQuery({
     queryKey: ['bookmarks'],
@@ -238,11 +253,19 @@ export default function Home() {
         )}
       </div>
 
-      {/* Onboarding Modal */}
-      <OnboardingModal 
-        open={showOnboarding} 
+      {/* Advanced Onboarding Wizard */}
+      <AdvancedOnboardingWizard 
+        open={showOnboarding || !onboardingProfile} 
         onComplete={handleOnboardingComplete}
       />
+
+      {/* Tutorial System */}
+      {activeTutorial && (
+        <TutorialSystem
+          tutorialId={activeTutorial}
+          onComplete={() => setActiveTutorial(null)}
+        />
+      )}
 
       {/* AI Chat */}
       <AIGuideChat 
