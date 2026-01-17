@@ -11,6 +11,7 @@ import WelcomeStep from './steps/WelcomeStep';
 import DealSourcingStep from './steps/DealSourcingStep';
 import PortfolioGoalsStep from './steps/PortfolioGoalsStep';
 import CommunityPreferencesStep from './steps/CommunityPreferencesStep';
+import AdvancedModulesStep from './steps/AdvancedModulesStep';
 import ReviewStep from './steps/ReviewStep';
 import CompleteStep from './steps/CompleteStep';
 
@@ -19,6 +20,7 @@ const STEPS = [
   { id: 'deal_sourcing', title: 'Deal Sourcing Criteria', component: DealSourcingStep },
   { id: 'portfolio_goals', title: 'Portfolio Goals', component: PortfolioGoalsStep },
   { id: 'community', title: 'Community Preferences', component: CommunityPreferencesStep },
+  { id: 'advanced_modules', title: 'Advanced Learning (Optional)', component: AdvancedModulesStep, optional: true },
   { id: 'review', title: 'Review & Confirm', component: ReviewStep },
   { id: 'complete', title: 'All Set!', component: CompleteStep }
 ];
@@ -52,7 +54,10 @@ export default function EnhancedOnboardingWizard({ open, onComplete }) {
     networking_vs_knowledge: 'balanced',
     community_notification_frequency: 'weekly',
     profile_visibility: 'network_only',
-    allow_collaboration_requests: true
+    allow_collaboration_requests: true,
+    
+    // Advanced Modules (optional)
+    advanced_modules: []
   });
 
   const progress = ((step + 1) / STEPS.length) * 100;
@@ -87,6 +92,13 @@ export default function EnhancedOnboardingWizard({ open, onComplete }) {
       await base44.auth.updateMe({
         has_completed_onboarding: true
       });
+
+      // Generate personalized onboarding nudges
+      try {
+        await base44.functions.invoke('generateOnboardingNudges', {});
+      } catch (error) {
+        console.error('Failed to generate nudges:', error);
+      }
 
       toast.success('Welcome to the platform!');
       onComplete?.(preferences);
