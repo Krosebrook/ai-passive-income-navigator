@@ -19,6 +19,7 @@ import TutorialSystem from '@/components/onboarding/TutorialSystem';
 import ActivationGuideWrapper from '@/components/activation/ActivationGuideWrapper';
 import RetentionHubWrapper from '@/components/retention/RetentionHubWrapper';
 import PowerUserHub from '@/components/poweruser/PowerUserHub';
+import LifecycleAdaptiveUI from '@/components/lifecycle/LifecycleAdaptiveUI';
 import { IDEAS_CATALOG, CATEGORIES } from '@/components/data/ideasCatalog';
 
 export default function Home() {
@@ -127,6 +128,7 @@ export default function Home() {
   };
 
   return (
+    <LifecycleAdaptiveUI>
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-violet-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Hero Section */}
