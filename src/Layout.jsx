@@ -4,7 +4,7 @@ import { createPageUrl } from '@/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { base44 } from '@/api/base44Client';
-import OnboardingNudges from '@/components/deals/OnboardingNudges';
+import PersonalizedNudgeSystem from '@/components/onboarding/PersonalizedNudgeSystem';
 import {
   Home, FolderHeart, Bookmark, TrendingUp, 
   LayoutDashboard, Users, Settings, Menu, X,
@@ -228,8 +228,8 @@ export default function Layout({ children, currentPageName }) {
         </div>
       </footer>
 
-      {/* Onboarding Nudges */}
-      {user?.has_completed_onboarding && <OnboardingNudges />}
+      {/* Personalized Nudges */}
+      <PersonalizedNudgeSystem />
     </div>
   );
 }
