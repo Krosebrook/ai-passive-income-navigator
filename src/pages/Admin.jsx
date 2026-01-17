@@ -124,23 +124,23 @@ export default function AdminPage() {
                     <div className="p-4 bg-[#1a0f2e] rounded-lg border border-[#2d1e50]">
                       <h4 className="font-medium text-white mb-2">Auto-Categorization</h4>
                       <p className="text-sm text-gray-400">AI categorizes incoming deals as hot/warm/cold leads based on criteria</p>
-                      <p className="text-xs text-violet-400 mt-2">Function: categorizeDeal</p>
-                    </div>
-                    <div className="p-4 bg-[#1a0f2e] rounded-lg border border-[#2d1e50]">
+                      <p className="text-xs text-violet-400 mt-2 font-mono">categorizeDeal</p>
+                      </div>
+                      <div className="p-4 bg-[#1a0f2e] rounded-lg border border-[#2d1e50]">
                       <h4 className="font-medium text-white mb-2">Deal Comparison</h4>
                       <p className="text-sm text-gray-400">Compare multiple deals side-by-side with AI recommendations</p>
-                      <p className="text-xs text-cyan-400 mt-2">Function: compareDeals</p>
-                    </div>
-                    <div className="p-4 bg-[#1a0f2e] rounded-lg border border-[#2d1e50]">
+                      <p className="text-xs text-cyan-400 mt-2 font-mono">compareDeals</p>
+                      </div>
+                      <div className="p-4 bg-[#1a0f2e] rounded-lg border border-[#2d1e50]">
                       <h4 className="font-medium text-white mb-2">Summary Reports</h4>
                       <p className="text-sm text-gray-400">Auto-generate comprehensive deal analysis reports</p>
-                      <p className="text-xs text-emerald-400 mt-2">Function: generateDealReport</p>
-                    </div>
-                    <div className="p-4 bg-[#1a0f2e] rounded-lg border border-[#2d1e50]">
+                      <p className="text-xs text-emerald-400 mt-2 font-mono">generateDealReport</p>
+                      </div>
+                      <div className="p-4 bg-[#1a0f2e] rounded-lg border border-[#2d1e50]">
                       <h4 className="font-medium text-white mb-2">Nurturing Workflows</h4>
                       <p className="text-sm text-gray-400">Automated follow-ups and engagement tracking</p>
-                      <p className="text-xs text-orange-400 mt-2">Entity: DealNurturingWorkflow</p>
-                    </div>
+                      <p className="text-xs text-orange-400 mt-2 font-mono">DealNurturingWorkflow</p>
+                      </div>
                   </div>
                 </div>
 
@@ -150,29 +150,32 @@ export default function AdminPage() {
                     <div className="p-4 bg-[#1a0f2e] rounded-lg border border-[#2d1e50]">
                       <h4 className="font-medium text-white mb-2">AI Onboarding Insights</h4>
                       <p className="text-sm text-gray-400">Personalized guidance during user onboarding flow</p>
-                      <p className="text-xs text-violet-400 mt-2">Function: generateOnboardingInsights</p>
-                    </div>
-                    <div className="p-4 bg-[#1a0f2e] rounded-lg border border-[#2d1e50]">
+                      <p className="text-xs text-violet-400 mt-2 font-mono">generateOnboardingInsights</p>
+                      </div>
+                      <div className="p-4 bg-[#1a0f2e] rounded-lg border border-[#2d1e50]">
                       <h4 className="font-medium text-white mb-2">Advanced Learning Modules</h4>
                       <p className="text-sm text-gray-400">Optional M&A, financial modeling, and due diligence training</p>
-                      <p className="text-xs text-cyan-400 mt-2">Component: AdvancedModulesStep</p>
-                    </div>
-                    <div className="p-4 bg-[#1a0f2e] rounded-lg border border-[#2d1e50]">
+                      <p className="text-xs text-cyan-400 mt-2 font-mono">AdvancedModulesStep</p>
+                      </div>
+                      <div className="p-4 bg-[#1a0f2e] rounded-lg border border-[#2d1e50]">
                       <h4 className="font-medium text-white mb-2">Smart Nudges</h4>
                       <p className="text-sm text-gray-400">Post-onboarding feature discovery prompts</p>
-                      <p className="text-xs text-emerald-400 mt-2">Function: generateOnboardingNudges</p>
-                    </div>
-                    <div className="p-4 bg-[#1a0f2e] rounded-lg border border-[#2d1e50]">
+                      <p className="text-xs text-emerald-400 mt-2 font-mono">generateOnboardingNudges</p>
+                      </div>
+                      <div className="p-4 bg-[#1a0f2e] rounded-lg border border-[#2d1e50]">
                       <h4 className="font-medium text-white mb-2">Adaptive Questions</h4>
                       <p className="text-sm text-gray-400">Onboarding wizard adapts based on user responses</p>
-                      <p className="text-xs text-orange-400 mt-2">Enhanced onboarding flow</p>
-                    </div>
+                      <p className="text-xs text-orange-400 mt-2 font-mono">EnhancedOnboardingWizard</p>
+                      </div>
                   </div>
                 </div>
 
                 <div className="p-4 bg-gradient-to-br from-violet-900/20 to-purple-900/20 rounded-lg border border-violet-500/30">
-                  <p className="text-sm text-violet-300">
+                  <p className="text-sm text-violet-300 mb-2">
                     <strong>✨ All AI features are active and ready to use!</strong> Users can access deal automation from the Pipeline page, comparison tools in Deal Discovery, and enhanced onboarding when they first sign up.
+                  </p>
+                  <p className="text-xs text-violet-400">
+                    📚 View complete documentation in the "Docs" section from the main navigation menu.
                   </p>
                 </div>
               </div>

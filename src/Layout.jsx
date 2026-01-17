@@ -14,16 +14,10 @@ import {
 const NAV_ITEMS = [
   { name: 'Home', icon: Home, page: 'Home' },
   { name: 'Portfolio', icon: FolderHeart, page: 'Portfolio' },
-  { name: 'Bookmarks', icon: Bookmark, page: 'Bookmarks' },
-  { name: 'Trends', icon: TrendingUp, page: 'Trends' },
-  { name: 'Learn', icon: BookOpen, page: 'Learn' },
   { name: 'Discover', icon: Sparkles, page: 'DealDiscovery' },
-  { name: 'Dashboard', icon: LayoutDashboard, page: 'Dashboard' },
-  { name: 'Community', icon: Users, page: 'Community' },
-  { name: 'Forum', icon: Users, page: 'Forum' },
   { name: 'Pipeline', icon: TrendingUp, page: 'DealPipeline' },
-  { name: 'Collaborate', icon: Users, page: 'Collaborate' },
-  { name: 'Settings', icon: Settings, page: 'ProfileSettings' }
+  { name: 'Community', icon: Users, page: 'Community' },
+  { name: 'Docs', icon: BookOpen, page: 'Documentation' }
 ];
 
 const ADMIN_NAV_ITEM = { name: 'Admin', icon: Shield, page: 'Admin' };
