@@ -159,60 +159,121 @@ export default function Landing() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0f0618] text-white overflow-hidden">
-      {/* Fixed Background */}
-      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-[#1a0f2e] via-[#0f0618] to-[#0f0618]">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-[#8b85f7] rounded-full blur-3xl opacity-10" />
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#00b7eb] rounded-full blur-3xl opacity-10" />
-        </div>
+    <div className="min-h-screen bg-[#0f0618] text-white overflow-x-hidden">
+      {/* 
+        Mesh gradient background (GPU accelerated)
+        No heavy images—pure CSS creates depth without perf cost
+      */}
+      <div className="fixed inset-0 -z-10">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1a0f2e] via-[#0f0618] to-[#0f0618]" />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#8b85f7] rounded-full blur-3xl opacity-5 will-change-transform" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#00b7eb] rounded-full blur-3xl opacity-5 will-change-transform" />
       </div>
 
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-[#2d1e50]/30 bg-[#0f0618]/80 backdrop-blur-xl">
+      {/* 
+        Navigation: Glassmorphism (backdrop-blur), minimal links for fast scanning
+        Sticky on scroll for persistent CTA access
+      */}
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-white/[0.02] backdrop-blur-2xl">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#8b85f7] to-[#00b7eb] flex items-center justify-center glow-primary">
-              <Zap className="w-4 h-4 text-white" />
+          {/* Logo + Brand */}
+          <a href="#hero" className="flex items-center gap-2.5 group cursor-pointer">
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[#8b85f7] to-[#00b7eb] flex items-center justify-center glow-primary group-hover:shadow-lg group-hover:shadow-[#8b85f7]/40 transition-shadow">
+              <Zap className="w-4 h-4 text-white" aria-hidden="true" />
             </div>
-            <span className="font-bold text-lg text-gradient hidden sm:block">FlashFusion</span>
-          </div>
+            <span className="font-bold text-base text-gradient hidden sm:inline-block">FlashFusion</span>
+          </a>
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-6">
-            <a href="#features" className="text-[#64748b] hover:text-[#8b85f7] text-sm">Features</a>
-            <a href="#pricing" className="text-[#64748b] hover:text-[#8b85f7] text-sm">Pricing</a>
-            <a href="#faq" className="text-[#64748b] hover:text-[#8b85f7] text-sm">FAQ</a>
-            <Button variant="ghost" size="sm" className="text-[#64748b] hover:text-[#8b85f7]" onClick={() => window.location.href = createPageUrl('Home')}>
-              Log In
+          {/* Desktop Nav (F-Pattern: top-left to center-right) */}
+          <nav className="hidden md:flex items-center gap-1">
+            {[
+              { label: 'How it Works', href: '#how' },
+              { label: 'Pricing', href: '#pricing' },
+              { label: 'FAQ', href: '#faq' },
+            ].map(({ label, href }) => (
+              <a
+                key={href}
+                href={href}
+                className="px-3 py-2 text-sm text-[#64748b] hover:text-[#8b85f7] transition-colors"
+                aria-label={label}
+              >
+                {label}
+              </a>
+            ))}
+          </nav>
+
+          {/* CTA Buttons (Sticky for high intent) */}
+          <div className="hidden md:flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-[#64748b] hover:text-[#8b85f7] hover:bg-white/5"
+              onClick={() => window.location.href = createPageUrl('Home')}
+              aria-label="Sign in to your account"
+            >
+              Sign In
             </Button>
             {!isInstalled && installPrompt && (
-              <Button onClick={handleInstall} className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:from-[#9a95ff] hover:to-[#6b4fff]">
+              <Button
+                onClick={handleInstall}
+                className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:from-[#9a95ff] hover:to-[#6b4fff] hover:shadow-lg hover:shadow-[#8b85f7]/30 active:scale-95 transition-all"
+                aria-label="Add FlashFusion to your home screen"
+              >
                 <Download className="w-4 h-4 mr-2" />
-                Add to Home
+                Install App
               </Button>
             )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <button className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          {/* Mobile Menu Toggle */}
+          <button
+            className="md:hidden p-2 hover:bg-white/5 rounded-lg transition-colors"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={mobileMenuOpen}
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </nav>
 
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="md:hidden border-t border-[#2d1e50]/30 bg-[#1a0f2e]/95 backdrop-blur-xl">
-            <div className="px-4 py-4 space-y-3">
-              <a href="#features" className="block text-[#64748b] hover:text-[#8b85f7]">Features</a>
-              <a href="#pricing" className="block text-[#64748b] hover:text-[#8b85f7]">Pricing</a>
-              <a href="#faq" className="block text-[#64748b] hover:text-[#8b85f7]">FAQ</a>
-              <Button variant="ghost" className="w-full text-[#64748b] hover:text-[#8b85f7]" onClick={() => window.location.href = createPageUrl('Home')}>
-                Log In
-              </Button>
-            </div>
-          </motion.div>
-        )}
+        {/* Mobile Menu (Collapse animation) */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="md:hidden border-t border-white/5 bg-white/[0.02] backdrop-blur-xl"
+            >
+              <div className="px-4 py-3 space-y-2">
+                {[
+                  { label: 'How it Works', href: '#how' },
+                  { label: 'Pricing', href: '#pricing' },
+                  { label: 'FAQ', href: '#faq' },
+                ].map(({ label, href }) => (
+                  <a
+                    key={href}
+                    href={href}
+                    className="block px-3 py-2 text-sm text-[#64748b] hover:text-[#8b85f7] hover:bg-white/5 rounded-lg transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {label}
+                  </a>
+                ))}
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start text-[#64748b] hover:text-[#8b85f7] hover:bg-white/5"
+                  onClick={() => {
+                    window.location.href = createPageUrl('Home');
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  Sign In
+                </Button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
       {/* Hero Section */}
