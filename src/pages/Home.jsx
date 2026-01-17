@@ -129,7 +129,7 @@ export default function Home() {
 
   return (
     <LifecycleAdaptiveUI>
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-violet-50">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-violet-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Hero Section */}
         <motion.div 
@@ -308,7 +308,7 @@ export default function Home() {
           <MessageSquare className="w-6 h-6" />
         </motion.button>
       )}
-    </div>
+      </div>
     </LifecycleAdaptiveUI>
   );
 }
