@@ -3,12 +3,16 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
-import { ExternalLink, TrendingUp, AlertTriangle, CheckCircle, Eye, ThumbsDown, Loader2 } from 'lucide-react';
+import { ExternalLink, TrendingUp, AlertTriangle, CheckCircle, Eye, ThumbsDown, Loader2, Brain } from 'lucide-react';
+import AIFinancialAnalysis from './AIFinancialAnalysis';
 
 export default function SourcedOpportunitiesList({ criteriaId, isSearching }) {
   const queryClient = useQueryClient();
+  const [analysisModalOpen, setAnalysisModalOpen] = useState(false);
+  const [selectedDeal, setSelectedDeal] = useState(null);
 
   const { data: opportunities = [], isLoading } = useQuery({
     queryKey: ['sourced-opportunities', criteriaId],
@@ -163,6 +167,17 @@ export default function SourcedOpportunitiesList({ criteriaId, isSearching }) {
                 )}
 
                 <div className="flex gap-2 pt-2 border-t border-gray-700">
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      setSelectedDeal(opp);
+                      setAnalysisModalOpen(true);
+                    }}
+                    className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0]"
+                  >
+                    <Brain className="w-3 h-3 mr-1" />
+                    AI Analysis
+                  </Button>
                   {opp.source_url && (
                     <Button
                       size="sm"
@@ -203,6 +218,19 @@ export default function SourcedOpportunitiesList({ criteriaId, isSearching }) {
           ))}
         </div>
       )}
+
+      {/* AI Analysis Modal */}
+      <Dialog open={analysisModalOpen} onOpenChange={setAnalysisModalOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          {selectedDeal && (
+            <AIFinancialAnalysis
+              entityType="SourcedDealOpportunity"
+              entityId={selectedDeal.id}
+              entityTitle={selectedDeal.deal_title}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
