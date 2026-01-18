@@ -7,6 +7,10 @@ import { base44 } from '@/api/base44Client';
 import PersonalizedNudgeSystem from '@/components/onboarding/PersonalizedNudgeSystem';
 import DeferredSetupManager from '@/components/onboarding/DeferredSetupManager';
 import PWAInstallPrompt from '@/components/pwa/PWAInstallPrompt';
+import ParallaxBackground from '@/components/ui/ParallaxBackground';
+import ScrollProgress from '@/components/ui/ScrollProgress';
+import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
+import SEOHead from '@/components/seo/SEOHead';
 import {
   Home, FolderHeart, Bookmark, TrendingUp, 
   LayoutDashboard, Users, Settings, Menu, X,
@@ -52,6 +56,17 @@ export default function Layout({ children, currentPageName }) {
 
   return (
     <div className="min-h-screen bg-[#0f0618]">
+      {/* SEO Optimization */}
+      <SEOHead />
+      
+      {/* Parallax Background */}
+      <ParallaxBackground />
+      
+      {/* Scroll Progress Bar */}
+      <ScrollProgress />
+      
+      {/* Live Activity Feed */}
+      <LiveActivityFeed />
       {/* Top Navigation */}
       <header 
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
