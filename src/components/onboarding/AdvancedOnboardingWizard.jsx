@@ -12,7 +12,7 @@ import PortfolioGoalsStep from '@/components/onboarding/steps/ComprehensivePortf
 import CommunityStep from '@/components/onboarding/steps/ComprehensiveCommunityStep';
 import ReviewStep from '@/components/onboarding/steps/ReviewStep';
 import { X } from 'lucide-react';
-import ONBOARDING_CONFIG from '@/functions/onboardingFlowConfig';
+import { ONBOARDING_CONFIG } from '@/functions/onboardingFlowConfig';
 
 const STEP_COMPONENTS = {
   WelcomeStep,
