@@ -13,11 +13,11 @@ import ForumPost from './pages/ForumPost';
 import Home from './pages/Home';
 import IdeaDetail from './pages/IdeaDetail';
 import Integrations from './pages/Integrations';
+import Landing from './pages/Landing';
 import Learn from './pages/Learn';
 import Portfolio from './pages/Portfolio';
 import ProfileSettings from './pages/ProfileSettings';
 import Trends from './pages/Trends';
-import Landing from './pages/Landing';
 import __Layout from './Layout.jsx';
 
 
@@ -37,11 +37,11 @@ export const PAGES = {
     "Home": Home,
     "IdeaDetail": IdeaDetail,
     "Integrations": Integrations,
+    "Landing": Landing,
     "Learn": Learn,
     "Portfolio": Portfolio,
     "ProfileSettings": ProfileSettings,
     "Trends": Trends,
-    "Landing": Landing,
 }
 
 export const pagesConfig = {
