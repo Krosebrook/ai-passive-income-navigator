@@ -33,8 +33,8 @@ export default function AdvancedOnboardingWizard({ open = true, onComplete = nul
     community: {}
   });
 
-  const pathSteps = selectedPath 
-    ? ONBOARDING_CONFIG.paths[selectedPath]?.steps?.map(id => 
+  const pathSteps = selectedPath && ONBOARDING_CONFIG?.paths?.[selectedPath]
+    ? ONBOARDING_CONFIG.paths[selectedPath].steps?.map(id => 
         ONBOARDING_CONFIG.steps.find(s => s.id === id)
       ).filter(Boolean)
     : [];
