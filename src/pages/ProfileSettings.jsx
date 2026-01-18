@@ -21,6 +21,7 @@ import { toast } from 'sonner';
 
 import PageHeader from '@/components/ui/PageHeader';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import AdvancedPreferencesWizard from '@/components/preferences/AdvancedPreferencesWizard';
 
 const SKILLS = [
   'Writing & Content', 'Design & Graphics', 'Marketing', 'Programming',
@@ -38,6 +39,7 @@ export default function ProfileSettings() {
   const queryClient = useQueryClient();
   const [user, setUser] = useState(null);
   const [saved, setSaved] = useState(false);
+  const [showAdvancedWizard, setShowAdvancedWizard] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -383,6 +385,36 @@ export default function ProfileSettings() {
             </Card>
           </motion.div>
 
+          {/* Advanced Setup CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45 }}
+          >
+            <Card className="bg-gradient-to-br from-purple-900/20 via-indigo-900/20 to-violet-900/20 border-[#8b85f7]/30">
+              <CardContent className="p-6">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold text-white mb-1">
+                      Advanced Preferences
+                    </h3>
+                    <p className="text-sm text-gray-400 mb-4">
+                      Set detailed deal criteria, portfolio goals, and tool integrations
+                    </p>
+                    <Button
+                      onClick={() => setShowAdvancedWizard(true)}
+                      className="bg-[#8b85f7] hover:bg-[#7a75e8]"
+                    >
+                      <Settings className="w-4 h-4 mr-2" />
+                      Configure Advanced Settings
+                    </Button>
+                  </div>
+                  <div className="text-4xl">⚙️</div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
           {/* Actions */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -415,6 +447,12 @@ export default function ProfileSettings() {
           </motion.div>
         </div>
       </div>
+
+      {/* Advanced Preferences Wizard */}
+      <AdvancedPreferencesWizard 
+        open={showAdvancedWizard}
+        onClose={() => setShowAdvancedWizard(false)}
+      />
     </div>
   );
 }
