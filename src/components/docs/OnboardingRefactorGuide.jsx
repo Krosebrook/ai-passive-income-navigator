@@ -146,10 +146,10 @@ export default function OnboardingRefactorGuide() {
   ];
 
   const successMetrics = [
-    { metric: 'Time-to-First-Value', current: '12 min', target: '5 min', killThreshold: '> 10 min' },
-    { metric: 'Completion Rate', current: '60%', target: '85%', killThreshold: '< 75%' },
-    { metric: 'Outcome-First Activation', current: 'N/A', target: '90%+', killThreshold: '< 85%' },
-    { metric: 'Drop-off per Step', current: '40%↓', target: '< 15%↓', killThreshold: '> 25%↓ any step' }
+    { metric: 'Time-to-First-Value', current: '12 min', target: '5 min', killThreshold: '> 10 min', status: '✅ Implemented' },
+    { metric: 'Completion Rate', current: '60%', target: '85%', killThreshold: '< 75%', status: '🔄 Monitoring' },
+    { metric: 'Outcome-First Activation', current: 'N/A', target: '90%+', killThreshold: '< 85%', status: '✅ Live' },
+    { metric: 'Drop-off per Step', current: '40%↓', target: '< 15%↓', killThreshold: '> 25%↓ any step', status: '🔄 Monitoring' }
   ];
 
   return (
@@ -393,19 +393,19 @@ export default function OnboardingRefactorGuide() {
         <CardContent>
           <div className="space-y-3 text-sm">
             {[
-              'Week 1: Refactor AdvancedOnboardingWizard → LowFrictionOnboarding',
-              'Week 1: Create OutcomeSelector + ValueExposureCard components',
-              'Week 1: Update OnboardingState entity schema',
-              'Week 2: Implement immediate value exposure + deferred setup modals',
-              'Week 2: Create contextual walkthroughs',
-              'Week 2: Integrate with activation lifecycle',
-              'Week 3: Analytics tracking (all metrics)',
-              'Week 3: A/B test outcome-first vs. standard',
-              'Week 4: Monitor kill criteria; pivot or rollout'
+              { task: 'Week 1: Refactor AdvancedOnboardingWizard → LowFrictionOnboarding', done: true },
+              { task: 'Week 1: Create OutcomeSelector + ValueExposureCard components', done: true },
+              { task: 'Week 1: Update OnboardingState entity schema', done: true },
+              { task: 'Week 2: Implement immediate value exposure + deferred setup modals', done: true },
+              { task: 'Week 2: Create contextual walkthroughs', done: false },
+              { task: 'Week 2: Integrate with activation lifecycle', done: false },
+              { task: 'Week 3: Analytics tracking (all metrics)', done: false },
+              { task: 'Week 3: A/B test outcome-first vs. standard', done: false },
+              { task: 'Week 4: Monitor kill criteria; pivot or rollout', done: false }
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-3">
-                <CheckCircle className="w-4 h-4 text-[#8b85f7] mt-0.5 flex-shrink-0" />
-                <span className="text-[#a0aec0]">{item}</span>
+                <CheckCircle className={`w-4 h-4 mt-0.5 flex-shrink-0 ${item.done ? 'text-emerald-500' : 'text-[#64748b]'}`} />
+                <span className={item.done ? 'text-[#a0aec0] line-through' : 'text-[#a0aec0]'}>{item.task}</span>
               </div>
             ))}
           </div>
