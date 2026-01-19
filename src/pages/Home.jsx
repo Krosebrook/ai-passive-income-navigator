@@ -15,6 +15,7 @@ import SearchBar from '@/components/ideas/SearchBar';
 import AdvancedOnboardingWizard from '@/components/onboarding/AdvancedOnboardingWizard';
 import EnhancedOnboardingFlow from '@/components/onboarding/EnhancedOnboardingFlow';
 import InteractiveOnboarding from '@/components/onboarding/InteractiveOnboarding';
+import AIOnboardingWizard from '@/components/onboarding/AIOnboardingWizard';
 import AIGuideChat from '@/components/ai/AIGuideChat';
 import IdeaGeneratorModal from '@/components/ideas/IdeaGeneratorModal';
 import TutorialSystem from '@/components/onboarding/TutorialSystem';
@@ -60,6 +61,13 @@ export default function Home() {
       return prefs[0];
     }
   });
+
+  // Show AI onboarding wizard for new users
+  useEffect(() => {
+    if (preferences !== undefined && !preferences?.has_completed_onboarding) {
+      setShowOnboarding(true);
+    }
+  }, [preferences]);
 
   // Trigger tutorials contextually
   useEffect(() => {
@@ -273,10 +281,13 @@ export default function Home() {
         )}
       </div>
 
-      {/* Enhanced Onboarding Flow */}
-      <EnhancedOnboardingFlow 
-        open={showOnboarding && !preferences?.has_completed_onboarding} 
-        onClose={() => setShowOnboarding(false)}
+      {/* AI Onboarding Wizard for New Users */}
+      <AIOnboardingWizard
+        isOpen={showOnboarding && !preferences?.has_completed_onboarding}
+        onComplete={() => {
+          setShowOnboarding(false);
+          queryClient.invalidateQueries({ queryKey: ['userPreferences'] });
+        }}
       />
 
       {/* Tutorial System */}
