@@ -13,6 +13,7 @@ import IdeaCard from '@/components/ideas/IdeaCard';
 import CategoryFilter from '@/components/ideas/CategoryFilter';
 import SearchBar from '@/components/ideas/SearchBar';
 import AdvancedOnboardingWizard from '@/components/onboarding/AdvancedOnboardingWizard';
+import EnhancedOnboardingFlow from '@/components/onboarding/EnhancedOnboardingFlow';
 import AIGuideChat from '@/components/ai/AIGuideChat';
 import IdeaGeneratorModal from '@/components/ideas/IdeaGeneratorModal';
 import TutorialSystem from '@/components/onboarding/TutorialSystem';
@@ -271,10 +272,10 @@ export default function Home() {
         )}
       </div>
 
-      {/* Advanced Onboarding Wizard */}
-      <AdvancedOnboardingWizard 
-        open={showOnboarding || !onboardingProfile} 
-        onComplete={handleOnboardingComplete}
+      {/* Enhanced Onboarding Flow */}
+      <EnhancedOnboardingFlow 
+        open={showOnboarding && !preferences?.has_completed_onboarding} 
+        onClose={() => setShowOnboarding(false)}
       />
 
       {/* Tutorial System */}
