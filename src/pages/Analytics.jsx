@@ -9,6 +9,7 @@ import ConversionRateChart from '@/components/analytics/ConversionRateChart';
 import UserEngagementMetrics from '@/components/analytics/UserEngagementMetrics';
 import IntegrationPerformance from '@/components/analytics/IntegrationPerformance';
 import AnalyticsFilters from '@/components/analytics/AnalyticsFilters';
+import PortfolioPerformanceCharts from '@/components/analytics/PortfolioPerformanceCharts';
 import { TrendingUp, DollarSign, Users, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -40,6 +41,11 @@ export default function Analytics() {
   const { data: analytics = [] } = useQuery({
     queryKey: ['user-analytics'],
     queryFn: () => base44.entities.UserPreferences.list()
+  });
+
+  const { data: portfolioIdeas = [] } = useQuery({
+    queryKey: ['portfolio-ideas'],
+    queryFn: () => base44.entities.PortfolioIdea.list()
   });
 
   // Calculate KPIs
@@ -120,13 +126,18 @@ export default function Analytics() {
         </div>
 
         {/* Charts */}
-        <Tabs defaultValue="deals" className="space-y-6">
+        <Tabs defaultValue="portfolio" className="space-y-6">
           <TabsList className="bg-[#1a0f2e] border border-[#2d1e50]">
+            <TabsTrigger value="portfolio">Portfolio Performance</TabsTrigger>
             <TabsTrigger value="deals">Deal Sourcing</TabsTrigger>
             <TabsTrigger value="conversion">Conversion Rates</TabsTrigger>
             <TabsTrigger value="engagement">User Engagement</TabsTrigger>
             <TabsTrigger value="integrations">Integrations</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="portfolio" className="space-y-6">
+            <PortfolioPerformanceCharts portfolioIdeas={portfolioIdeas} />
+          </TabsContent>
 
           <TabsContent value="deals" className="space-y-6">
             <DealSourcingChart deals={deals} filters={filters} />
