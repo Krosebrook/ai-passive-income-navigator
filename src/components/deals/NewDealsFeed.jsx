@@ -7,13 +7,15 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { 
   Sparkles, TrendingUp, AlertCircle, BookmarkPlus, 
-  ExternalLink, Loader2, RefreshCw, CheckCircle, X
+  ExternalLink, Loader2, RefreshCw, CheckCircle, X, Search
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 
 export default function NewDealsFeed() {
   const [isGenerating, setIsGenerating] = useState(false);
+  const [analyzingDealId, setAnalyzingDealId] = useState(null);
+  const [expandedDealId, setExpandedDealId] = useState(null);
   const queryClient = useQueryClient();
 
   const { data: newDeals = [], isLoading } = useQuery({
@@ -60,6 +62,23 @@ export default function NewDealsFeed() {
     }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['new-deals-feed'] });
+    }
+  });
+
+  const analyzeDealMutation = useMutation({
+    mutationFn: async (dealId) => {
+      const result = await base44.functions.invoke('performDealDueDiligence', { dealId });
+      return result.data;
+    },
+    onSuccess: (data, dealId) => {
+      queryClient.invalidateQueries({ queryKey: ['new-deals-feed'] });
+      setExpandedDealId(dealId);
+      setAnalyzingDealId(null);
+      toast.success('AI due diligence complete!');
+    },
+    onError: () => {
+      setAnalyzingDealId(null);
+      toast.error('Failed to analyze deal');
     }
   });
 
@@ -230,20 +249,108 @@ export default function NewDealsFeed() {
                       </div>
                     )}
 
+                    {/* AI Due Diligence Results */}
+                    {deal.dd_viability_summary && expandedDealId === deal.id && (
+                      <div className="space-y-3 mt-4 pt-4 border-t border-[#2d1e50]">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Search className="w-4 h-4 text-[#00b7eb]" />
+                          <p className="text-sm font-semibold text-[#00b7eb]">AI Due Diligence</p>
+                        </div>
+
+                        {/* Viability Summary */}
+                        <div className="bg-[#00b7eb]/5 rounded-lg p-3 border border-[#00b7eb]/20">
+                          <p className="text-xs font-semibold text-[#00b7eb] mb-1">Viability Assessment:</p>
+                          <p className="text-xs text-gray-300">{deal.dd_viability_summary}</p>
+                        </div>
+
+                        {/* Actionable Steps */}
+                        {deal.dd_actionable_steps?.length > 0 && (
+                          <div>
+                            <p className="text-xs font-semibold text-green-400 mb-2">Actionable Steps:</p>
+                            <ul className="space-y-1">
+                              {deal.dd_actionable_steps.map((step, i) => (
+                                <li key={i} className="flex items-start gap-2 text-xs text-gray-300">
+                                  <CheckCircle className="w-3 h-3 text-green-400 mt-0.5 flex-shrink-0" />
+                                  {step}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+
+                        {/* Red Flags */}
+                        {deal.dd_red_flags?.length > 0 && (
+                          <div>
+                            <p className="text-xs font-semibold text-red-400 mb-2">Potential Red Flags:</p>
+                            <ul className="space-y-1">
+                              {deal.dd_red_flags.map((flag, i) => (
+                                <li key={i} className="flex items-start gap-2 text-xs text-gray-300">
+                                  <AlertCircle className="w-3 h-3 text-red-400 mt-0.5 flex-shrink-0" />
+                                  {flag}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+
+                        {/* Risk Mitigation */}
+                        {deal.dd_risk_mitigation && Object.keys(deal.dd_risk_mitigation).length > 0 && (
+                          <div>
+                            <p className="text-xs font-semibold text-yellow-400 mb-2">Risk Mitigation Strategies:</p>
+                            <div className="space-y-2">
+                              {Object.entries(deal.dd_risk_mitigation).map(([risk, mitigation], i) => (
+                                <div key={i} className="bg-yellow-500/5 rounded p-2 border border-yellow-500/20">
+                                  <p className="text-xs text-yellow-400 font-medium mb-1">{risk}</p>
+                                  <p className="text-xs text-gray-300">{mitigation}</p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
                     {/* Actions */}
                     <div className="flex gap-2 pt-2">
+                      <Button
+                        onClick={() => {
+                          setAnalyzingDealId(deal.id);
+                          analyzeDealMutation.mutate(deal.id);
+                        }}
+                        disabled={analyzingDealId === deal.id || deal.dd_viability_summary}
+                        variant="outline"
+                        className="flex-1 border-[#00b7eb] text-[#00b7eb] hover:bg-[#00b7eb]/10"
+                      >
+                        {analyzingDealId === deal.id ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            Analyzing...
+                          </>
+                        ) : deal.dd_viability_summary ? (
+                          <>
+                            <CheckCircle className="w-4 h-4 mr-2" />
+                            Analyzed
+                          </>
+                        ) : (
+                          <>
+                            <Search className="w-4 h-4 mr-2" />
+                            AI Due Diligence
+                          </>
+                        )}
+                      </Button>
                       <Button
                         onClick={() => saveDealMutation.mutate(deal.id)}
                         disabled={saveDealMutation.isPending}
                         className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600"
                       >
                         <BookmarkPlus className="w-4 h-4 mr-2" />
-                        Save to Pipeline
+                        Save
                       </Button>
                       {deal.source_url && (
                         <Button
                           onClick={() => window.open(deal.source_url, '_blank')}
                           variant="outline"
+                          size="icon"
                           className="border-[#2d1e50] text-gray-400 hover:text-white"
                         >
                           <ExternalLink className="w-4 h-4" />
