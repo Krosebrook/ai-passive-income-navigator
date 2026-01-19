@@ -18,14 +18,12 @@ export default function AIInvestmentAdvisor() {
   const [activeTab, setActiveTab] = useState('strategy');
   const queryClient = useQueryClient();
 
-  const { data: strategy, isLoading: strategyLoading } = useQuery({
+  const { data: strategies = [], isLoading: strategyLoading } = useQuery({
     queryKey: ['investment-strategy'],
-    queryFn: async () => {
-      const result = await base44.functions.invoke('generateInvestmentStrategy', {});
-      return result.data;
-    },
-    enabled: false
+    queryFn: () => base44.entities.InvestmentStrategy.filter({ created_by: base44.auth.me().email }, '-generated_at', 1)
   });
+
+  const strategy = strategies.length > 0 ? strategies[0] : null;
 
   const { data: riskAnalysis, refetch: refetchRisks } = useQuery({
     queryKey: ['market-risks'],
@@ -178,7 +176,7 @@ export default function AIInvestmentAdvisor() {
 
         {/* Strategy Tab */}
         <TabsContent value="strategy" className="space-y-4">
-          {!strategy?.strategy && !strategyLoading ? (
+          {!strategy && !strategyLoading ? (
             <Card className="bg-[#1a0f2e] border-[#2d1e50]">
               <CardContent className="p-12 text-center">
                 <Brain className="w-16 h-16 mx-auto text-[#8b85f7] mb-4" />
@@ -210,7 +208,7 @@ export default function AIInvestmentAdvisor() {
                 </Button>
               </CardContent>
             </Card>
-          ) : strategy?.strategy && (
+          ) : strategy && (
             <AnimatePresence>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -224,19 +222,19 @@ export default function AIInvestmentAdvisor() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-300 leading-relaxed">
-                      {strategy.strategy.strategic_direction}
+                      {strategy.strategic_direction}
                     </p>
                   </CardContent>
                 </Card>
 
                 {/* Asset Allocation */}
-                {strategy.strategy.asset_allocation?.recommended_categories && (
+                {strategy.asset_allocation?.recommended_categories && (
                   <Card className="bg-[#1a0f2e] border-[#2d1e50]">
                     <CardHeader>
                       <CardTitle className="text-white">Recommended Asset Allocation</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-3">
-                      {strategy.strategy.asset_allocation.recommended_categories.map((cat, idx) => (
+                      {strategy.asset_allocation.recommended_categories.map((cat, idx) => (
                         <div key={idx}>
                           <div className="flex items-center justify-between mb-2">
                             <span className="text-sm text-white capitalize">{cat.category}</span>
@@ -256,7 +254,7 @@ export default function AIInvestmentAdvisor() {
                     <CardTitle className="text-white">Short-Term Actions (3-6 months)</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
-                    {strategy.strategy.short_term_actions?.map((action, idx) => (
+                    {strategy.short_term_actions?.map((action, idx) => (
                       <div key={idx} className="bg-[#0f0618] rounded-lg p-3 border border-[#2d1e50]">
                         <div className="flex items-start justify-between mb-2">
                           <p className="text-sm font-semibold text-white">{action.action}</p>
@@ -277,7 +275,7 @@ export default function AIInvestmentAdvisor() {
                     <CardTitle className="text-white">Long-Term Milestones (1-3 years)</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
-                    {strategy.strategy.long_term_milestones?.map((milestone, idx) => (
+                    {strategy.long_term_milestones?.map((milestone, idx) => (
                       <div key={idx} className="flex items-start gap-3">
                         <div className="w-8 h-8 rounded-full bg-[#8b85f7]/20 flex items-center justify-center flex-shrink-0 mt-1">
                           <Target className="w-4 h-4 text-[#8b85f7]" />

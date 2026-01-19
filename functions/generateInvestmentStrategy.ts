@@ -134,9 +134,29 @@ Provide a comprehensive investment strategy including:
             }
         });
 
+        // Check if user already has a strategy and update, otherwise create
+        const existingStrategies = await base44.entities.InvestmentStrategy.filter({ 
+            created_by: user.email 
+        }, '-generated_at', 1);
+
+        let savedStrategy;
+        if (existingStrategies && existingStrategies.length > 0) {
+            savedStrategy = await base44.entities.InvestmentStrategy.update(existingStrategies[0].id, {
+                ...result,
+                user_email: user.email,
+                generated_at: new Date().toISOString()
+            });
+        } else {
+            savedStrategy = await base44.entities.InvestmentStrategy.create({
+                ...result,
+                user_email: user.email,
+                generated_at: new Date().toISOString()
+            });
+        }
+
         return Response.json({
             success: true,
-            strategy: result,
+            strategy: savedStrategy,
             generated_at: new Date().toISOString()
         });
 
