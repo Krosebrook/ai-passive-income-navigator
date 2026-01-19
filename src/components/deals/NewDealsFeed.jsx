@@ -7,8 +7,9 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { 
   Sparkles, TrendingUp, AlertCircle, BookmarkPlus, 
-  ExternalLink, Loader2, RefreshCw, CheckCircle, X, Search
+  ExternalLink, Loader2, RefreshCw, CheckCircle, X, Search, MessageSquare
 } from 'lucide-react';
+import DealFeedbackModal from './DealFeedbackModal';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 
@@ -16,6 +17,8 @@ export default function NewDealsFeed() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [analyzingDealId, setAnalyzingDealId] = useState(null);
   const [expandedDealId, setExpandedDealId] = useState(null);
+  const [feedbackDeal, setFeedbackDeal] = useState(null);
+  const [isSubmittingFeedback, setIsSubmittingFeedback] = useState(false);
   const queryClient = useQueryClient();
 
   const { data: newDeals = [], isLoading } = useQuery({
@@ -81,6 +84,30 @@ export default function NewDealsFeed() {
       toast.error('Failed to analyze deal');
     }
   });
+
+  const handleFeedbackSubmit = async (feedbackData) => {
+    setIsSubmittingFeedback(true);
+    try {
+      const result = await base44.functions.invoke('learnFromUserFeedback', feedbackData);
+      
+      if (result.data.success) {
+        toast.success(result.data.message);
+        
+        // Show AI learning insights
+        if (result.data.ai_learning?.insights?.length > 0) {
+          setTimeout(() => {
+            toast.info(`AI learned: ${result.data.ai_learning.insights[0]}`);
+          }, 1500);
+        }
+      }
+      
+      setFeedbackDeal(null);
+    } catch (error) {
+      toast.error('Failed to submit feedback');
+    } finally {
+      setIsSubmittingFeedback(false);
+    }
+  };
 
   const getRiskColor = (score) => {
     if (score <= 3) return 'text-green-400';
@@ -311,58 +338,70 @@ export default function NewDealsFeed() {
                     )}
 
                     {/* Actions */}
-                    <div className="flex gap-2 pt-2">
-                      <Button
-                        onClick={() => {
-                          setAnalyzingDealId(deal.id);
-                          analyzeDealMutation.mutate(deal.id);
-                        }}
-                        disabled={analyzingDealId === deal.id || deal.dd_viability_summary}
-                        variant="outline"
-                        className="flex-1 border-[#00b7eb] text-[#00b7eb] hover:bg-[#00b7eb]/10"
-                      >
-                        {analyzingDealId === deal.id ? (
-                          <>
-                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                            Analyzing...
-                          </>
-                        ) : deal.dd_viability_summary ? (
-                          <>
-                            <CheckCircle className="w-4 h-4 mr-2" />
-                            Analyzed
-                          </>
-                        ) : (
-                          <>
-                            <Search className="w-4 h-4 mr-2" />
-                            AI Due Diligence
-                          </>
-                        )}
-                      </Button>
-                      <Button
-                        onClick={() => saveDealMutation.mutate(deal.id)}
-                        disabled={saveDealMutation.isPending}
-                        className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600"
-                      >
-                        <BookmarkPlus className="w-4 h-4 mr-2" />
-                        Save
-                      </Button>
-                      {deal.source_url && (
+                    <div className="space-y-2 pt-2">
+                      <div className="flex gap-2">
                         <Button
-                          onClick={() => window.open(deal.source_url, '_blank')}
+                          onClick={() => {
+                            setAnalyzingDealId(deal.id);
+                            analyzeDealMutation.mutate(deal.id);
+                          }}
+                          disabled={analyzingDealId === deal.id || deal.dd_viability_summary}
                           variant="outline"
-                          size="icon"
-                          className="border-[#2d1e50] text-gray-400 hover:text-white"
+                          className="flex-1 border-[#00b7eb] text-[#00b7eb] hover:bg-[#00b7eb]/10"
                         >
-                          <ExternalLink className="w-4 h-4" />
+                          {analyzingDealId === deal.id ? (
+                            <>
+                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                              Analyzing...
+                            </>
+                          ) : deal.dd_viability_summary ? (
+                            <>
+                              <CheckCircle className="w-4 h-4 mr-2" />
+                              Analyzed
+                            </>
+                          ) : (
+                            <>
+                              <Search className="w-4 h-4 mr-2" />
+                              AI Due Diligence
+                            </>
+                          )}
                         </Button>
-                      )}
+                        <Button
+                          onClick={() => saveDealMutation.mutate(deal.id)}
+                          disabled={saveDealMutation.isPending}
+                          className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600"
+                        >
+                          <BookmarkPlus className="w-4 h-4 mr-2" />
+                          Save
+                        </Button>
+                        {deal.source_url && (
+                          <Button
+                            onClick={() => window.open(deal.source_url, '_blank')}
+                            variant="outline"
+                            size="icon"
+                            className="border-[#2d1e50] text-gray-400 hover:text-white"
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                          </Button>
+                        )}
+                        <Button
+                          onClick={() => dismissDealMutation.mutate(deal.id)}
+                          variant="ghost"
+                          size="icon"
+                          className="text-gray-400 hover:text-red-400"
+                        >
+                          <X className="w-4 h-4" />
+                        </Button>
+                      </div>
+                      
+                      {/* Feedback Button */}
                       <Button
-                        onClick={() => dismissDealMutation.mutate(deal.id)}
-                        variant="ghost"
-                        size="icon"
-                        className="text-gray-400 hover:text-red-400"
+                        onClick={() => setFeedbackDeal(deal)}
+                        variant="outline"
+                        className="w-full border-[#8b85f7]/30 text-[#8b85f7] hover:bg-[#8b85f7]/10"
                       >
-                        <X className="w-4 h-4" />
+                        <MessageSquare className="w-4 h-4 mr-2" />
+                        Give Feedback to Improve AI Matching
                       </Button>
                     </div>
                   </CardContent>
@@ -371,6 +410,17 @@ export default function NewDealsFeed() {
             ))}
           </div>
         </AnimatePresence>
+      )}
+
+      {/* Feedback Modal */}
+      {feedbackDeal && (
+        <DealFeedbackModal
+          isOpen={!!feedbackDeal}
+          onClose={() => setFeedbackDeal(null)}
+          deal={feedbackDeal}
+          onSubmit={handleFeedbackSubmit}
+          isSubmitting={isSubmittingFeedback}
+        />
       )}
     </div>
   );
