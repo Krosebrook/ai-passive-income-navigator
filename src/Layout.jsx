@@ -22,9 +22,9 @@ const NAV_ITEMS = [
   { name: 'Portfolio', icon: FolderHeart, page: 'Portfolio' },
   { name: 'AI Coach', icon: Sparkles, page: 'AICoach' },
   { name: 'Pipeline', icon: TrendingUp, page: 'DealPipeline' },
+  { name: 'Analytics', icon: Zap, page: 'Analytics' },
   { name: 'Data', icon: HardDrive, page: 'DataManagement' },
-  { name: 'Community', icon: Users, page: 'Community' },
-  { name: 'Docs', icon: BookOpen, page: 'Documentation' }
+  { name: 'Community', icon: Users, page: 'Community' }
 ];
 
 const ADMIN_NAV_ITEM = { name: 'Admin', icon: Shield, page: 'Admin' };
