@@ -1,7 +1,27 @@
 {
-  "name": "base44-app",
-  "private": true,
+  "name": "ai-passive-income-navigator",
+  "description": "An AI-powered platform to discover, track, and manage passive income opportunities",
   "version": "0.0.0",
+  "author": "Krosebrook",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Krosebrook/ai-passive-income-navigator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Krosebrook/ai-passive-income-navigator/issues"
+  },
+  "homepage": "https://github.com/Krosebrook/ai-passive-income-navigator#readme",
+  "keywords": [
+    "passive-income",
+    "ai",
+    "income-tracker",
+    "portfolio-management",
+    "react",
+    "vite",
+    "base44"
+  ],
+  "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite",
