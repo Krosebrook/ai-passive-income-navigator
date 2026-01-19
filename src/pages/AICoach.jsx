@@ -4,6 +4,7 @@ import PageHeader from '@/components/ui/PageHeader';
 import AIInvestmentCoach from '@/components/ai/AIInvestmentCoach';
 import SourcedOpportunitiesPanel from '@/components/deals/SourcedOpportunitiesPanel';
 import AIGeneratedDeals from '@/components/deals/AIGeneratedDeals';
+import AIAssistantChat from '@/components/ai/AIAssistantChat';
 import { Sparkles, TrendingUp, Zap } from 'lucide-react';
 
 export default function AICoachPage() {

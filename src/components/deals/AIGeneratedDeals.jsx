@@ -4,7 +4,8 @@ import { base44 } from '@/api/base44Client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Sparkles, TrendingUp, AlertTriangle, DollarSign, Calendar, Loader2, Heart, X } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
+import { Sparkles, TrendingUp, AlertTriangle, DollarSign, Calendar, Loader2, Heart, X, Brain, Activity } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 
@@ -68,6 +69,27 @@ export default function AIGeneratedDeals() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['ai-generated-deals'] });
+    }
+  });
+
+  const predictPerformanceMutation = useMutation({
+    mutationFn: async (deal) => {
+      const result = await base44.functions.invoke('predictDealPerformance', { deal });
+      return { dealId: deal.id, predictions: result.data.predictions };
+    },
+    onSuccess: async ({ dealId, predictions }) => {
+      await base44.entities.SourcedDealOpportunity.update(dealId, {
+        predicted_roi: predictions.predicted_roi,
+        predicted_risk_score: predictions.predicted_risk_score,
+        predicted_time_to_profit: predictions.predicted_time_to_profit,
+        prediction_confidence: predictions.confidence_level,
+        prediction_generated_at: new Date().toISOString()
+      });
+      queryClient.invalidateQueries({ queryKey: ['ai-generated-deals'] });
+      toast.success('AI predictions generated!');
+    },
+    onError: () => {
+      toast.error('Failed to generate predictions');
     }
   });
 
@@ -177,6 +199,56 @@ export default function AIGeneratedDeals() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <p className="text-sm text-gray-300">{deal.summary}</p>
+
+                    {/* AI Predictions */}
+                    {deal.predicted_roi && (
+                      <div className="bg-gradient-to-r from-[#8b85f7]/10 to-[#00b7eb]/10 rounded-lg p-3 border border-[#8b85f7]/30">
+                        <div className="flex items-center gap-2 mb-3">
+                          <Brain className="w-4 h-4 text-[#8b85f7]" />
+                          <span className="text-sm font-semibold text-[#8b85f7]">AI Predictions</span>
+                          <Badge className="ml-auto bg-[#8b85f7]/20 text-[#8b85f7] border-[#8b85f7]/50">
+                            {deal.prediction_confidence}% Confidence
+                          </Badge>
+                        </div>
+                        <div className="grid grid-cols-3 gap-4 text-center">
+                          <div>
+                            <div className="text-lg font-bold text-white">{deal.predicted_roi?.toFixed(1)}%</div>
+                            <div className="text-xs text-gray-400">Predicted ROI</div>
+                          </div>
+                          <div>
+                            <div className="text-lg font-bold text-white">{deal.predicted_risk_score?.toFixed(1)}/10</div>
+                            <div className="text-xs text-gray-400">Risk Level</div>
+                          </div>
+                          <div>
+                            <div className="text-lg font-bold text-white">{deal.predicted_time_to_profit}mo</div>
+                            <div className="text-xs text-gray-400">Time to Profit</div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Generate Predictions Button */}
+                    {!deal.predicted_roi && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => predictPerformanceMutation.mutate(deal)}
+                        disabled={predictPerformanceMutation.isPending}
+                        className="w-full border-[#8b85f7]/50 text-[#8b85f7] hover:bg-[#8b85f7]/10"
+                      >
+                        {predictPerformanceMutation.isPending ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            Analyzing...
+                          </>
+                        ) : (
+                          <>
+                            <Activity className="w-4 h-4 mr-2" />
+                            Generate AI Predictions
+                          </>
+                        )}
+                      </Button>
+                    )}
 
                     {/* Key Metrics */}
                     <div className="grid grid-cols-3 gap-4">
