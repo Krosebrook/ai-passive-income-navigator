@@ -5,7 +5,8 @@ import AIInvestmentCoach from '@/components/ai/AIInvestmentCoach';
 import SourcedOpportunitiesPanel from '@/components/deals/SourcedOpportunitiesPanel';
 import AIGeneratedDeals from '@/components/deals/AIGeneratedDeals';
 import AIAssistantChat from '@/components/ai/AIAssistantChat';
-import { Sparkles, TrendingUp, Zap, MessageSquare } from 'lucide-react';
+import AIInvestmentAdvisor from '@/components/ai/AIInvestmentAdvisor';
+import { Sparkles, TrendingUp, Zap, MessageSquare, Brain } from 'lucide-react';
 
 export default function AICoachPage() {
     return (
@@ -17,27 +18,35 @@ export default function AICoachPage() {
                 />
 
                 <Tabs defaultValue="ai-deals" className="mt-8">
-                    <TabsList className="grid w-full grid-cols-4 max-w-3xl">
+                    <TabsList className="grid w-full grid-cols-5 max-w-4xl">
                         <TabsTrigger value="ai-deals" className="gap-2">
                             <Zap className="w-4 h-4" />
                             AI Deals
                         </TabsTrigger>
+                        <TabsTrigger value="advisor" className="gap-2">
+                            <Brain className="w-4 h-4" />
+                            Advisor
+                        </TabsTrigger>
                         <TabsTrigger value="coach" className="gap-2">
                             <Sparkles className="w-4 h-4" />
-                            Investment Coach
+                            Coach
                         </TabsTrigger>
                         <TabsTrigger value="sourcing" className="gap-2">
                             <TrendingUp className="w-4 h-4" />
-                            Deal Sourcing
+                            Sourcing
                         </TabsTrigger>
                         <TabsTrigger value="assistant" className="gap-2">
                             <MessageSquare className="w-4 h-4" />
-                            AI Assistant
+                            Assistant
                         </TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="ai-deals" className="mt-6">
                         <AIGeneratedDeals />
+                    </TabsContent>
+
+                    <TabsContent value="advisor" className="mt-6">
+                        <AIInvestmentAdvisor />
                     </TabsContent>
 
                     <TabsContent value="coach" className="mt-6">

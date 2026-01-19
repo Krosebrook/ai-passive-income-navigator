@@ -54,6 +54,23 @@ export default function RebalancingSuggestions() {
     }
   });
 
+  const executeRebalancingMutation = useMutation({
+    mutationFn: async (suggestionId) => {
+      const result = await base44.functions.invoke('executeRebalancing', {
+        suggestion_id: suggestionId
+      });
+      return result.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['portfolio-suggestions'] });
+      queryClient.invalidateQueries({ queryKey: ['user-preferences'] });
+      toast.success('Rebalancing executed successfully!');
+    },
+    onError: () => {
+      toast.error('Failed to execute rebalancing');
+    }
+  });
+
   const getPriorityColor = (priority) => {
     switch (priority) {
       case 'high': return 'bg-red-500/20 text-red-400 border-red-500/50';
@@ -277,16 +294,21 @@ export default function RebalancingSuggestions() {
                     {/* Actions */}
                     <div className="flex gap-3 pt-4">
                       <Button
-                        onClick={() => updateStatusMutation.mutate({
-                          id: suggestion.id,
-                          status: 'accepted',
-                          notes: 'Accepted via UI'
-                        })}
-                        disabled={updateStatusMutation.isPending}
+                        onClick={() => executeRebalancingMutation.mutate(suggestion.id)}
+                        disabled={executeRebalancingMutation.isPending}
                         className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600"
                       >
-                        <CheckCircle className="w-4 h-4 mr-2" />
-                        Accept Recommendations
+                        {executeRebalancingMutation.isPending ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            Executing...
+                          </>
+                        ) : (
+                          <>
+                            <CheckCircle className="w-4 h-4 mr-2" />
+                            Execute Rebalancing
+                          </>
+                        )}
                       </Button>
                       <Button
                         onClick={() => updateStatusMutation.mutate({

@@ -10,134 +10,141 @@ Deno.serve(async (req) => {
         }
 
         // Fetch user data
-        const userPrefs = await base44.entities.UserPreferences.filter({ created_by: user.email });
-        const prefs = userPrefs[0];
-
+        const preferences = await base44.entities.UserPreferences.filter({ created_by: user.email });
         const portfolioIdeas = await base44.entities.PortfolioIdea.filter({ created_by: user.email });
-        const performanceReports = await base44.entities.PerformanceReport.filter({ created_by: user.email });
-        const latestReport = performanceReports[0];
+        const deals = await base44.entities.SourcedDealOpportunity.filter({ created_by: user.email });
+        const financialData = await base44.entities.FinancialData.filter({ created_by: user.email }, '-date', 100);
 
-        if (!prefs) {
-            return Response.json({ error: 'Please complete onboarding first' }, { status: 400 });
+        if (!preferences || preferences.length === 0) {
+            return Response.json({ 
+                error: 'User preferences not found. Please complete your profile first.' 
+            }, { status: 400 });
         }
 
-        // Build comprehensive strategy prompt
-        const portfolioSummary = portfolioIdeas.length > 0
-            ? `Current portfolio has ${portfolioIdeas.length} active ideas with sectors: ${
-                [...new Set(portfolioIdeas.map(p => p.category))].join(', ')
-              }`
-            : 'User is just starting their portfolio';
+        const userPrefs = preferences[0];
 
-        const performanceSummary = latestReport
-            ? `Recent performance: Total profit $${latestReport.portfolio_summary.total_profit || 0}, ROI ${latestReport.portfolio_summary.overall_roi || 0}%`
-            : 'No performance data yet';
+        // Calculate portfolio metrics
+        const totalRevenue = financialData.reduce((sum, d) => sum + (d.revenue || 0), 0);
+        const totalExpenses = financialData.reduce((sum, d) => sum + (d.expenses || 0), 0);
+        const totalProfit = totalRevenue - totalExpenses;
 
-        const prompt = `You are an expert investment advisor specializing in passive income. Provide comprehensive investment strategy advice for:
+        const prompt = `You are an expert investment strategist and wealth advisor.
 
-User Profile:
-- Passive Income Goal: ${prefs.passive_income_goal}
-- Time Commitment: ${prefs.time_commitment} hours/week
-- Risk Tolerance: ${prefs.risk_tolerance}
-- Target Return: ${prefs.target_return_percentage}% annually
-- Time Horizon: ${prefs.time_horizon}
-- Diversification Preference: ${prefs.diversification_preference}
-- Preferred Sectors: ${prefs.sector_priorities?.join(', ') || 'all'}
-- Asset Classes: ${prefs.asset_class_priorities?.join(', ') || 'all'}
+Analyze this investor's profile and provide a comprehensive, personalized investment strategy:
 
-Portfolio Status:
-${portfolioSummary}
-${performanceSummary}
+INVESTOR PROFILE:
+- Income Goal: ${userPrefs.passive_income_goal || 'Not specified'}
+- Risk Tolerance: ${userPrefs.risk_tolerance || 'moderate'}
+- Time Horizon: ${userPrefs.time_horizon || 'medium_term'}
+- Target Return: ${userPrefs.target_return_percentage || 'N/A'}% annually
+- Time Commitment: ${userPrefs.time_commitment || 'N/A'} hours/week
+- Diversification: ${userPrefs.diversification_preference || 'moderately_diversified'}
+- Existing Skills: ${userPrefs.existing_skills?.join(', ') || 'Not specified'}
 
-Provide strategic advice in the following areas:
+CURRENT PORTFOLIO:
+- Active Ideas: ${portfolioIdeas.length}
+- Active Deals: ${deals.filter(d => d.status !== 'dismissed').length}
+- Total Revenue (tracked): $${totalRevenue.toFixed(2)}
+- Total Profit: $${totalProfit.toFixed(2)}
 
-1. **Portfolio Rebalancing Strategy**:
-   - Current allocation analysis (if applicable)
-   - Recommended reallocation for optimal risk-adjusted returns
-   - Specific actions to take (buy/sell/hold)
-   - Timeline for rebalancing
+MARKET CONTEXT: Use current market conditions, economic outlook, and industry trends.
 
-2. **Market Trends & Opportunities**:
-   - Top 3 emerging trends relevant to their sectors
-   - Specific opportunities in high-growth industries
-   - Market headwinds to watch
-   - Best timing for investments
+Provide a comprehensive investment strategy including:
+1. Overall strategic direction aligned with their goals
+2. Specific asset allocation recommendations
+3. Short-term (3-6 months) actionable steps
+4. Long-term (1-3 years) strategic milestones
+5. Risk management tactics
+6. Growth opportunities specific to their profile
+7. Key metrics to track for success`;
 
-3. **Risk Assessment**:
-   - Current portfolio concentration risks (if any)
-   - Correlation risks between holdings
-   - External market risks (economic, regulatory)
-   - Mitigation strategies
-
-4. **Immediate Action Items**:
-   - Top 3 priorities for the next 30 days
-   - Quick wins for income improvement
-   - Areas needing due diligence
-
-5. **12-Month Roadmap**:
-   - Strategic milestones
-   - Expected portfolio growth
-   - Diversification targets
-   - Tax optimization opportunities
-
-Return response as structured JSON with these exact sections.`;
-
-        const strategy = await base44.integrations.Core.InvokeLLM({
+        const result = await base44.integrations.Core.InvokeLLM({
             prompt,
             add_context_from_internet: true,
             response_json_schema: {
                 type: "object",
                 properties: {
-                    portfolio_rebalancing: {
+                    strategic_direction: {
+                        type: "string",
+                        description: "Overall strategic direction and vision"
+                    },
+                    asset_allocation: {
                         type: "object",
                         properties: {
-                            analysis: { type: "string" },
-                            recommendations: { type: "array", items: { type: "string" } },
-                            timeline: { type: "string" }
+                            recommended_categories: {
+                                type: "array",
+                                items: {
+                                    type: "object",
+                                    properties: {
+                                        category: { type: "string" },
+                                        percentage: { type: "number" },
+                                        rationale: { type: "string" }
+                                    }
+                                }
+                            }
                         }
                     },
-                    market_trends: {
+                    short_term_actions: {
+                        type: "array",
+                        items: {
+                            type: "object",
+                            properties: {
+                                action: { type: "string" },
+                                priority: { type: "string", enum: ["high", "medium", "low"] },
+                                timeline: { type: "string" },
+                                expected_impact: { type: "string" }
+                            }
+                        }
+                    },
+                    long_term_milestones: {
+                        type: "array",
+                        items: {
+                            type: "object",
+                            properties: {
+                                milestone: { type: "string" },
+                                timeframe: { type: "string" },
+                                success_criteria: { type: "string" }
+                            }
+                        }
+                    },
+                    risk_management: {
                         type: "object",
                         properties: {
-                            emerging_trends: { type: "array", items: { type: "string" } },
-                            opportunities: { type: "array", items: { type: "string" } },
-                            headwinds: { type: "array", items: { type: "string" } }
+                            key_risks: { type: "array", items: { type: "string" } },
+                            mitigation_strategies: { type: "array", items: { type: "string" } }
                         }
                     },
-                    risk_assessment: {
-                        type: "object",
-                        properties: {
-                            concentration_risks: { type: "array", items: { type: "string" } },
-                            external_risks: { type: "array", items: { type: "string" } },
-                            mitigations: { type: "array", items: { type: "string" } }
-                        }
-                    },
-                    immediate_actions: {
+                    growth_opportunities: {
                         type: "array",
                         items: { type: "string" }
                     },
-                    twelve_month_roadmap: {
-                        type: "object",
-                        properties: {
-                            milestones: { type: "array", items: { type: "string" } },
-                            expected_growth: { type: "string" },
-                            diversification_targets: { type: "array", items: { type: "string" } }
+                    success_metrics: {
+                        type: "array",
+                        items: {
+                            type: "object",
+                            properties: {
+                                metric: { type: "string" },
+                                target_value: { type: "string" },
+                                tracking_frequency: { type: "string" }
+                            }
                         }
                     }
-                }
+                },
+                required: ["strategic_direction", "short_term_actions", "long_term_milestones"]
             }
         });
 
         return Response.json({
             success: true,
-            strategy: strategy,
+            strategy: result,
             generated_at: new Date().toISOString()
         });
 
     } catch (error) {
-        console.error('Error generating strategy:', error);
+        console.error('Error generating investment strategy:', error);
         return Response.json({ 
-            success: false,
-            error: error.message 
+            error: error.message,
+            success: false 
         }, { status: 500 });
     }
 });
