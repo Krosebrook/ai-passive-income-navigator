@@ -14,6 +14,7 @@ import CategoryFilter from '@/components/ideas/CategoryFilter';
 import SearchBar from '@/components/ideas/SearchBar';
 import AdvancedOnboardingWizard from '@/components/onboarding/AdvancedOnboardingWizard';
 import EnhancedOnboardingFlow from '@/components/onboarding/EnhancedOnboardingFlow';
+import InteractiveOnboarding from '@/components/onboarding/InteractiveOnboarding';
 import AIGuideChat from '@/components/ai/AIGuideChat';
 import IdeaGeneratorModal from '@/components/ideas/IdeaGeneratorModal';
 import TutorialSystem from '@/components/onboarding/TutorialSystem';
@@ -298,6 +299,13 @@ export default function Home() {
         open={showIdeaGenerator}
         onClose={() => setShowIdeaGenerator(false)}
         userPreferences={preferences}
+      />
+
+      {/* Interactive Onboarding */}
+      <InteractiveOnboarding
+        onComplete={() => {
+          queryClient.invalidateQueries({ queryKey: ['userPreferences'] });
+        }}
       />
 
       {/* Floating AI Button */}
