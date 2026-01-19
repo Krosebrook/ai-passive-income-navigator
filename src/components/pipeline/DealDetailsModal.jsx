@@ -12,6 +12,7 @@ import { toast } from 'sonner';
 import { Plus, CheckCircle, Clock, Bell, MessageSquare } from 'lucide-react';
 import CommentSection from '@/components/collaboration/CommentSection';
 import WorkflowBuilder from '@/components/pipeline/WorkflowBuilder';
+import TaskManager from './TaskManager';
 
 export default function DealDetailsModal({ open, onClose, deal }) {
   const queryClient = useQueryClient();
@@ -135,62 +136,7 @@ export default function DealDetailsModal({ open, onClose, deal }) {
           </TabsContent>
 
           <TabsContent value="tasks" className="space-y-4">
-            <div className="flex gap-2">
-              <Input
-                placeholder="Task title..."
-                value={newTask.title}
-                onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-              />
-              <Input
-                type="date"
-                value={newTask.due_date}
-                onChange={(e) => setNewTask({ ...newTask, due_date: e.target.value })}
-                className="w-40"
-              />
-              <Button 
-                size="icon"
-                onClick={() => addTaskMutation.mutate({
-                  deal_pipeline_id: deal.id,
-                  ...newTask,
-                  assigned_to: user?.email
-                })}
-                disabled={!newTask.title}
-              >
-                <Plus className="w-4 h-4" />
-              </Button>
-            </div>
-
-            <div className="space-y-2">
-              {tasks.map(task => (
-                <Card key={task.id}>
-                  <CardContent className="p-3 flex items-center gap-3">
-                    <button onClick={() => toggleTaskMutation.mutate({ 
-                      id: task.id, 
-                      completed: task.status !== 'completed' 
-                    })}>
-                      {task.status === 'completed' ? (
-                        <CheckCircle className="w-5 h-5 text-emerald-600" />
-                      ) : (
-                        <Clock className="w-5 h-5 text-gray-400" />
-                      )}
-                    </button>
-                    <div className="flex-1">
-                      <p className={`text-sm ${task.status === 'completed' ? 'line-through text-gray-500' : ''}`}>
-                        {task.title}
-                      </p>
-                      {task.due_date && (
-                        <p className="text-xs text-gray-500">
-                          Due: {new Date(task.due_date).toLocaleDateString()}
-                        </p>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-              {tasks.length === 0 && (
-                <p className="text-center text-gray-500 py-4 text-sm">No tasks yet</p>
-              )}
-            </div>
+            <TaskManager dealId={deal.id} />
           </TabsContent>
 
           <TabsContent value="reminders" className="space-y-4">
