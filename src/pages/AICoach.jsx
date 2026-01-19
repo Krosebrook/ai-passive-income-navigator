@@ -3,7 +3,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import PageHeader from '@/components/ui/PageHeader';
 import AIInvestmentCoach from '@/components/ai/AIInvestmentCoach';
 import SourcedOpportunitiesPanel from '@/components/deals/SourcedOpportunitiesPanel';
-import { Sparkles, TrendingUp } from 'lucide-react';
+import AIGeneratedDeals from '@/components/deals/AIGeneratedDeals';
+import { Sparkles, TrendingUp, Zap } from 'lucide-react';
 
 export default function AICoachPage() {
     return (
@@ -14,8 +15,12 @@ export default function AICoachPage() {
                     subtitle="AI coach guidance and automated deal sourcing"
                 />
 
-                <Tabs defaultValue="coach" className="mt-8">
-                    <TabsList className="grid w-full grid-cols-2 max-w-md">
+                <Tabs defaultValue="ai-deals" className="mt-8">
+                    <TabsList className="grid w-full grid-cols-3 max-w-2xl">
+                        <TabsTrigger value="ai-deals" className="gap-2">
+                            <Zap className="w-4 h-4" />
+                            AI Deals
+                        </TabsTrigger>
                         <TabsTrigger value="coach" className="gap-2">
                             <Sparkles className="w-4 h-4" />
                             Investment Coach
@@ -25,6 +30,10 @@ export default function AICoachPage() {
                             Deal Sourcing
                         </TabsTrigger>
                     </TabsList>
+
+                    <TabsContent value="ai-deals" className="mt-6">
+                        <AIGeneratedDeals />
+                    </TabsContent>
 
                     <TabsContent value="coach" className="mt-6">
                         <AIInvestmentCoach />
