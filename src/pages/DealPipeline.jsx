@@ -6,13 +6,14 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
-import { Plus, MoreVertical, TrendingUp, Zap, Settings, Layout } from 'lucide-react';
+import { Plus, MoreVertical, TrendingUp, Zap, Settings, Layout, BarChart3 } from 'lucide-react';
 import DealCard from '@/components/pipeline/DealCard';
 import AddDealModal from '@/components/pipeline/AddDealModal';
 import DealDetailsModal from '@/components/pipeline/DealDetailsModal';
 import AutomationRulesManager from '@/components/pipeline/AutomationRulesManager';
 import KanbanBoard from '@/components/pipeline/KanbanBoard';
 import StageManager from '@/components/pipeline/StageManager';
+import AnalyticsDashboard from '@/components/pipeline/AnalyticsDashboard';
 
 const STAGES = [
   { id: 'research', label: 'Research', color: 'bg-blue-100 text-blue-700' },
@@ -145,9 +146,13 @@ export default function DealPipelinePage() {
               <Layout className="w-4 h-4 mr-2" />
               Kanban View
             </TabsTrigger>
+            <TabsTrigger value="analytics">
+              <BarChart3 className="w-4 h-4 mr-2" />
+              Analytics
+            </TabsTrigger>
             <TabsTrigger value="automation">
               <Zap className="w-4 h-4 mr-2" />
-              Automation Rules
+              Automation
             </TabsTrigger>
           </TabsList>
 
@@ -159,6 +164,10 @@ export default function DealPipelinePage() {
               onDealClick={handleDealClick}
               onStageEdit={() => setStageManagerOpen(true)}
             />
+          </TabsContent>
+
+          <TabsContent value="analytics">
+            <AnalyticsDashboard />
           </TabsContent>
 
           <TabsContent value="automation">
