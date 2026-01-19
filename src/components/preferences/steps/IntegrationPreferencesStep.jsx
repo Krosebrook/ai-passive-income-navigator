@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { CheckCircle2, Zap, Calendar, FileText, DollarSign } from 'lucide-react';
+import ContextualTooltip from '@/components/guidance/ContextualTooltip';
 
 const AVAILABLE_INTEGRATIONS = [
   {
@@ -81,7 +82,14 @@ export default function IntegrationPreferencesStep({ onNext, initialData = {} })
     <div className="space-y-6">
       {/* Available Integrations */}
       <div>
-        <Label className="text-base mb-3 block">External Tools</Label>
+        <div className="flex items-center gap-2 mb-3">
+          <Label className="text-base">External Tools</Label>
+          <ContextualTooltip
+            title="Tool Integrations"
+            description="Connect external services to automate tracking, sync data, and streamline workflows."
+            whyItMatters="Integrations save hours of manual data entry and ensure you never miss important updates or deadlines."
+          />
+        </div>
         <p className="text-sm text-gray-400 mb-4">Connect your favorite tools to FlashFusion</p>
         
         <div className="space-y-3">
