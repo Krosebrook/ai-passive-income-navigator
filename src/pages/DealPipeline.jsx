@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,11 +6,13 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
-import { Plus, MoreVertical, TrendingUp, Zap } from 'lucide-react';
+import { Plus, MoreVertical, TrendingUp, Zap, Settings, Layout } from 'lucide-react';
 import DealCard from '@/components/pipeline/DealCard';
 import AddDealModal from '@/components/pipeline/AddDealModal';
 import DealDetailsModal from '@/components/pipeline/DealDetailsModal';
 import AutomationRulesManager from '@/components/pipeline/AutomationRulesManager';
+import KanbanBoard from '@/components/pipeline/KanbanBoard';
+import StageManager from '@/components/pipeline/StageManager';
 
 const STAGES = [
   { id: 'research', label: 'Research', color: 'bg-blue-100 text-blue-700' },
@@ -25,11 +27,42 @@ export default function DealPipelinePage() {
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [selectedDeal, setSelectedDeal] = useState(null);
   const [detailsModalOpen, setDetailsModalOpen] = useState(false);
+  const [stageManagerOpen, setStageManagerOpen] = useState(false);
+  const [viewMode, setViewMode] = useState('kanban');
 
   const { data: deals = [], isLoading } = useQuery({
     queryKey: ['deal-pipeline'],
     queryFn: () => base44.entities.DealPipeline.list('-created_date')
   });
+
+  const { data: customStages = [] } = useQuery({
+    queryKey: ['deal-stages'],
+    queryFn: () => base44.entities.DealStage.filter({ is_active: true }, 'order')
+  });
+
+  // Initialize default stages if none exist
+  useEffect(() => {
+    const initializeStages = async () => {
+      if (customStages.length === 0) {
+        const defaultStages = [
+          { name: 'Research', order: 0, color: 'bg-blue-100 text-blue-700', is_default: true },
+          { name: 'Analysis', order: 1, color: 'bg-purple-100 text-purple-700', is_default: true },
+          { name: 'Negotiation', order: 2, color: 'bg-orange-100 text-orange-700', is_default: true },
+          { name: 'Launch', order: 3, color: 'bg-emerald-100 text-emerald-700', is_default: true }
+        ];
+        
+        for (const stage of defaultStages) {
+          await base44.entities.DealStage.create(stage);
+        }
+        
+        queryClient.invalidateQueries({ queryKey: ['deal-stages'] });
+      }
+    };
+    
+    initializeStages();
+  }, [customStages.length]);
+
+  const activeStages = customStages.length > 0 ? customStages : STAGES;
 
   const updateStageMutation = useMutation({
     mutationFn: async ({ dealId, newStage }) => {
@@ -40,10 +73,23 @@ export default function DealPipelinePage() {
         notes: `Moved to ${newStage}`
       }];
 
-      return await base44.entities.DealPipeline.update(dealId, {
+      await base44.entities.DealPipeline.update(dealId, {
         stage: newStage,
         stage_history: stageHistory
       });
+
+      // Send notification
+      try {
+        await base44.functions.invoke('notifyDealUpdate', {
+          dealId,
+          updateType: 'stage_change',
+          details: { newStage }
+        });
+      } catch (error) {
+        console.error('Notification failed:', error);
+      }
+
+      return dealId;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['deal-pipeline'] });
@@ -77,15 +123,28 @@ export default function DealPipelinePage() {
               </span>
             </div>
           </div>
-          <Button onClick={() => setAddModalOpen(true)} className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0]">
-            <Plus className="w-4 h-4 mr-2" />
-            Add Deal
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              onClick={() => setStageManagerOpen(true)}
+              className="border-[#2d1e50]"
+            >
+              <Settings className="w-4 h-4 mr-2" />
+              Manage Stages
+            </Button>
+            <Button onClick={() => setAddModalOpen(true)} className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0]">
+              <Plus className="w-4 h-4 mr-2" />
+              Add Deal
+            </Button>
+          </div>
         </div>
 
         <Tabs defaultValue="pipeline" className="w-full">
           <TabsList className="mb-6">
-            <TabsTrigger value="pipeline">Pipeline View</TabsTrigger>
+            <TabsTrigger value="pipeline">
+              <Layout className="w-4 h-4 mr-2" />
+              Kanban View
+            </TabsTrigger>
             <TabsTrigger value="automation">
               <Zap className="w-4 h-4 mr-2" />
               Automation Rules
@@ -93,50 +152,13 @@ export default function DealPipelinePage() {
           </TabsList>
 
           <TabsContent value="pipeline">
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-          {STAGES.map(stage => {
-            const stageDeals = getDealsByStage(stage.id);
-            const stageValue = stageDeals.reduce((sum, d) => sum + (d.estimated_value || 0), 0);
-
-            return (
-              <div key={stage.id} className="flex flex-col">
-                <Card className="bg-[#1a0f2e] border-[#2d1e50] mb-3">
-                  <CardHeader className="p-4">
-                    <div className="flex items-center justify-between">
-                      <Badge className={stage.color}>{stage.label}</Badge>
-                      <span className="text-sm text-gray-400">{stageDeals.length}</span>
-                    </div>
-                    {stageValue > 0 && (
-                      <p className="text-xs text-gray-500 mt-2">
-                        ${stageValue.toLocaleString()}
-                      </p>
-                    )}
-                  </CardHeader>
-                </Card>
-
-                <div className="space-y-3 flex-1">
-                  {stageDeals.map(deal => (
-                    <DealCard
-                      key={deal.id}
-                      deal={deal}
-                      onClick={() => handleDealClick(deal)}
-                      onStageChange={(newStage) => updateStageMutation.mutate({ 
-                        dealId: deal.id, 
-                        newStage 
-                      })}
-                    />
-                  ))}
-
-                  {stageDeals.length === 0 && (
-                    <div className="text-center py-8 text-gray-600 text-sm">
-                      No deals in this stage
-                    </div>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-            </div>
+            <KanbanBoard
+              stages={activeStages}
+              deals={deals}
+              onDealMove={(dealId, newStage) => updateStageMutation.mutate({ dealId, newStage })}
+              onDealClick={handleDealClick}
+              onStageEdit={() => setStageManagerOpen(true)}
+            />
           </TabsContent>
 
           <TabsContent value="automation">
@@ -159,6 +181,11 @@ export default function DealPipelinePage() {
             deal={selectedDeal}
           />
         )}
+
+        <StageManager
+          isOpen={stageManagerOpen}
+          onClose={() => setStageManagerOpen(false)}
+        />
       </div>
     </div>
   );
