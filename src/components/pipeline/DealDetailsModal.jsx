@@ -13,6 +13,7 @@ import { Plus, CheckCircle, Clock, Bell, MessageSquare } from 'lucide-react';
 import CommentSection from '@/components/collaboration/CommentSection';
 import WorkflowBuilder from '@/components/pipeline/WorkflowBuilder';
 import TaskManager from './TaskManager';
+import DealMarketAnalysis from '@/components/market/DealMarketAnalysis';
 
 export default function DealDetailsModal({ open, onClose, deal }) {
   const queryClient = useQueryClient();
@@ -77,13 +78,18 @@ export default function DealDetailsModal({ open, onClose, deal }) {
         </DialogHeader>
 
         <Tabs defaultValue="overview">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="market">Market</TabsTrigger>
             <TabsTrigger value="workflow">Workflow</TabsTrigger>
             <TabsTrigger value="tasks">Tasks ({tasks.length})</TabsTrigger>
-            <TabsTrigger value="reminders">Reminders ({reminders.length})</TabsTrigger>
+            <TabsTrigger value="reminders">Reminders</TabsTrigger>
             <TabsTrigger value="discussion">Discussion</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="market">
+            <DealMarketAnalysis dealId={deal.id} />
+          </TabsContent>
 
           <TabsContent value="workflow">
             <WorkflowBuilder dealId={deal?.id} />
