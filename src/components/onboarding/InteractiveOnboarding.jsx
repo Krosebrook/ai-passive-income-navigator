@@ -55,8 +55,8 @@ export default function InteractiveOnboarding({ onComplete }) {
   });
 
   useEffect(() => {
-    // Show onboarding if user hasn't completed it
-    if (preferences && !preferences.has_completed_onboarding) {
+    // Show onboarding if user hasn't completed it (or no preferences exist yet)
+    if (preferences?.has_completed_onboarding === false || (!preferences && preferences !== undefined)) {
       setIsOpen(true);
     }
   }, [preferences]);
