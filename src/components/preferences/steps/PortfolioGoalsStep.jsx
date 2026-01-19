@@ -4,6 +4,7 @@ import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle2, PieChart } from 'lucide-react';
+import ContextualTooltip from '@/components/guidance/ContextualTooltip';
 
 const ASSET_CLASSES = [
   { value: 'digital', label: 'Digital Assets', desc: 'SaaS, apps, websites' },
@@ -73,7 +74,14 @@ export default function PortfolioGoalsStep({ onNext, initialData = {} }) {
       {/* Target Allocation */}
       <div>
         <div className="flex justify-between items-center mb-3">
-          <Label className="text-base">Target Asset Allocation</Label>
+          <div className="flex items-center gap-2">
+            <Label className="text-base">Target Asset Allocation</Label>
+            <ContextualTooltip
+              title="Asset Allocation"
+              description="Distribute your portfolio across different asset types to balance risk and returns."
+              whyItMatters="Proper allocation reduces risk through diversification. Different assets perform differently under various market conditions."
+            />
+          </div>
           <Badge variant={totalAllocation === 100 ? 'default' : 'destructive'}>
             {totalAllocation}% {totalAllocation === 100 ? '✓' : '(must equal 100%)'}
           </Badge>
@@ -103,7 +111,14 @@ export default function PortfolioGoalsStep({ onNext, initialData = {} }) {
 
       {/* Diversification Rules */}
       <div className="space-y-4">
-        <Label className="text-base block">Diversification Rules</Label>
+        <div className="flex items-center gap-2 mb-3">
+          <Label className="text-base">Diversification Rules</Label>
+          <ContextualTooltip
+            title="Diversification Strategy"
+            description="Set limits to prevent over-concentration in any single investment."
+            whyItMatters="Diversification protects your portfolio from individual deal failures. The 'don't put all eggs in one basket' principle."
+          />
+        </div>
         
         <div className="bg-[#0f0618] rounded-xl p-4 border border-[#2d1e50]">
           <div className="flex justify-between items-center mb-2">

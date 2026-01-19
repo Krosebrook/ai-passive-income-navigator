@@ -7,6 +7,8 @@ import { base44 } from '@/api/base44Client';
 import PersonalizedNudgeSystem from '@/components/onboarding/PersonalizedNudgeSystem';
 import DeferredSetupManager from '@/components/onboarding/DeferredSetupManager';
 import PWAInstallPrompt from '@/components/pwa/PWAInstallPrompt';
+import { GuidanceProvider } from '@/components/guidance/ProactiveGuidanceSystem';
+import BehaviorTriggers from '@/components/guidance/BehaviorTriggers';
 import ParallaxBackground from '@/components/ui/ParallaxBackground';
 import ScrollProgress from '@/components/ui/ScrollProgress';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
@@ -55,6 +57,7 @@ export default function Layout({ children, currentPageName }) {
   }, []);
 
   return (
+    <GuidanceProvider>
     <div className="min-h-screen bg-[#0f0618]">
       {/* SEO Optimization */}
       <SEOHead />
@@ -253,6 +256,10 @@ export default function Layout({ children, currentPageName }) {
 
       {/* PWA Install Prompt */}
       <PWAInstallPrompt />
+
+      {/* Behavior-based Guidance Triggers */}
+      <BehaviorTriggers />
     </div>
+    </GuidanceProvider>
   );
 }

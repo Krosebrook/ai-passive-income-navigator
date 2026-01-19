@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Slider } from '@/components/ui/slider';
 import { CheckCircle2, TrendingUp } from 'lucide-react';
+import ContextualTooltip from '@/components/guidance/ContextualTooltip';
 
 const GROWTH_STAGES = [
   { value: 'idea', label: 'Idea Stage', desc: 'Pre-launch concepts' },
@@ -49,7 +50,14 @@ export default function DealCriteriaStep({ onNext, initialData = {} }) {
     <div className="space-y-6">
       {/* Growth Stages */}
       <div>
-        <Label className="text-base mb-3 block">Growth Stages</Label>
+        <div className="flex items-center gap-2 mb-3">
+          <Label className="text-base">Growth Stages</Label>
+          <ContextualTooltip
+            title="Growth Stages"
+            description="Different stages represent varying levels of risk and potential returns."
+            whyItMatters="Early-stage deals offer higher growth potential but more risk. Mature deals provide stability with lower but steadier returns."
+          />
+        </div>
         <p className="text-sm text-gray-400 mb-3">Select which stages you're interested in</p>
         <div className="grid grid-cols-2 gap-3">
           {GROWTH_STAGES.map(stage => (
@@ -76,7 +84,14 @@ export default function DealCriteriaStep({ onNext, initialData = {} }) {
 
       {/* Financial Metrics */}
       <div className="space-y-4">
-        <Label className="text-base mb-3 block">Financial Metrics</Label>
+        <div className="flex items-center gap-2 mb-3">
+          <Label className="text-base">Financial Metrics</Label>
+          <ContextualTooltip
+            title="Financial Criteria"
+            description="Set revenue and profitability thresholds to filter deals that match your investment capacity."
+            whyItMatters="These filters ensure you only see deals that align with your budget and expected returns, saving time on deal evaluation."
+          />
+        </div>
         
         {/* Revenue Range */}
         <div className="bg-[#0f0618] rounded-xl p-4 border border-[#2d1e50]">
