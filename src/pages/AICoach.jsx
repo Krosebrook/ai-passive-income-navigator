@@ -6,7 +6,8 @@ import SourcedOpportunitiesPanel from '@/components/deals/SourcedOpportunitiesPa
 import AIGeneratedDeals from '@/components/deals/AIGeneratedDeals';
 import AIAssistantChat from '@/components/ai/AIAssistantChat';
 import AIInvestmentAdvisor from '@/components/ai/AIInvestmentAdvisor';
-import { Sparkles, TrendingUp, Zap, MessageSquare, Brain } from 'lucide-react';
+import NewDealsFeed from '@/components/deals/NewDealsFeed';
+import { Sparkles, TrendingUp, Zap, MessageSquare, Brain, Rss } from 'lucide-react';
 
 export default function AICoachPage() {
     return (
@@ -17,8 +18,12 @@ export default function AICoachPage() {
                     subtitle="AI coach guidance and automated deal sourcing"
                 />
 
-                <Tabs defaultValue="ai-deals" className="mt-8">
-                    <TabsList className="grid w-full grid-cols-5 max-w-4xl">
+                <Tabs defaultValue="new-deals" className="mt-8">
+                    <TabsList className="grid w-full grid-cols-6 max-w-5xl">
+                        <TabsTrigger value="new-deals" className="gap-2">
+                            <Rss className="w-4 h-4" />
+                            New Deals
+                        </TabsTrigger>
                         <TabsTrigger value="ai-deals" className="gap-2">
                             <Zap className="w-4 h-4" />
                             AI Deals
@@ -40,6 +45,10 @@ export default function AICoachPage() {
                             Assistant
                         </TabsTrigger>
                     </TabsList>
+
+                    <TabsContent value="new-deals" className="mt-6">
+                        <NewDealsFeed />
+                    </TabsContent>
 
                     <TabsContent value="ai-deals" className="mt-6">
                         <AIGeneratedDeals />
