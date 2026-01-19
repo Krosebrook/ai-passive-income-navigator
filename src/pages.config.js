@@ -19,6 +19,7 @@ import Learn from './pages/Learn';
 import Portfolio from './pages/Portfolio';
 import ProfileSettings from './pages/ProfileSettings';
 import Trends from './pages/Trends';
+import UserPreferences from './pages/UserPreferences';
 import __Layout from './Layout.jsx';
 
 
@@ -44,6 +45,7 @@ export const PAGES = {
     "Portfolio": Portfolio,
     "ProfileSettings": ProfileSettings,
     "Trends": Trends,
+    "UserPreferences": UserPreferences,
 }
 
 export const pagesConfig = {

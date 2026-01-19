@@ -24,8 +24,7 @@ const NAV_ITEMS = [
   { name: 'Portfolio', icon: FolderHeart, page: 'Portfolio' },
   { name: 'AI Coach', icon: Sparkles, page: 'AICoach' },
   { name: 'Pipeline', icon: TrendingUp, page: 'DealPipeline' },
-  { name: 'Analytics', icon: Zap, page: 'Analytics' },
-  { name: 'Data', icon: HardDrive, page: 'DataManagement' },
+  { name: 'Preferences', icon: Settings, page: 'UserPreferences' },
   { name: 'Community', icon: Users, page: 'Community' }
 ];
 
