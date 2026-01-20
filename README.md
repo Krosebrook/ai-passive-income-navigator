@@ -1,17 +1,35 @@
 # AI Passive Income Navigator
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
+[![React](https://img.shields.io/badge/react-18.2.0-blue)](https://reactjs.org/)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
 **An AI-powered platform to discover, track, and manage passive income opportunities**
 
 View and edit your app on [Base44.com](http://Base44.com)
 
 ## 📋 Documentation
 
+### Core Documentation
+- 📖 **[Contributing Guide](./CONTRIBUTING.md)** - How to contribute to this project
+- 🏗️ **[Architecture](./ARCHITECTURE.md)** - System architecture and design decisions
+- 🔌 **[API Documentation](./docs/API.md)** - API endpoints and usage
+- 🚀 **[Deployment Guide](./docs/DEPLOYMENT.md)** - How to deploy the application
+- 💻 **[Development Guide](./docs/DEVELOPMENT.md)** - Development setup and workflow
+- 🧪 **[Testing Guide](./docs/TESTING.md)** - Testing strategies and best practices
+- 🔧 **[Troubleshooting](./docs/TROUBLESHOOTING.md)** - Common issues and solutions
+- 🔒 **[Security Policy](./SECURITY.md)** - Security policies and reporting
+- 📝 **[Changelog](./CHANGELOG.md)** - Version history and changes
+
+### Product Documentation
 **Important:** Before launching to production, please review the comprehensive audit and roadmap:
 
 - 📊 **[PRODUCT_AUDIT.md](./PRODUCT_AUDIT.md)** - Complete technical and business audit
 - 🗺️ **[PRODUCT_ROADMAP.md](./PRODUCT_ROADMAP.md)** - 3-month roadmap to production
 - 🔧 **[TECHNICAL_RECOMMENDATIONS.md](./TECHNICAL_RECOMMENDATIONS.md)** - Recommended tools and libraries
 - 🚀 **[IMPLEMENTATION_GUIDE.md](./IMPLEMENTATION_GUIDE.md)** - Quick start guide for immediate actions
+- 🛡️ **[SECURITY_RECOMMENDATIONS.md](./SECURITY_RECOMMENDATIONS.md)** - Security best practices
 
 ## Features
 
@@ -152,11 +170,21 @@ See [PRODUCT_ROADMAP.md](./PRODUCT_ROADMAP.md) for the 3-month plan to productio
 
 ## 🤝 Contributing
 
-1. Read the [IMPLEMENTATION_GUIDE.md](./IMPLEMENTATION_GUIDE.md)
-2. Review the [PRODUCT_ROADMAP.md](./PRODUCT_ROADMAP.md)
-3. Create a feature branch
-4. Make your changes
-5. Submit a pull request
+We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md) for details.
+
+### Quick Start for Contributors
+
+1. Read the [Contributing Guide](./CONTRIBUTING.md)
+2. Check the [Development Guide](./docs/DEVELOPMENT.md)
+3. Review the [Product Roadmap](./PRODUCT_ROADMAP.md)
+4. Create a feature branch
+5. Make your changes
+6. Run tests and linting
+7. Submit a pull request
+
+### Code of Conduct
+
+This project adheres to a [Code of Conduct](./CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
 
 ## 📚 Documentation & Support
 
@@ -167,7 +195,13 @@ See [PRODUCT_ROADMAP.md](./PRODUCT_ROADMAP.md) for the 3-month plan to productio
 
 ## 📄 License
 
-[Your License Here]
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Built with [Base44 Platform](https://base44.com)
+- UI components from [Shadcn/ui](https://ui.shadcn.com/)
+- Icons from [Lucide](https://lucide.dev/)
 
 ---
 
