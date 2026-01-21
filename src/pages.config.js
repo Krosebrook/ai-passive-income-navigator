@@ -20,6 +20,7 @@ import Portfolio from './pages/Portfolio';
 import ProfileSettings from './pages/ProfileSettings';
 import Trends from './pages/Trends';
 import UserPreferences from './pages/UserPreferences';
+import Gamification from './pages/Gamification';
 import __Layout from './Layout.jsx';
 
 
@@ -46,6 +47,7 @@ export const PAGES = {
     "ProfileSettings": ProfileSettings,
     "Trends": Trends,
     "UserPreferences": UserPreferences,
+    "Gamification": Gamification,
 }
 
 export const pagesConfig = {
