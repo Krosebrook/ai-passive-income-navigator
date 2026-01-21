@@ -2,6 +2,20 @@
 
 Welcome to the AI Passive Income Navigator documentation! This index helps you find the right documentation for your needs.
 
+## 🚨 Documentation Audit (2026-01-21)
+
+**⚠️ IMPORTANT:** A comprehensive documentation audit has been completed. See:
+- 📋 **[DOCUMENTATION_AUDIT.md](DOCUMENTATION_AUDIT.md)** - Complete audit report with findings and remediation plan
+- 📂 **[docs/README.md](docs/README.md)** - New documentation structure and navigation
+
+**Key Findings:**
+- **Documentation Maturity:** C+ (Adequate for prototype, inadequate for production)
+- **Critical Gaps:** 11 production-blocking documentation gaps identified
+- **Production Ready:** ❌ No (estimated 2-3 weeks to remediate critical gaps)
+- **Cloud Functions:** 74 functions completely undocumented
+
+---
+
 ## 📚 Quick Links
 
 | I want to... | Go to |
@@ -360,7 +374,37 @@ All documentation follows:
 
 ---
 
-**Last Updated**: 2026-01-19  
+## 🆕 New Documentation Structure (2026-01-21)
+
+A major documentation reorganization has been completed. New documentation includes:
+
+### Critical Production Blockers (P0)
+- ❌ [docs/api/cloud-functions/REFERENCE.md](docs/api/cloud-functions/REFERENCE.md) - 74 cloud functions (Not Started)
+- ❌ [docs/api/ERROR_HANDLING.md](docs/api/ERROR_HANDLING.md) - Error handling patterns (Not Started)
+- ❌ [docs/architecture/DATA_MODEL.md](docs/architecture/DATA_MODEL.md) - Database schemas (Not Started)
+- ❌ [docs/operations/DISASTER_RECOVERY.md](docs/operations/DISASTER_RECOVERY.md) - Backup/restore (Not Started)
+- ❌ [docs/operations/MONITORING.md](docs/operations/MONITORING.md) - Observability (Not Started)
+- ❌ [docs/operations/RUNBOOK.md](docs/operations/RUNBOOK.md) - Operational procedures (Not Started)
+- ❌ [docs/security/INCIDENT_RESPONSE.md](docs/security/INCIDENT_RESPONSE.md) - Security response (Not Started)
+- ❌ [docs/legal/PRIVACY_POLICY.md](docs/legal/PRIVACY_POLICY.md) - **LEGAL REQUIREMENT** (Not Started)
+- ❌ [docs/legal/TERMS_OF_SERVICE.md](docs/legal/TERMS_OF_SERVICE.md) - **LEGAL REQUIREMENT** (Not Started)
+
+### High Priority (P1)
+- ❌ [docs/architecture/ARCHITECTURE_DECISIONS.md](docs/architecture/ARCHITECTURE_DECISIONS.md) - ADRs (Not Started)
+- ❌ [docs/operations/PERFORMANCE_BASELINE.md](docs/operations/PERFORMANCE_BASELINE.md) - SLAs (Not Started)
+- ❌ [docs/features/deal-pipeline.md](docs/features/deal-pipeline.md) - Major feature (Not Started)
+
+### Documentation Status Legend
+- ✅ **Complete** - Production-ready documentation
+- ⚠️ **Incomplete** - Exists but missing critical sections
+- ❌ **Not Started** - Placeholder only, needs writing
+- 🔄 **Outdated** - Needs review and updates
+
+**For complete audit and remediation plan, see [DOCUMENTATION_AUDIT.md](DOCUMENTATION_AUDIT.md)**
+
+---
+
+**Last Updated**: 2026-01-21  
 **Maintained by**: Development Team
 
 For questions or suggestions about documentation, create an issue using the [documentation template](.github/ISSUE_TEMPLATE/documentation.md).
