@@ -7,6 +7,7 @@ import DealPerformanceMetrics from '@/components/dashboard/DealPerformanceMetric
 import MarketPerformanceWidget from '@/components/dashboard/MarketPerformanceWidget';
 import AIInsightsSummary from '@/components/dashboard/AIInsightsSummary';
 import CustomizableWidgets from '@/components/dashboard/CustomizableWidgets';
+import PredictiveInsightsDashboard from '@/components/analytics/PredictiveInsightsDashboard';
 
 export default function Dashboard() {
   const { data: deals = [], isLoading: dealsLoading } = useQuery({
@@ -46,6 +47,10 @@ export default function Dashboard() {
               <Sparkles className="w-4 h-4 mr-2" />
               AI Insights
             </TabsTrigger>
+            <TabsTrigger value="predictive" className="data-[state=active]:bg-[#8b85f7]">
+              <TrendingUp className="w-4 h-4 mr-2" />
+              Predictive Analytics
+            </TabsTrigger>
             <TabsTrigger value="customize" className="data-[state=active]:bg-[#8b85f7]">
               <Settings className="w-4 h-4 mr-2" />
               Customize
@@ -80,6 +85,11 @@ export default function Dashboard() {
           {/* AI Insights Tab */}
           <TabsContent value="ai">
             <AIInsightsSummary />
+          </TabsContent>
+
+          {/* Predictive Analytics Tab */}
+          <TabsContent value="predictive">
+            <PredictiveInsightsDashboard />
           </TabsContent>
 
           {/* Customize Tab */}
