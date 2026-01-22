@@ -148,11 +148,11 @@ export default function AdaptiveOnboardingFlow({ isOpen, onClose }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-3xl bg-[#1a0f2e] border-[#2d1e50] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="bg-[#3e2370] p-6 opacity-100 rounded fixed left-[50%] top-[50%] z-50 grid w-full translate-x-[-50%] translate-y-[-50%] gap-4 border shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg max-w-3xl border-[#2d1e50] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-[#8b85f7] to-[#00b7eb] bg-clip-text text-transparent flex items-center gap-2">
-            <Sparkles className="w-6 h-6 text-[#8b85f7]" />
-            Welcome to FlashFusion
+          <DialogTitle className="text-orange-300 text-2xl font-bold tracking-tight flex items-center gap-2">Welcome to FlashFusion
+
+
           </DialogTitle>
         </DialogHeader>
 
