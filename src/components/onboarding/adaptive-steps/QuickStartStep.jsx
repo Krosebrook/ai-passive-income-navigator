@@ -50,7 +50,7 @@ export default function QuickStartStep({ preferences, onComplete, onBack, canGoB
     <div className="space-y-6 py-4">
       <div className="text-center">
         <Zap className="w-12 h-12 text-[#ff8e42] mx-auto mb-3" />
-        <h2 className="text-2xl font-bold text-white mb-2">
+        <h2 className="text-2xl font-bold bg-gradient-to-r from-[#ff8e42] to-[#8b85f7] bg-clip-text text-transparent mb-2">
           Quick Start Guide
         </h2>
         <p className="text-gray-400">

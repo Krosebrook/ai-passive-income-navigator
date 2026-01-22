@@ -82,7 +82,7 @@ export default function FeatureQuickStart({ feature, isOpen, onClose }) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl bg-[#1a0f2e] border-[#2d1e50]">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-gradient">
+          <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-[#8b85f7] to-[#00b7eb] bg-clip-text text-transparent">
             {guide.title}
           </DialogTitle>
         </DialogHeader>

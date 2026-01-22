@@ -13,7 +13,7 @@ export default function WelcomeStep({ onComplete }) {
   return (
     <div className="space-y-6 py-4">
       <div className="text-center">
-        <h2 className="text-3xl font-bold text-gradient mb-2">
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-[#8b85f7] via-[#00b7eb] to-[#ff8e42] bg-clip-text text-transparent mb-2">
           Your Journey to Passive Income Starts Here
         </h2>
         <p className="text-gray-400">

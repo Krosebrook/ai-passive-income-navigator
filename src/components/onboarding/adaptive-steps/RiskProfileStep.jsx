@@ -32,7 +32,7 @@ export default function RiskProfileStep({ onComplete, onBack, canGoBack }) {
     <div className="space-y-6 py-4">
       <div className="text-center">
         <Shield className="w-12 h-12 text-[#00b7eb] mx-auto mb-3" />
-        <h2 className="text-2xl font-bold text-white mb-2">
+        <h2 className="text-2xl font-bold bg-gradient-to-r from-[#00b7eb] to-[#8b85f7] bg-clip-text text-transparent mb-2">
           Define Your Risk Profile
         </h2>
         <p className="text-gray-400">

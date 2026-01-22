@@ -150,9 +150,9 @@ export default function AdaptiveOnboardingFlow({ isOpen, onClose }) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-3xl bg-[#1a0f2e] border-[#2d1e50] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-orange-300 text-2xl font-bold tracking-tight flex items-center gap-2">Welcome to FlashFusion
-
-
+          <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-[#8b85f7] to-[#00b7eb] bg-clip-text text-transparent flex items-center gap-2">
+            <Sparkles className="w-6 h-6 text-[#8b85f7]" />
+            Welcome to FlashFusion
           </DialogTitle>
         </DialogHeader>
 

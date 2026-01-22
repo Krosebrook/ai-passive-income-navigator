@@ -25,7 +25,7 @@ export default function PreferencesStep({ onComplete, onBack, canGoBack }) {
     <div className="space-y-6 py-4">
       <div className="text-center">
         <Target className="w-12 h-12 text-[#8b85f7] mx-auto mb-3" />
-        <h2 className="text-2xl font-bold text-white mb-2">
+        <h2 className="text-2xl font-bold bg-gradient-to-r from-[#8b85f7] to-[#00b7eb] bg-clip-text text-transparent mb-2">
           What Are Your Investment Goals?
         </h2>
         <p className="text-gray-400">

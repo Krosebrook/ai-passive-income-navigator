@@ -25,7 +25,7 @@ export default function CompletionStep({ onComplete }) {
       </div>
 
       <div>
-        <h2 className="text-3xl font-bold text-gradient mb-2">
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-[#8b85f7] via-[#ff69b4] to-[#ff8e42] bg-clip-text text-transparent mb-2">
           Welcome to FlashFusion!
         </h2>
         <p className="text-gray-400">
