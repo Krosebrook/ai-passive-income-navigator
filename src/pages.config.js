@@ -11,6 +11,7 @@ import DealPipeline from './pages/DealPipeline';
 import Documentation from './pages/Documentation';
 import Forum from './pages/Forum';
 import ForumPost from './pages/ForumPost';
+import Gamification from './pages/Gamification';
 import Home from './pages/Home';
 import IdeaDetail from './pages/IdeaDetail';
 import Integrations from './pages/Integrations';
@@ -20,7 +21,7 @@ import Portfolio from './pages/Portfolio';
 import ProfileSettings from './pages/ProfileSettings';
 import Trends from './pages/Trends';
 import UserPreferences from './pages/UserPreferences';
-import Gamification from './pages/Gamification';
+import PortfolioManagement from './pages/PortfolioManagement';
 import __Layout from './Layout.jsx';
 
 
@@ -38,6 +39,7 @@ export const PAGES = {
     "Documentation": Documentation,
     "Forum": Forum,
     "ForumPost": ForumPost,
+    "Gamification": Gamification,
     "Home": Home,
     "IdeaDetail": IdeaDetail,
     "Integrations": Integrations,
@@ -47,7 +49,7 @@ export const PAGES = {
     "ProfileSettings": ProfileSettings,
     "Trends": Trends,
     "UserPreferences": UserPreferences,
-    "Gamification": Gamification,
+    "PortfolioManagement": PortfolioManagement,
 }
 
 export const pagesConfig = {
