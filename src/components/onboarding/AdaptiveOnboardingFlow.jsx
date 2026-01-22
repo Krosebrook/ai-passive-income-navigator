@@ -54,10 +54,10 @@ export default function AdaptiveOnboardingFlow({ isOpen, onClose }) {
     try {
       // Generate personalized step sequence based on preferences
       const baseSteps = [
-        { id: 'welcome', component: WelcomeStep },
-        { id: 'preferences', component: PreferencesStep },
-        { id: 'risk_profile', component: RiskProfileStep }
-      ];
+      { id: 'welcome', component: WelcomeStep },
+      { id: 'preferences', component: PreferencesStep },
+      { id: 'risk_profile', component: RiskProfileStep }];
+
 
       // Add feature intros based on risk tolerance
       const featureSteps = [];
@@ -144,15 +144,15 @@ export default function AdaptiveOnboardingFlow({ isOpen, onClose }) {
 
   const CurrentStepComponent = personalizedSteps[currentStep]?.component;
   const stepProps = personalizedSteps[currentStep]?.props || {};
-  const progress = ((currentStep + 1) / personalizedSteps.length) * 100;
+  const progress = (currentStep + 1) / personalizedSteps.length * 100;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-3xl bg-[#1a0f2e] border-[#2d1e50] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-gradient flex items-center gap-2">
-            <Sparkles className="w-6 h-6" />
-            Welcome to FlashFusion
+          <DialogTitle className="text-orange-300 text-2xl font-bold tracking-tight flex items-center gap-2">Welcome to FlashFusion
+
+
           </DialogTitle>
         </DialogHeader>
 
@@ -172,20 +172,20 @@ export default function AdaptiveOnboardingFlow({ isOpen, onClose }) {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            {CurrentStepComponent && (
-              <CurrentStepComponent
-                onComplete={handleStepComplete}
-                onBack={handleBack}
-                canGoBack={currentStep > 0}
-                isLoading={isLoading}
-                {...stepProps}
-              />
-            )}
+            transition={{ duration: 0.3 }}>
+
+            {CurrentStepComponent &&
+            <CurrentStepComponent
+              onComplete={handleStepComplete}
+              onBack={handleBack}
+              canGoBack={currentStep > 0}
+              isLoading={isLoading}
+              {...stepProps} />
+
+            }
           </motion.div>
         </AnimatePresence>
       </DialogContent>
-    </Dialog>
-  );
+    </Dialog>);
+
 }
