@@ -18,10 +18,10 @@ import Integrations from './pages/Integrations';
 import Landing from './pages/Landing';
 import Learn from './pages/Learn';
 import Portfolio from './pages/Portfolio';
+import PortfolioManagement from './pages/PortfolioManagement';
 import ProfileSettings from './pages/ProfileSettings';
 import Trends from './pages/Trends';
 import UserPreferences from './pages/UserPreferences';
-import PortfolioManagement from './pages/PortfolioManagement';
 import __Layout from './Layout.jsx';
 
 
@@ -46,10 +46,10 @@ export const PAGES = {
     "Landing": Landing,
     "Learn": Learn,
     "Portfolio": Portfolio,
+    "PortfolioManagement": PortfolioManagement,
     "ProfileSettings": ProfileSettings,
     "Trends": Trends,
     "UserPreferences": UserPreferences,
-    "PortfolioManagement": PortfolioManagement,
 }
 
 export const pagesConfig = {
