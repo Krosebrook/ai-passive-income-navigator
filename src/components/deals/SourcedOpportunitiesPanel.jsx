@@ -7,14 +7,15 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { 
     Sparkles, TrendingUp, AlertCircle, CheckCircle2, 
-    ExternalLink, Loader2, RefreshCw, Star 
+    ExternalLink, Loader2, RefreshCw, Star, FileSearch 
 } from 'lucide-react';
 import { toast } from 'sonner';
+import DueDiligenceAssistant from '@/components/deals/DueDiligenceAssistant';
 
 export default function SourcedOpportunitiesPanel() {
     const queryClient = useQueryClient();
     const [selectedDeal, setSelectedDeal] = useState(null);
-  const [showDueDiligence, setShowDueDiligence] = useState(false);
+    const [showDueDiligence, setShowDueDiligence] = useState(false);
     const [filterStatus, setFilterStatus] = useState('new');
 
     // Fetch sourced deals
@@ -212,28 +213,41 @@ export default function SourcedOpportunitiesPanel() {
 
                                 {/* Action Buttons */}
                                 <div className="flex gap-2 pt-2">
-                                    <Button
-                                        size="sm"
-                                        variant="outline"
-                                        className="flex-1"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            setSelectedDeal(deal);
-                                        }}
-                                    >
-                                        View Details
-                                    </Button>
-                                    <Button
-                                        size="sm"
-                                        className="flex-1 gap-1"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            moveToPortfolio(deal);
-                                        }}
-                                    >
-                                        <Star className="w-3 h-3" />
-                                        Interested
-                                    </Button>
+                                   <Button
+                                       size="sm"
+                                       variant="outline"
+                                       className="flex-1"
+                                       onClick={(e) => {
+                                           e.stopPropagation();
+                                           setSelectedDeal(deal);
+                                           setShowDueDiligence(false);
+                                       }}
+                                   >
+                                       View Details
+                                   </Button>
+                                   <Button
+                                       size="sm"
+                                       variant="outline"
+                                       className="border-[#8b85f7] text-[#8b85f7] hover:bg-[#8b85f7]/10"
+                                       onClick={(e) => {
+                                           e.stopPropagation();
+                                           setSelectedDeal(deal);
+                                           setShowDueDiligence(true);
+                                       }}
+                                   >
+                                       <FileSearch className="w-3 h-3" />
+                                   </Button>
+                                   <Button
+                                       size="sm"
+                                       className="gap-1"
+                                       onClick={(e) => {
+                                           e.stopPropagation();
+                                           moveToPortfolio(deal);
+                                       }}
+                                   >
+                                       <Star className="w-3 h-3" />
+                                       Interested
+                                   </Button>
                                 </div>
                             </CardContent>
                         </Card>
@@ -242,7 +256,7 @@ export default function SourcedOpportunitiesPanel() {
             )}
 
             {/* Deal Details Modal */}
-            {selectedDeal && (
+            {selectedDeal && !showDueDiligence && (
                 <DealDetailModal
                     deal={selectedDeal}
                     onClose={() => setSelectedDeal(null)}
@@ -254,6 +268,28 @@ export default function SourcedOpportunitiesPanel() {
                         });
                     }}
                 />
+            )}
+
+            {/* Due Diligence Modal */}
+            {selectedDeal && showDueDiligence && (
+                <Dialog open={showDueDiligence} onOpenChange={() => {
+                    setShowDueDiligence(false);
+                    setSelectedDeal(null);
+                }}>
+                    <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-[#1a0f2e] border-[#2d1e50]">
+                        <DialogHeader>
+                            <DialogTitle className="text-xl font-bold bg-gradient-to-r from-[#8b85f7] to-[#00b7eb] bg-clip-text text-transparent">
+                                AI Due Diligence: {selectedDeal.deal_title}
+                            </DialogTitle>
+                        </DialogHeader>
+                        <DueDiligenceAssistant 
+                            deal={selectedDeal} 
+                            onComplete={() => {
+                                queryClient.invalidateQueries({ queryKey: ['sourced-deals'] });
+                            }}
+                        />
+                    </DialogContent>
+                </Dialog>
             )}
         </div>
     );
