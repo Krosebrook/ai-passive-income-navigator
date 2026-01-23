@@ -14,6 +14,7 @@ import { toast } from 'sonner';
 export default function SourcedOpportunitiesPanel() {
     const queryClient = useQueryClient();
     const [selectedDeal, setSelectedDeal] = useState(null);
+  const [showDueDiligence, setShowDueDiligence] = useState(false);
     const [filterStatus, setFilterStatus] = useState('new');
 
     // Fetch sourced deals
