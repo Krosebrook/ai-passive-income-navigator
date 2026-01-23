@@ -5,7 +5,7 @@ import AIInvestmentCoach from '@/components/ai/AIInvestmentCoach';
 import SourcedOpportunitiesPanel from '@/components/deals/SourcedOpportunitiesPanel';
 import AIGeneratedDeals from '@/components/deals/AIGeneratedDeals';
 import AIAssistantChat from '@/components/ai/AIAssistantChat';
-import AIInvestmentAdvisor from '@/components/ai/AIInvestmentAdvisor';
+import EnhancedAIAdvisor from '@/components/ai/EnhancedAIAdvisor';
 import NewDealsFeed from '@/components/deals/NewDealsFeed';
 import MarketDataFeed from '@/components/market/MarketDataFeed';
 import MarketAlertManager from '@/components/market/MarketAlertManager';
@@ -68,7 +68,7 @@ export default function AICoachPage() {
                     </TabsContent>
 
                     <TabsContent value="advisor" className="mt-6">
-                        <AIInvestmentAdvisor />
+                        <EnhancedAIAdvisor />
                     </TabsContent>
 
                     <TabsContent value="coach" className="mt-6">

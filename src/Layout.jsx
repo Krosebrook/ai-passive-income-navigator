@@ -14,6 +14,7 @@ import ScrollProgress from '@/components/ui/ScrollProgress';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 import SEOHead from '@/components/seo/SEOHead';
 import AdaptiveOnboardingFlow from '@/components/onboarding/AdaptiveOnboardingFlow';
+import GamifiedOnboarding from '@/components/onboarding/GamifiedOnboarding';
 import {
   Home, FolderHeart, Bookmark, TrendingUp, 
   LayoutDashboard, Users, Settings, Menu, X,
@@ -36,6 +37,7 @@ export default function Layout({ children, currentPageName }) {
   const [scrolled, setScrolled] = useState(false);
   const [user, setUser] = useState(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showGamifiedOnboarding, setShowGamifiedOnboarding] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -273,6 +275,12 @@ export default function Layout({ children, currentPageName }) {
       <AdaptiveOnboardingFlow 
         isOpen={showOnboarding} 
         onClose={() => setShowOnboarding(false)} 
+      />
+
+      {/* Gamified Onboarding */}
+      <GamifiedOnboarding 
+        isOpen={showGamifiedOnboarding} 
+        onClose={() => setShowGamifiedOnboarding(false)} 
       />
     </div>
     </GuidanceProvider>
