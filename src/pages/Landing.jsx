@@ -173,13 +173,12 @@ export default function Landing() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0f0618] text-white overflow-x-hidden">
+    <div className="min-h-screen text-white overflow-x-hidden">
       {/* 
         Mesh gradient background (GPU accelerated)
         No heavy images—pure CSS creates depth without perf cost
       */}
-      <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#1a0f2e] via-[#0f0618] to-[#0f0618]" />
+      <div className="fixed inset-0 -z-10 bg-page-landing">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#8b85f7] rounded-full blur-3xl opacity-5 will-change-transform" />
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#00b7eb] rounded-full blur-3xl opacity-5 will-change-transform" />
       </div>

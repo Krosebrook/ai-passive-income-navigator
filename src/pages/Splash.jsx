@@ -15,9 +15,9 @@ export default function SplashPage() {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen bg-[#0f0618] flex items-center justify-center overflow-hidden relative">
+    <div className="min-h-screen flex items-center justify-center overflow-hidden relative bg-page-landing">
       {/* Animated background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#1a0f2e] via-[#0f0618] to-[#2d1e50] opacity-50" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#1a0f2e] via-[#0a0410] to-[#0f0618] opacity-50" />
       
       {/* Subtle animated particles */}
       <div className="absolute inset-0">

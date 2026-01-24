@@ -73,10 +73,19 @@ export default function Layout({ children, currentPageName }) {
     fetchUser();
   }, [isPublicPage]);
 
+  // Page-specific background classes
+  const getPageBackgroundClass = () => {
+    if (currentPageName === 'Splash' || currentPageName === 'Landing') return 'bg-page-landing';
+    if (currentPageName === 'Home') return 'bg-page-home';
+    if (currentPageName === 'Portfolio' || currentPageName === 'AICoach') return 'bg-page-default';
+    if (currentPageName === 'DealPipeline' || currentPageName === 'Community') return 'bg-page-deep';
+    return 'bg-page-deeper';
+  };
+
   // For public pages, render without navigation/footer
   if (isPublicPage) {
     return (
-      <div className="min-h-screen bg-[#0f0618]">
+      <div className={`min-h-screen ${getPageBackgroundClass()}`}>
         <SEOHead />
         {children}
       </div>
@@ -85,7 +94,7 @@ export default function Layout({ children, currentPageName }) {
 
   return (
     <GuidanceProvider>
-    <div className="min-h-screen bg-[#0f0618]">
+    <div className={`min-h-screen ${getPageBackgroundClass()}`}>
       {/* SEO Optimization */}
       <SEOHead />
       

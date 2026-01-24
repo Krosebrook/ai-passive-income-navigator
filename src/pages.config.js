@@ -20,9 +20,9 @@ import Learn from './pages/Learn';
 import Portfolio from './pages/Portfolio';
 import PortfolioManagement from './pages/PortfolioManagement';
 import ProfileSettings from './pages/ProfileSettings';
+import Splash from './pages/Splash';
 import Trends from './pages/Trends';
 import UserPreferences from './pages/UserPreferences';
-import Splash from './pages/Splash';
 import __Layout from './Layout.jsx';
 
 
@@ -49,9 +49,9 @@ export const PAGES = {
     "Portfolio": Portfolio,
     "PortfolioManagement": PortfolioManagement,
     "ProfileSettings": ProfileSettings,
+    "Splash": Splash,
     "Trends": Trends,
     "UserPreferences": UserPreferences,
-    "Splash": Splash,
 }
 
 export const pagesConfig = {

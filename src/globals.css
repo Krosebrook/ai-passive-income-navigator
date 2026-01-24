@@ -25,9 +25,12 @@
   --error: 239 68 68; /* #ef4444 - Red */
   --info: 59 130 246; /* #3b82f6 - Blue */
 
-  /* Backgrounds */
-  --bg-dark: 15 6 24;
-  --bg-darker: 10 4 16;
+  /* Backgrounds - Progressive gradient levels */
+  --bg-darkest: 10 4 16;        /* Landing page - Pure dark */
+  --bg-dark: 15 6 24;            /* #0f0618 - Deep Navy Background */
+  --bg-medium: 25 15 40;         /* Transitional purple */
+  --bg-light: 35 25 55;          /* Light purple */
+  --bg-lighter: 45 35 70;        /* Lighter purple for deep pages */
   --surface: 30 20 50;
   --surface-light: 45 30 80;
 
@@ -254,6 +257,27 @@ textarea::placeholder {
   );
   background-size: 400% 400%;
   animation: gradientShift 15s ease infinite;
+}
+
+/* Page-specific background gradients */
+.bg-page-landing {
+  background: linear-gradient(to bottom, rgb(10, 4, 16), rgb(15, 6, 24));
+}
+
+.bg-page-home {
+  background: linear-gradient(to bottom, rgb(15, 6, 24), rgb(20, 12, 32));
+}
+
+.bg-page-default {
+  background: linear-gradient(to bottom, rgb(25, 15, 40), rgb(30, 20, 48));
+}
+
+.bg-page-deep {
+  background: linear-gradient(to bottom, rgb(35, 25, 55), rgb(40, 30, 65));
+}
+
+.bg-page-deeper {
+  background: linear-gradient(to bottom, rgb(45, 35, 70), rgb(50, 40, 80));
 }
 
 /* Floating Animation */
