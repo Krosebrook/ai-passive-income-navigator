@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Zap, TrendingUp, Shield, Users, Download, X, Menu, Check } from 'lucide-react';
+import { ArrowRight, Zap, TrendingUp, Shield, Users, Download, X, Menu, Check, LogIn, UserPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { createPageUrl } from '@/utils';
+import { base44 } from '@/api/base44Client';
 
 // Performance note: Landing page optimized for LCP, INP, CLS
 // - Hero image uses fetchPriority="high" and loading="eager"
@@ -15,6 +16,19 @@ export default function Landing() {
   const [installPrompt, setInstallPrompt] = useState(null);
   const [isInstalled, setIsInstalled] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const authed = await base44.auth.isAuthenticated();
+        setIsAuthenticated(authed);
+      } catch (error) {
+        setIsAuthenticated(false);
+      }
+    };
+    checkAuth();
+  }, []);
 
   // PWA install detection (deferred)
   useEffect(() => {
@@ -204,24 +218,36 @@ export default function Landing() {
 
           {/* CTA Buttons (Sticky for high intent) */}
           <div className="hidden md:flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-[#64748b] hover:text-[#8b85f7] hover:bg-white/5"
-              onClick={() => window.location.href = createPageUrl('Home')}
-              aria-label="Sign in to your account"
-            >
-              Sign In
-            </Button>
-            {!isInstalled && installPrompt && (
+            {isAuthenticated ? (
               <Button
-                onClick={handleInstall}
-                className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:from-[#9a95ff] hover:to-[#6b4fff] hover:shadow-lg hover:shadow-[#8b85f7]/30 active:scale-95 transition-all"
-                aria-label="Add FlashFusion to your home screen"
+                size="sm"
+                className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:from-[#9a95ff] hover:to-[#6b4fff]"
+                onClick={() => window.location.href = createPageUrl('Home')}
               >
-                <Download className="w-4 h-4 mr-2" />
-                Install App
+                Go to Dashboard
               </Button>
+            ) : (
+              <>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-[#64748b] hover:text-[#8b85f7] hover:bg-white/5"
+                  onClick={() => base44.auth.redirectToLogin(createPageUrl('Home'))}
+                  aria-label="Sign in to your account"
+                >
+                  <LogIn className="w-4 h-4 mr-2" />
+                  Log In
+                </Button>
+                <Button
+                  size="sm"
+                  className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:from-[#9a95ff] hover:to-[#6b4fff] hover:shadow-lg hover:shadow-[#8b85f7]/30 active:scale-95 transition-all"
+                  onClick={() => base44.auth.redirectToLogin(createPageUrl('Home'))}
+                  aria-label="Create your free account"
+                >
+                  <UserPlus className="w-4 h-4 mr-2" />
+                  Sign Up Free
+                </Button>
+              </>
             )}
           </div>
 
@@ -260,16 +286,41 @@ export default function Landing() {
                     {label}
                   </a>
                 ))}
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start text-[#64748b] hover:text-[#8b85f7] hover:bg-white/5"
-                  onClick={() => {
-                    window.location.href = createPageUrl('Home');
-                    setMobileMenuOpen(false);
-                  }}
-                >
-                  Sign In
-                </Button>
+                {isAuthenticated ? (
+                  <Button
+                    className="w-full bg-gradient-to-r from-[#8b85f7] to-[#583cf0]"
+                    onClick={() => {
+                      window.location.href = createPageUrl('Home');
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    Go to Dashboard
+                  </Button>
+                ) : (
+                  <>
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-start text-[#64748b] hover:text-[#8b85f7] hover:bg-white/5"
+                      onClick={() => {
+                        base44.auth.redirectToLogin(createPageUrl('Home'));
+                        setMobileMenuOpen(false);
+                      }}
+                    >
+                      <LogIn className="w-4 h-4 mr-2" />
+                      Log In
+                    </Button>
+                    <Button
+                      className="w-full bg-gradient-to-r from-[#8b85f7] to-[#583cf0]"
+                      onClick={() => {
+                        base44.auth.redirectToLogin(createPageUrl('Home'));
+                        setMobileMenuOpen(false);
+                      }}
+                    >
+                      <UserPlus className="w-4 h-4 mr-2" />
+                      Sign Up Free
+                    </Button>
+                  </>
+                )}
               </div>
             </motion.div>
           )}
@@ -318,41 +369,40 @@ export default function Landing() {
 
               {/* Primary CTA (High contrast, action-oriented) */}
               <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
-                <Button
-                  onClick={handleInstall || (() => window.location.href = createPageUrl('Home'))}
-                  className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-xl hover:shadow-[#8b85f7]/30 active:scale-95 transition-all"
-                  size="lg"
-                  aria-label={installPrompt ? 'Install FlashFusion on your device' : 'Start finding deals today'}
-                >
-                  {installPrompt && !isInstalled ? (
-                    <>
-                      <Download className="w-5 h-5 mr-2" />
-                      Install Free
-                    </>
-                  ) : isInstalled ? (
-                    <>
-                      <ArrowRight className="w-5 h-5 mr-2" />
-                      Open App
-                    </>
-                  ) : (
-                    <>
-                      <ArrowRight className="w-5 h-5 mr-2" />
-                      Get Started Free
-                    </>
-                  )}
-                </Button>
+                {isAuthenticated ? (
+                  <Button
+                    onClick={() => window.location.href = createPageUrl('Home')}
+                    className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-xl hover:shadow-[#8b85f7]/30 active:scale-95 transition-all"
+                    size="lg"
+                  >
+                    <ArrowRight className="w-5 h-5 mr-2" />
+                    Go to Dashboard
+                  </Button>
+                ) : (
+                  <>
+                    <Button
+                      onClick={() => base44.auth.redirectToLogin(createPageUrl('Home'))}
+                      className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-xl hover:shadow-[#8b85f7]/30 active:scale-95 transition-all"
+                      size="lg"
+                      aria-label="Create your free account"
+                    >
+                      <UserPlus className="w-5 h-5 mr-2" />
+                      Sign Up Free
+                    </Button>
 
-                {/* Secondary CTA (Lower contrast) */}
-                <Button
-                  variant="outline"
-                  className="border-white/10 text-[#a0aec0] hover:bg-white/5 hover:border-white/20 active:scale-95 transition-all"
-                  size="lg"
-                  onClick={() => document.getElementById('how')?.scrollIntoView({ behavior: 'smooth' })}
-                  aria-label="Watch how FlashFusion works"
-                >
-                  How It Works
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
+                    {/* Secondary CTA (Login) */}
+                    <Button
+                      variant="outline"
+                      className="border-white/10 text-[#a0aec0] hover:bg-white/5 hover:border-white/20 active:scale-95 transition-all"
+                      size="lg"
+                      onClick={() => base44.auth.redirectToLogin(createPageUrl('Home'))}
+                      aria-label="Sign in to existing account"
+                    >
+                      <LogIn className="w-4 h-4 mr-2" />
+                      Log In
+                    </Button>
+                  </>
+                )}
               </div>
 
               {/* Risk reversal copy (CRO) */}
@@ -689,38 +739,50 @@ export default function Landing() {
             Join 3,000+ passive income builders who've replaced manual research with AI-powered discovery.
             Start free, no card required.
           </p>
-          <Button
-            size="lg"
-            className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-xl hover:shadow-[#8b85f7]/30 active:scale-95 transition-all"
-            onClick={() => window.location.href = createPageUrl('Home')}
-            aria-label="Start your free FlashFusion account today"
-          >
-            Get Started Free
-            <ArrowRight className="w-5 h-5 ml-2" />
-          </Button>
+          {isAuthenticated ? (
+            <Button
+              size="lg"
+              className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-xl hover:shadow-[#8b85f7]/30 active:scale-95 transition-all"
+              onClick={() => window.location.href = createPageUrl('Home')}
+            >
+              Go to Dashboard
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Button>
+          ) : (
+            <Button
+              size="lg"
+              className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-xl hover:shadow-[#8b85f7]/30 active:scale-95 transition-all"
+              onClick={() => base44.auth.redirectToLogin(createPageUrl('Home'))}
+              aria-label="Start your free FlashFusion account today"
+            >
+              <UserPlus className="w-5 h-5 mr-2" />
+              Get Started Free
+            </Button>
+          )}
         </motion.article>
       </section>
 
       {/* Mobile Sticky CTA Bar (Thumb zone: fixed at bottom for easy thumb access on mobile) */}
       {/* Positioned above footer with z-40 to ensure visibility but below modals */}
       <div className="fixed bottom-0 left-0 right-0 md:hidden bg-gradient-to-t from-[#0f0618] via-[#0f0618]/95 to-[#0f0618]/0 backdrop-blur-xl border-t border-white/10 p-4 z-40">
-        <Button
-          onClick={handleInstall || (() => window.location.href = createPageUrl('Home'))}
-          className="w-full bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-xl hover:shadow-[#8b85f7]/30 active:scale-95 transition-all font-semibold"
-          aria-label="Get started with FlashFusion"
-        >
-          {installPrompt && !isInstalled ? (
-            <>
-              <Download className="w-4 h-4 mr-2" />
-              Install Free
-            </>
-          ) : (
-            <>
-              Get Started
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </>
-          )}
-        </Button>
+        {isAuthenticated ? (
+          <Button
+            onClick={() => window.location.href = createPageUrl('Home')}
+            className="w-full bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-xl hover:shadow-[#8b85f7]/30 active:scale-95 transition-all font-semibold"
+          >
+            Go to Dashboard
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </Button>
+        ) : (
+          <Button
+            onClick={() => base44.auth.redirectToLogin(createPageUrl('Home'))}
+            className="w-full bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-xl hover:shadow-[#8b85f7]/30 active:scale-95 transition-all font-semibold"
+            aria-label="Get started with FlashFusion"
+          >
+            <UserPlus className="w-4 h-4 mr-2" />
+            Get Started Free
+          </Button>
+        )}
       </div>
 
       {/* Footer */}
