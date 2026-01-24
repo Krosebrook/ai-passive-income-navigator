@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import PageHeader from '@/components/ui/PageHeader';
 import AIInvestmentCoach from '@/components/ai/AIInvestmentCoach';
@@ -9,19 +9,49 @@ import EnhancedAIAdvisor from '@/components/ai/EnhancedAIAdvisor';
 import NewDealsFeed from '@/components/deals/NewDealsFeed';
 import MarketDataFeed from '@/components/market/MarketDataFeed';
 import MarketAlertManager from '@/components/market/MarketAlertManager';
-import { Sparkles, TrendingUp, Zap, MessageSquare, Brain, Rss, BarChart3 } from 'lucide-react';
+import MarketIntelligencePanel from '@/components/ai/MarketIntelligencePanel';
+import DealPerformanceCorrelation from '@/components/ai/DealPerformanceCorrelation';
+import { Sparkles, TrendingUp, Zap, MessageSquare, Brain, Rss, BarChart3, Activity, LineChart } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
 
 export default function AICoachPage() {
+    const [userPreferences, setUserPreferences] = useState(null);
+
+    useEffect(() => {
+        const fetchPreferences = async () => {
+            try {
+                const user = await base44.auth.me();
+                const prefs = await base44.entities.UserPreferences.filter({ 
+                    created_by: user.email 
+                });
+                if (prefs.length > 0) {
+                    setUserPreferences(prefs[0]);
+                }
+            } catch (error) {
+                console.error('Failed to fetch preferences:', error);
+            }
+        };
+        fetchPreferences();
+    }, []);
+
     return (
         <div className="min-h-screen p-6">
             <div className="max-w-7xl mx-auto">
                 <PageHeader
                     title="AI-Powered Intelligence"
-                    subtitle="AI coach guidance and automated deal sourcing"
+                    subtitle="Real-time market data, sentiment analysis, and deal performance insights"
                 />
 
-                <Tabs defaultValue="new-deals" className="mt-8">
-                    <TabsList className="grid w-full grid-cols-7 max-w-6xl">
+                <Tabs defaultValue="market-intel" className="mt-8">
+                    <TabsList className="grid w-full grid-cols-9 max-w-full overflow-x-auto">
+                        <TabsTrigger value="market-intel" className="gap-2">
+                            <Activity className="w-4 h-4" />
+                            Market Intel
+                        </TabsTrigger>
+                        <TabsTrigger value="correlation" className="gap-2">
+                            <LineChart className="w-4 h-4" />
+                            Correlation
+                        </TabsTrigger>
                         <TabsTrigger value="new-deals" className="gap-2">
                             <Rss className="w-4 h-4" />
                             New Deals
@@ -51,6 +81,14 @@ export default function AICoachPage() {
                             Assistant
                         </TabsTrigger>
                     </TabsList>
+
+                    <TabsContent value="market-intel" className="mt-6">
+                        <MarketIntelligencePanel userPreferences={userPreferences} />
+                    </TabsContent>
+
+                    <TabsContent value="correlation" className="mt-6">
+                        <DealPerformanceCorrelation />
+                    </TabsContent>
 
                     <TabsContent value="new-deals" className="mt-6">
                         <NewDealsFeed />
