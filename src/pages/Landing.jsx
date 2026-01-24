@@ -67,126 +67,126 @@ export default function Landing() {
 
   // Feature cards optimized for CRO (Conversion Rate Optimization)
   const features = [
-    {
-      icon: Zap,
-      title: 'AI-Sourced Deals',
-      desc: 'Wake up to 5+ vetted passive income opportunities every morning—pre-analyzed and ranked by AI for your risk profile.',
-    },
-    {
-      icon: TrendingUp,
-      title: 'Scenario Modeling',
-      desc: 'Test "what-if" scenarios in seconds. See projected returns, tax impact, and exit strategies before you commit.',
-    },
-    {
-      icon: Shield,
-      title: 'Fort Knox Data Security',
-      desc: 'Military-grade encryption. Automated daily backups. You own your data. Export anytime, no lock-in.',
-    },
-    {
-      icon: Users,
-      title: 'Founder Network',
-      desc: 'Co-invest with vetted founders. Share deal flow. Learn from deal breakdowns and tax strategies.',
-    },
-  ];
+  {
+    icon: Zap,
+    title: 'AI-Sourced Deals',
+    desc: 'Wake up to 5+ vetted passive income opportunities every morning—pre-analyzed and ranked by AI for your risk profile.'
+  },
+  {
+    icon: TrendingUp,
+    title: 'Scenario Modeling',
+    desc: 'Test "what-if" scenarios in seconds. See projected returns, tax impact, and exit strategies before you commit.'
+  },
+  {
+    icon: Shield,
+    title: 'Fort Knox Data Security',
+    desc: 'Military-grade encryption. Automated daily backups. You own your data. Export anytime, no lock-in.'
+  },
+  {
+    icon: Users,
+    title: 'Founder Network',
+    desc: 'Co-invest with vetted founders. Share deal flow. Learn from deal breakdowns and tax strategies.'
+  }];
+
 
   // Pricing tiers optimized for CRO (psychological triggers, anchoring)
   const pricingTiers = [
-    {
-      name: 'Free',
-      price: '$0',
-      period: 'forever',
-      desc: 'Perfect to test the waters',
-      features: [
-        { text: '1 premium deal per day', included: true },
-        { text: 'Basic portfolio dashboard', included: true },
-        { text: 'Read-only community', included: true },
-        { text: 'Email deal alerts', included: true },
-        { text: 'Scenario modeling', included: false },
-        { text: 'Data exports', included: false },
-      ],
-      cta: 'Get Started Free',
-      highlight: false,
-      riskReversal: 'No card required',
-    },
-    {
-      name: 'Pro',
-      price: '$9.99',
-      period: '/month',
-      desc: 'For active builders (most popular)',
-      features: [
-        { text: '20 premium deals per month', included: true },
-        { text: 'Advanced scenario modeling', included: true },
-        { text: 'CSV/JSON data exports', included: true },
-        { text: 'Community posting & discussions', included: true },
-        { text: 'Performance analytics dashboard', included: true },
-        { text: 'Deal comparison side-by-side', included: true },
-      ],
-      cta: 'Start Free Trial',
-      highlight: true,
-      riskReversal: '14-day free trial, cancel anytime',
-    },
-    {
-      name: 'Enterprise',
-      price: 'Custom',
-      period: 'pricing',
-      desc: 'For teams, offices, institutions',
-      features: [
-        { text: 'Unlimited deal analysis', included: true },
-        { text: 'Team workspaces & SSO', included: true },
-        { text: 'Custom ML scoring models', included: true },
-        { text: 'Audit-ready compliance exports', included: true },
-        { text: '24/7 dedicated support', included: true },
-        { text: 'REST API access', included: true },
-      ],
-      cta: 'Schedule Demo',
-      highlight: false,
-      riskReversal: 'Volume discounts available',
-    },
-  ];
+  {
+    name: 'Free',
+    price: '$0',
+    period: 'forever',
+    desc: 'Perfect to test the waters',
+    features: [
+    { text: '1 premium deal per day', included: true },
+    { text: 'Basic portfolio dashboard', included: true },
+    { text: 'Read-only community', included: true },
+    { text: 'Email deal alerts', included: true },
+    { text: 'Scenario modeling', included: false },
+    { text: 'Data exports', included: false }],
+
+    cta: 'Get Started Free',
+    highlight: false,
+    riskReversal: 'No card required'
+  },
+  {
+    name: 'Pro',
+    price: '$9.99',
+    period: '/month',
+    desc: 'For active builders (most popular)',
+    features: [
+    { text: '20 premium deals per month', included: true },
+    { text: 'Advanced scenario modeling', included: true },
+    { text: 'CSV/JSON data exports', included: true },
+    { text: 'Community posting & discussions', included: true },
+    { text: 'Performance analytics dashboard', included: true },
+    { text: 'Deal comparison side-by-side', included: true }],
+
+    cta: 'Start Free Trial',
+    highlight: true,
+    riskReversal: '14-day free trial, cancel anytime'
+  },
+  {
+    name: 'Enterprise',
+    price: 'Custom',
+    period: 'pricing',
+    desc: 'For teams, offices, institutions',
+    features: [
+    { text: 'Unlimited deal analysis', included: true },
+    { text: 'Team workspaces & SSO', included: true },
+    { text: 'Custom ML scoring models', included: true },
+    { text: 'Audit-ready compliance exports', included: true },
+    { text: '24/7 dedicated support', included: true },
+    { text: 'REST API access', included: true }],
+
+    cta: 'Schedule Demo',
+    highlight: false,
+    riskReversal: 'Volume discounts available'
+  }];
+
 
   // FAQ with CRO-optimized answers (addresses common objections)
   const faqs = [
-    {
-      q: 'How long does it take to find my first deal?',
-      a: 'Most users find their first deal within 2–5 minutes. Log in, set your investment criteria (risk, size, geography), and AI instantly surfaces matches from 50+ global platforms. Free users get 1 curated deal daily via email.',
-    },
-    {
-      q: 'Will I actually make money with this?',
-      a: 'FlashFusion surfaces opportunities and validates them. Execution is on you. But by cutting research time from 40 hours to 2 hours per deal, you can evaluate 10x more options and find the winner faster. Many users report 50–300% ROI on their first deal within 12–24 months.',
-    },
-    {
-      q: 'Is my data secure? Can you sell my portfolio to others?',
-      a: 'No. Data is end-to-end encrypted (AES-256). We never sell, share, or even access your portfolio without your explicit consent. Compliance: SOC 2 Type II, GDPR-ready. See our full Privacy Policy.',
-    },
-    {
-      q: 'What if I want to cancel?',
-      a: 'Cancel anytime in Settings → Billing. Your subscription continues through the end of your billing cycle. No early termination fees, no surprise charges.',
-    },
-    {
-      q: 'Do you offer annual pricing?',
-      a: 'Yes. Pro annual ($99/yr) saves you 20% vs monthly. Enterprise has custom annual plans with volume discounts.',
-    },
-    {
-      q: 'Which countries/geographies do you support?',
-      a: 'AI sourcing is global (100+ countries). Market data strongest in US, UK, EU, Canada, Australia. If your target is outside these regions, email support—we may have custom integrations.',
-    },
-  ];
+  {
+    q: 'How long does it take to find my first deal?',
+    a: 'Most users find their first deal within 2–5 minutes. Log in, set your investment criteria (risk, size, geography), and AI instantly surfaces matches from 50+ global platforms. Free users get 1 curated deal daily via email.'
+  },
+  {
+    q: 'Will I actually make money with this?',
+    a: 'FlashFusion surfaces opportunities and validates them. Execution is on you. But by cutting research time from 40 hours to 2 hours per deal, you can evaluate 10x more options and find the winner faster. Many users report 50–300% ROI on their first deal within 12–24 months.'
+  },
+  {
+    q: 'Is my data secure? Can you sell my portfolio to others?',
+    a: 'No. Data is end-to-end encrypted (AES-256). We never sell, share, or even access your portfolio without your explicit consent. Compliance: SOC 2 Type II, GDPR-ready. See our full Privacy Policy.'
+  },
+  {
+    q: 'What if I want to cancel?',
+    a: 'Cancel anytime in Settings → Billing. Your subscription continues through the end of your billing cycle. No early termination fees, no surprise charges.'
+  },
+  {
+    q: 'Do you offer annual pricing?',
+    a: 'Yes. Pro annual ($99/yr) saves you 20% vs monthly. Enterprise has custom annual plans with volume discounts.'
+  },
+  {
+    q: 'Which countries/geographies do you support?',
+    a: 'AI sourcing is global (100+ countries). Market data strongest in US, UK, EU, Canada, Australia. If your target is outside these regions, email support—we may have custom integrations.'
+  }];
+
 
   return (
     <div className="min-h-screen text-white overflow-x-hidden">
       {/* 
-        Mesh gradient background (GPU accelerated)
-        No heavy images—pure CSS creates depth without perf cost
-      */}
+         Mesh gradient background (GPU accelerated)
+         No heavy images—pure CSS creates depth without perf cost
+        */}
       <div className="fixed inset-0 -z-10 bg-page-landing">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#8b85f7] rounded-full blur-3xl opacity-5 will-change-transform" />
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#00b7eb] rounded-full blur-3xl opacity-5 will-change-transform" />
       </div>
 
       {/* 
-        Navigation: Glassmorphism (backdrop-blur), minimal links for fast scanning
-        Sticky on scroll for persistent CTA access
-      */}
+         Navigation: Glassmorphism (backdrop-blur), minimal links for fast scanning
+         Sticky on scroll for persistent CTA access
+        */}
       <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-white/[0.02] backdrop-blur-2xl">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           {/* Logo + Brand */}
@@ -200,54 +200,54 @@ export default function Landing() {
           {/* Desktop Nav (F-Pattern: top-left to center-right) */}
           <nav className="hidden md:flex items-center gap-1">
             {[
-              { label: 'How it Works', href: '#how' },
-              { label: 'Pricing', href: '#pricing' },
-              { label: 'FAQ', href: '#faq' },
-            ].map(({ label, href }) => (
-              <a
-                key={href}
-                href={href}
-                className="px-3 py-2 text-sm text-[#64748b] hover:text-[#8b85f7] transition-colors"
-                aria-label={label}
-              >
+            { label: 'How it Works', href: '#how' },
+            { label: 'Pricing', href: '#pricing' },
+            { label: 'FAQ', href: '#faq' }].
+            map(({ label, href }) =>
+            <a
+              key={href}
+              href={href}
+              className="px-3 py-2 text-sm text-[#64748b] hover:text-[#8b85f7] transition-colors"
+              aria-label={label}>
+
                 {label}
               </a>
-            ))}
+            )}
           </nav>
 
           {/* CTA Buttons (Sticky for high intent) */}
           <div className="hidden md:flex items-center gap-2">
-            {isAuthenticated ? (
-              <Button
-                size="sm"
-                className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:from-[#9a95ff] hover:to-[#6b4fff]"
-                onClick={() => window.location.href = createPageUrl('Home')}
-              >
+            {isAuthenticated ?
+            <Button
+              size="sm"
+              className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:from-[#9a95ff] hover:to-[#6b4fff]"
+              onClick={() => window.location.href = createPageUrl('Home')}>
+
                 Go to Dashboard
-              </Button>
-            ) : (
-              <>
+              </Button> :
+
+            <>
                 <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-[#64748b] hover:text-[#8b85f7] hover:bg-white/5"
-                  onClick={() => base44.auth.redirectToLogin(createPageUrl('Home'))}
-                  aria-label="Sign in to your account"
-                >
+                variant="ghost"
+                size="sm"
+                className="text-[#64748b] hover:text-[#8b85f7] hover:bg-white/5"
+                onClick={() => base44.auth.redirectToLogin(createPageUrl('Home'))}
+                aria-label="Sign in to your account">
+
                   <LogIn className="w-4 h-4 mr-2" />
                   Log In
                 </Button>
                 <Button
-                  size="sm"
-                  className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:from-[#9a95ff] hover:to-[#6b4fff] hover:shadow-lg hover:shadow-[#8b85f7]/30 active:scale-95 transition-all"
-                  onClick={() => base44.auth.redirectToLogin(createPageUrl('Home'))}
-                  aria-label="Create your free account"
-                >
+                size="sm"
+                className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:from-[#9a95ff] hover:to-[#6b4fff] hover:shadow-lg hover:shadow-[#8b85f7]/30 active:scale-95 transition-all"
+                onClick={() => base44.auth.redirectToLogin(createPageUrl('Home'))}
+                aria-label="Create your free account">
+
                   <UserPlus className="w-4 h-4 mr-2" />
                   Sign Up Free
                 </Button>
               </>
-            )}
+            }
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -255,74 +255,74 @@ export default function Landing() {
             className="md:hidden p-2 hover:bg-white/5 rounded-lg transition-colors"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={mobileMenuOpen}
-          >
+            aria-expanded={mobileMenuOpen}>
+
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </nav>
 
         {/* Mobile Menu (Collapse animation) */}
         <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="md:hidden border-t border-white/5 bg-white/[0.02] backdrop-blur-xl"
-            >
+          {mobileMenuOpen &&
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="md:hidden border-t border-white/5 bg-white/[0.02] backdrop-blur-xl">
+
               <div className="px-4 py-3 space-y-2">
                 {[
-                  { label: 'How it Works', href: '#how' },
-                  { label: 'Pricing', href: '#pricing' },
-                  { label: 'FAQ', href: '#faq' },
-                ].map(({ label, href }) => (
-                  <a
-                    key={href}
-                    href={href}
-                    className="block px-3 py-2 text-sm text-[#64748b] hover:text-[#8b85f7] hover:bg-white/5 rounded-lg transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
+              { label: 'How it Works', href: '#how' },
+              { label: 'Pricing', href: '#pricing' },
+              { label: 'FAQ', href: '#faq' }].
+              map(({ label, href }) =>
+              <a
+                key={href}
+                href={href}
+                className="block px-3 py-2 text-sm text-[#64748b] hover:text-[#8b85f7] hover:bg-white/5 rounded-lg transition-colors"
+                onClick={() => setMobileMenuOpen(false)}>
+
                     {label}
                   </a>
-                ))}
-                {isAuthenticated ? (
-                  <Button
-                    className="w-full bg-gradient-to-r from-[#8b85f7] to-[#583cf0]"
-                    onClick={() => {
-                      window.location.href = createPageUrl('Home');
-                      setMobileMenuOpen(false);
-                    }}
-                  >
+              )}
+                {isAuthenticated ?
+              <Button
+                className="w-full bg-gradient-to-r from-[#8b85f7] to-[#583cf0]"
+                onClick={() => {
+                  window.location.href = createPageUrl('Home');
+                  setMobileMenuOpen(false);
+                }}>
+
                     Go to Dashboard
-                  </Button>
-                ) : (
-                  <>
+                  </Button> :
+
+              <>
                     <Button
-                      variant="ghost"
-                      className="w-full justify-start text-[#64748b] hover:text-[#8b85f7] hover:bg-white/5"
-                      onClick={() => {
-                        base44.auth.redirectToLogin(createPageUrl('Home'));
-                        setMobileMenuOpen(false);
-                      }}
-                    >
+                  variant="ghost"
+                  className="w-full justify-start text-[#64748b] hover:text-[#8b85f7] hover:bg-white/5"
+                  onClick={() => {
+                    base44.auth.redirectToLogin(createPageUrl('Home'));
+                    setMobileMenuOpen(false);
+                  }}>
+
                       <LogIn className="w-4 h-4 mr-2" />
                       Log In
                     </Button>
                     <Button
-                      className="w-full bg-gradient-to-r from-[#8b85f7] to-[#583cf0]"
-                      onClick={() => {
-                        base44.auth.redirectToLogin(createPageUrl('Home'));
-                        setMobileMenuOpen(false);
-                      }}
-                    >
+                  className="w-full bg-gradient-to-r from-[#8b85f7] to-[#583cf0]"
+                  onClick={() => {
+                    base44.auth.redirectToLogin(createPageUrl('Home'));
+                    setMobileMenuOpen(false);
+                  }}>
+
                       <UserPlus className="w-4 h-4 mr-2" />
                       Sign Up Free
                     </Button>
                   </>
-                )}
+              }
               </div>
             </motion.div>
-          )}
+          }
         </AnimatePresence>
       </header>
 
@@ -333,15 +333,15 @@ export default function Landing() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center lg:text-left lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center"
-          >
+            className="text-center lg:text-left lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center">
+
             {/* Left: H1 + Subheading + CTAs (Thumb zone friendly on mobile) */}
             <div>
               {/* H1: Semantic, unique, keyword-rich */}
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                <span className="text-gradient">
-                  Find passive income deals <br className="hidden sm:block" />
-                  in 2 minutes, not 2 months
+                <span className="text-slate-900">Find passive income deals
+in 2 minutes, not 2 months
+
                 </span>
               </h1>
 
@@ -368,40 +368,40 @@ export default function Landing() {
 
               {/* Primary CTA (High contrast, action-oriented) */}
               <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
-                {isAuthenticated ? (
-                  <Button
-                    onClick={() => window.location.href = createPageUrl('Home')}
-                    className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-xl hover:shadow-[#8b85f7]/30 active:scale-95 transition-all"
-                    size="lg"
-                  >
+                {isAuthenticated ?
+                <Button
+                  onClick={() => window.location.href = createPageUrl('Home')}
+                  className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-xl hover:shadow-[#8b85f7]/30 active:scale-95 transition-all"
+                  size="lg">
+
                     <ArrowRight className="w-5 h-5 mr-2" />
                     Go to Dashboard
-                  </Button>
-                ) : (
-                  <>
+                  </Button> :
+
+                <>
                     <Button
-                      onClick={() => base44.auth.redirectToLogin(createPageUrl('Home'))}
-                      className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-xl hover:shadow-[#8b85f7]/30 active:scale-95 transition-all"
-                      size="lg"
-                      aria-label="Create your free account"
-                    >
+                    onClick={() => base44.auth.redirectToLogin(createPageUrl('Home'))}
+                    className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-xl hover:shadow-[#8b85f7]/30 active:scale-95 transition-all"
+                    size="lg"
+                    aria-label="Create your free account">
+
                       <UserPlus className="w-5 h-5 mr-2" />
                       Sign Up Free
                     </Button>
 
                     {/* Secondary CTA (Login) */}
                     <Button
-                      variant="outline"
-                      className="border-white/10 text-[#a0aec0] hover:bg-white/5 hover:border-white/20 active:scale-95 transition-all"
-                      size="lg"
-                      onClick={() => base44.auth.redirectToLogin(createPageUrl('Home'))}
-                      aria-label="Sign in to existing account"
-                    >
+                    variant="outline"
+                    className="border-white/10 text-[#a0aec0] hover:bg-white/5 hover:border-white/20 active:scale-95 transition-all"
+                    size="lg"
+                    onClick={() => base44.auth.redirectToLogin(createPageUrl('Home'))}
+                    aria-label="Sign in to existing account">
+
                       <LogIn className="w-4 h-4 mr-2" />
                       Log In
                     </Button>
                   </>
-                )}
+                }
               </div>
 
               {/* Risk reversal copy (CRO) */}
@@ -420,21 +420,21 @@ export default function Landing() {
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="grid grid-cols-2 gap-4 w-3/4">
                     {[
-                      { icon: TrendingUp, color: '#00b7eb' },
-                      { icon: Zap, color: '#8b85f7' },
-                      { icon: Shield, color: '#ff8e42' },
-                      { icon: Users, color: '#10b981' },
-                    ].map(({ icon: Icon, color }, i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: i * 0.1 }}
-                        className="aspect-square rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 hover:border-white/20 transition-colors cursor-pointer"
-                      >
+                    { icon: TrendingUp, color: '#00b7eb' },
+                    { icon: Zap, color: '#8b85f7' },
+                    { icon: Shield, color: '#ff8e42' },
+                    { icon: Users, color: '#10b981' }].
+                    map(({ icon: Icon, color }, i) =>
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: i * 0.1 }}
+                      className="aspect-square rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 hover:border-white/20 transition-colors cursor-pointer">
+
                         <Icon className="w-8 h-8" style={{ color }} />
                       </motion.div>
-                    ))}
+                    )}
                   </div>
                 </div>
               </div>
@@ -454,32 +454,32 @@ export default function Landing() {
           {/* Step-by-step cards (F-pattern reading) */}
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              {
-                num: '1',
-                title: 'Set Your Criteria',
-                desc: 'Risk tolerance, investment size, industry. 2 minutes.',
-                icon: Zap,
-              },
-              {
-                num: '2',
-                title: 'AI Finds Matches',
-                desc: 'Scans 50+ platforms daily. Scores by ROI. 1 minute.',
-                icon: TrendingUp,
-              },
-              {
-                num: '3',
-                title: 'Validate & Decide',
-                desc: 'Full analysis, scenario modeling, due diligence tools. You decide.',
-                icon: Check,
-              },
-            ].map(({ num, title, desc, icon: Icon }, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.15 }}
-                className="group relative"
-              >
+            {
+              num: '1',
+              title: 'Set Your Criteria',
+              desc: 'Risk tolerance, investment size, industry. 2 minutes.',
+              icon: Zap
+            },
+            {
+              num: '2',
+              title: 'AI Finds Matches',
+              desc: 'Scans 50+ platforms daily. Scores by ROI. 1 minute.',
+              icon: TrendingUp
+            },
+            {
+              num: '3',
+              title: 'Validate & Decide',
+              desc: 'Full analysis, scenario modeling, due diligence tools. You decide.',
+              icon: Check
+            }].
+            map(({ num, title, desc, icon: Icon }, i) =>
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.15 }}
+              className="group relative">
+
                 {/* Card: Glassmorphism (white-opacity layer) */}
                 <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/[0.02] rounded-2xl border border-white/10 group-hover:border-white/20 transition-all" />
                 
@@ -497,7 +497,7 @@ export default function Landing() {
                   <p className="text-[#a0aec0]">{desc}</p>
                 </div>
               </motion.div>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -519,8 +519,8 @@ export default function Landing() {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.05 }}
-                  className="group relative"
-                >
+                  className="group relative">
+
                   {/* Background: Glassmorphism */}
                   <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/[0.02] rounded-xl border border-white/10 group-hover:border-white/20 group-hover:bg-gradient-to-br group-hover:from-white/8 group-hover:to-white/[0.03] transition-all" />
 
@@ -534,8 +534,8 @@ export default function Landing() {
                     {/* Description: Short, benefit-focused */}
                     <p className="text-xs text-[#a0aec0] leading-relaxed">{f.desc}</p>
                   </div>
-                </motion.article>
-              );
+                </motion.article>);
+
             })}
           </div>
         </div>
@@ -554,33 +554,33 @@ export default function Landing() {
 
           {/* Pricing cards grid (3-column on desktop, stacked on mobile) */}
           <div className="grid md:grid-cols-3 gap-8">
-            {pricingTiers.map((tier, i) => (
-              <motion.article
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className={`group relative rounded-2xl overflow-hidden transition-all ${
-                  tier.highlight ? 'md:scale-105 md:-mt-4' : ''
-                }`}
-              >
+            {pricingTiers.map((tier, i) =>
+            <motion.article
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+              className={`group relative rounded-2xl overflow-hidden transition-all ${
+              tier.highlight ? 'md:scale-105 md:-mt-4' : ''}`
+              }>
+
                 {/* Card background: Glassmorphism */}
                 <div
-                  className={`absolute inset-0 border transition-all ${
-                    tier.highlight
-                      ? 'bg-gradient-to-br from-white/8 to-white/2 border-[#8b85f7]/40 group-hover:border-[#8b85f7]/60'
-                      : 'bg-gradient-to-br from-white/4 to-white/[0.01] border-white/10 group-hover:border-white/20'
-                  }`}
-                />
+                className={`absolute inset-0 border transition-all ${
+                tier.highlight ?
+                'bg-gradient-to-br from-white/8 to-white/2 border-[#8b85f7]/40 group-hover:border-[#8b85f7]/60' :
+                'bg-gradient-to-br from-white/4 to-white/[0.01] border-white/10 group-hover:border-white/20'}`
+                } />
+
 
                 {/* Highlight badge */}
-                {tier.highlight && (
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                {tier.highlight &&
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
                     <span className="inline-block px-4 py-1 rounded-full bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-xs font-bold text-white">
                       Most Popular
                     </span>
                   </div>
-                )}
+              }
 
                 {/* Card content */}
                 <div className="relative p-8 sm:p-10 flex flex-col h-full">
@@ -596,53 +596,53 @@ export default function Landing() {
                       <span className="text-4xl sm:text-5xl font-bold">{tier.price}</span>
                       {tier.period !== 'pricing' && <span className="text-[#a0aec0]">{tier.period}</span>}
                     </div>
-                    {tier.riskReversal && (
-                      <p className="text-xs text-[#64748b] mt-3">{tier.riskReversal}</p>
-                    )}
+                    {tier.riskReversal &&
+                  <p className="text-xs text-[#64748b] mt-3">{tier.riskReversal}</p>
+                  }
                   </div>
 
                   {/* CTA Button (high contrast, scale-95 on active) */}
                   <Button
-                    className={`w-full mb-10 active:scale-95 transition-all ${
-                      tier.highlight
-                        ? 'bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-xl hover:shadow-[#8b85f7]/30'
-                        : 'border border-white/20 text-[#a0aec0] hover:bg-white/5 hover:border-white/40'
-                    }`}
-                    onClick={() => window.location.href = createPageUrl('Home')}
-                    aria-label={`Choose ${tier.name} plan`}
-                  >
+                  className={`w-full mb-10 active:scale-95 transition-all ${
+                  tier.highlight ?
+                  'bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-xl hover:shadow-[#8b85f7]/30' :
+                  'border border-white/20 text-[#a0aec0] hover:bg-white/5 hover:border-white/40'}`
+                  }
+                  onClick={() => window.location.href = createPageUrl('Home')}
+                  aria-label={`Choose ${tier.name} plan`}>
+
                     {tier.cta}
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
 
                   {/* Feature list (semantic ul/li) */}
                   <ul className="space-y-3 text-sm flex-1">
-                    {tier.features.map((feature, j) => (
-                      <li key={j} className="flex items-start gap-3">
+                    {tier.features.map((feature, j) =>
+                  <li key={j} className="flex items-start gap-3">
                         <span
-                          className={`mt-0.5 flex-shrink-0 w-5 h-5 flex items-center justify-center rounded-full ${
-                            feature.included
-                              ? 'bg-[#10b981]/20 text-[#10b981]'
-                              : 'bg-white/5 text-[#64748b]'
-                          }`}
-                        >
-                          {feature.included ? (
-                            <Check className="w-3 h-3" />
-                          ) : (
-                            <span className="text-xs">×</span>
-                          )}
+                      className={`mt-0.5 flex-shrink-0 w-5 h-5 flex items-center justify-center rounded-full ${
+                      feature.included ?
+                      'bg-[#10b981]/20 text-[#10b981]' :
+                      'bg-white/5 text-[#64748b]'}`
+                      }>
+
+                          {feature.included ?
+                      <Check className="w-3 h-3" /> :
+
+                      <span className="text-xs">×</span>
+                      }
                         </span>
                         <span
-                          className={feature.included ? 'text-[#e2e8f0]' : 'text-[#64748b]'}
-                        >
+                      className={feature.included ? 'text-[#e2e8f0]' : 'text-[#64748b]'}>
+
                           {feature.text}
                         </span>
                       </li>
-                    ))}
+                  )}
                   </ul>
                 </div>
               </motion.article>
-            ))}
+            )}
           </div>
 
           {/* Pricing footer: Trust signal + CRO */}
@@ -674,18 +674,18 @@ export default function Landing() {
 
           {/* Accordion (semantic details/summary) */}
           <div className="space-y-4">
-            {faqs.map((faq, i) => (
-              <motion.article
-                key={i}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.05 }}
-              >
+            {faqs.map((faq, i) =>
+            <motion.article
+              key={i}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.05 }}>
+
                 <details
-                  className="group bg-gradient-to-br from-white/4 to-white/[0.01] border border-white/10 rounded-xl overflow-hidden hover:border-white/20 transition-all cursor-pointer"
-                  open={activeTab === i}
-                  onClick={() => setActiveTab(activeTab === i ? -1 : i)}
-                >
+                className="group bg-gradient-to-br from-white/4 to-white/[0.01] border border-white/10 rounded-xl overflow-hidden hover:border-white/20 transition-all cursor-pointer"
+                open={activeTab === i}
+                onClick={() => setActiveTab(activeTab === i ? -1 : i)}>
+
                   {/* Summary: Question (expandable) */}
                   <summary className="p-6 sm:p-7 flex items-center justify-between select-none hover:bg-white/5 transition-colors">
                     <h3 className="font-semibold text-sm sm:text-base leading-relaxed pr-4">
@@ -694,34 +694,34 @@ export default function Landing() {
                     {/* Chevron icon (rotates on expand) */}
                     <span className="flex-shrink-0 ml-4 text-[#8b85f7] group-open:rotate-180 transition-transform will-change-transform">
                       <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                      >
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true">
+
                         <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                        />
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+
                       </svg>
                     </span>
                   </summary>
 
                   {/* Answer (hidden until expanded) */}
                   <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="px-6 sm:px-7 pb-6 pt-2 border-t border-white/5 text-sm text-[#a0aec0] leading-relaxed"
-                  >
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="px-6 sm:px-7 pb-6 pt-2 border-t border-white/5 text-sm text-[#a0aec0] leading-relaxed">
+
                     {faq.a}
                   </motion.div>
                 </details>
               </motion.article>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -731,57 +731,57 @@ export default function Landing() {
         <motion.article
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          className="max-w-4xl mx-auto text-center"
-        >
+          className="max-w-4xl mx-auto text-center">
+
           <h2 className="text-3xl sm:text-4xl font-bold mb-6">Ready to unlock 10x more opportunities?</h2>
           <p className="text-lg text-[#a0aec0] mb-10 leading-relaxed">
             Join 3,000+ passive income builders who've replaced manual research with AI-powered discovery.
             Start free, no card required.
           </p>
-          {isAuthenticated ? (
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-xl hover:shadow-[#8b85f7]/30 active:scale-95 transition-all"
-              onClick={() => window.location.href = createPageUrl('Home')}
-            >
+          {isAuthenticated ?
+          <Button
+            size="lg"
+            className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-xl hover:shadow-[#8b85f7]/30 active:scale-95 transition-all"
+            onClick={() => window.location.href = createPageUrl('Home')}>
+
               Go to Dashboard
               <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
-          ) : (
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-xl hover:shadow-[#8b85f7]/30 active:scale-95 transition-all"
-              onClick={() => base44.auth.redirectToLogin(createPageUrl('Home'))}
-              aria-label="Start your free FlashFusion account today"
-            >
+            </Button> :
+
+          <Button
+            size="lg"
+            className="bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-xl hover:shadow-[#8b85f7]/30 active:scale-95 transition-all"
+            onClick={() => base44.auth.redirectToLogin(createPageUrl('Home'))}
+            aria-label="Start your free FlashFusion account today">
+
               <UserPlus className="w-5 h-5 mr-2" />
               Get Started Free
             </Button>
-          )}
+          }
         </motion.article>
       </section>
 
       {/* Mobile Sticky CTA Bar (Thumb zone: fixed at bottom for easy thumb access on mobile) */}
       {/* Positioned above footer with z-40 to ensure visibility but below modals */}
       <div className="fixed bottom-0 left-0 right-0 md:hidden bg-gradient-to-t from-[#0f0618] via-[#0f0618]/95 to-[#0f0618]/0 backdrop-blur-xl border-t border-white/10 p-4 z-40">
-        {isAuthenticated ? (
-          <Button
-            onClick={() => window.location.href = createPageUrl('Home')}
-            className="w-full bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-xl hover:shadow-[#8b85f7]/30 active:scale-95 transition-all font-semibold"
-          >
+        {isAuthenticated ?
+        <Button
+          onClick={() => window.location.href = createPageUrl('Home')}
+          className="w-full bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-xl hover:shadow-[#8b85f7]/30 active:scale-95 transition-all font-semibold">
+
             Go to Dashboard
             <ArrowRight className="w-4 h-4 ml-2" />
-          </Button>
-        ) : (
-          <Button
-            onClick={() => base44.auth.redirectToLogin(createPageUrl('Home'))}
-            className="w-full bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-xl hover:shadow-[#8b85f7]/30 active:scale-95 transition-all font-semibold"
-            aria-label="Get started with FlashFusion"
-          >
+          </Button> :
+
+        <Button
+          onClick={() => base44.auth.redirectToLogin(createPageUrl('Home'))}
+          className="w-full bg-gradient-to-r from-[#8b85f7] to-[#583cf0] text-white hover:shadow-xl hover:shadow-[#8b85f7]/30 active:scale-95 transition-all font-semibold"
+          aria-label="Get started with FlashFusion">
+
             <UserPlus className="w-4 h-4 mr-2" />
             Get Started Free
           </Button>
-        )}
+        }
       </div>
 
       {/* Footer */}
@@ -882,6 +882,6 @@ export default function Landing() {
           </div>
         </div>
       </footer>
-    </div>
-  );
+    </div>);
+
 }
