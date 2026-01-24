@@ -32,12 +32,15 @@ const NAV_ITEMS = [
 
 const ADMIN_NAV_ITEM = { name: 'Admin', icon: Shield, page: 'Admin' };
 
+const PUBLIC_PAGES = ['Splash', 'Landing'];
+
 export default function Layout({ children, currentPageName }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [user, setUser] = useState(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showGamifiedOnboarding, setShowGamifiedOnboarding] = useState(false);
+  const isPublicPage = PUBLIC_PAGES.includes(currentPageName);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,6 +51,9 @@ export default function Layout({ children, currentPageName }) {
   }, []);
 
   useEffect(() => {
+    // Skip auth check for public pages
+    if (isPublicPage) return;
+
     const fetchUser = async () => {
       try {
         const userData = await base44.auth.me();
@@ -65,7 +71,17 @@ export default function Layout({ children, currentPageName }) {
       }
     };
     fetchUser();
-  }, []);
+  }, [isPublicPage]);
+
+  // For public pages, render without navigation/footer
+  if (isPublicPage) {
+    return (
+      <div className="min-h-screen bg-[#0f0618]">
+        <SEOHead />
+        {children}
+      </div>
+    );
+  }
 
   return (
     <GuidanceProvider>

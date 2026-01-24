@@ -22,6 +22,7 @@ import PortfolioManagement from './pages/PortfolioManagement';
 import ProfileSettings from './pages/ProfileSettings';
 import Trends from './pages/Trends';
 import UserPreferences from './pages/UserPreferences';
+import Splash from './pages/Splash';
 import __Layout from './Layout.jsx';
 
 
@@ -50,6 +51,7 @@ export const PAGES = {
     "ProfileSettings": ProfileSettings,
     "Trends": Trends,
     "UserPreferences": UserPreferences,
+    "Splash": Splash,
 }
 
 export const pagesConfig = {
