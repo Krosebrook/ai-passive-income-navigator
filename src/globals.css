@@ -2,22 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-/* FlashFusion Brand Color System */
+/* FlashFusion Brand Color System - Updated from logo */
 :root {
-  /* Primary Colors */
-  --primary: 139 133 247; /* #8b85f7 - Purple */
-  --primary-dark: 88 58 240; /* #583cf0 - Deep Purple */
-  --primary-light: 154 149 255; /* #9a95ff - Light Purple */
+  /* Primary Colors - Vibrant Pink/Magenta */
+  --primary: 255 28 247; /* #ff1cf7 - Vibrant Magenta */
+  --primary-dark: 200 20 190; /* Deeper Magenta */
+  --primary-light: 255 100 255; /* Light Magenta */
 
   /* Secondary Colors */
   --secondary: 15 6 24; /* #0f0618 - Deep Navy Background */
   --secondary-light: 45 30 80; /* #2d1e50 - Lighter Navy */
 
-  /* Accent Colors */
-  --accent-cyan: 0 183 235; /* #00b7eb - Cyan */
-  --accent-orange: 255 142 66; /* #ff8e42 - Orange */
-  --accent-orange-dark: 240 171 101; /* #f0ab65 - Warm Orange */
-  --accent-pink: 255 105 180; /* #ff69b4 - Pink */
+  /* Accent Colors - From Logo Gradient */
+  --accent-cyan: 0 229 255; /* #00e5ff - Bright Cyan */
+  --accent-orange: 255 107 53; /* #ff6b35 - Vibrant Orange */
+  --accent-orange-dark: 255 140 70; /* Lighter Orange */
+  --accent-pink: 255 28 247; /* #ff1cf7 - Magenta Pink */
 
   /* Semantic Colors */
   --success: 16 185 129; /* #10b981 - Emerald */
@@ -78,30 +78,30 @@ body {
   @apply bg-[#8b85f7] text-[#ffffff];
 }
 
-/* Gradient Classes */
+/* Gradient Classes - Updated with brand colors */
 .gradient-primary {
-  @apply bg-gradient-to-r from-[#8b85f7] via-[#00b7eb] to-[#ff8e42];
+  @apply bg-gradient-to-r from-[#ff1cf7] via-[#00e5ff] to-[#ff6b35];
 }
 
 .gradient-purple-cyan {
-  @apply bg-gradient-to-r from-[#8b85f7] to-[#00b7eb];
+  @apply bg-gradient-to-r from-[#ff1cf7] to-[#00e5ff];
 }
 
 .gradient-purple-pink {
-  @apply bg-gradient-to-r from-[#8b85f7] to-[#ff69b4];
+  @apply bg-gradient-to-r from-[#ff1cf7] to-[#ff69b4];
 }
 
 .gradient-cyan-orange {
-  @apply bg-gradient-to-r from-[#00b7eb] to-[#ff8e42];
+  @apply bg-gradient-to-r from-[#00e5ff] to-[#ff6b35];
 }
 
 /* Text Gradients */
 .text-gradient {
-  @apply bg-gradient-to-r from-[#8b85f7] to-[#00b7eb] bg-clip-text text-transparent;
+  @apply bg-gradient-to-r from-[#ff1cf7] to-[#00e5ff] bg-clip-text text-transparent;
 }
 
 .text-gradient-warm {
-  @apply bg-gradient-to-r from-[#8b85f7] via-[#ff69b4] to-[#ff8e42] bg-clip-text text-transparent;
+  @apply bg-gradient-to-r from-[#ff1cf7] via-[#ff69b4] to-[#ff6b35] bg-clip-text text-transparent;
 }
 
 /* Glow Effects */
