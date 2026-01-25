@@ -4,6 +4,7 @@ import { ArrowRight, Zap, TrendingUp, Shield, Users, Download, X, Menu, Check, L
 import { Button } from '@/components/ui/button';
 import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
+import InteractiveDemo from '@/components/landing/InteractiveDemo';
 
 // Performance note: Landing page optimized for LCP, INP, CLS
 // - Hero image uses fetchPriority="high" and loading="eager"
@@ -440,6 +441,27 @@ in 2 minutes, not 2 months
               </div>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Interactive Demo Section */}
+      <section className="py-20 px-4 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#ff1cf7]/5 to-transparent -z-10" />
+        <div className="max-w-5xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              See <span className="text-gradient">AI-Powered Discovery</span> in Action
+            </h2>
+            <p className="text-[#a0aec0] text-lg max-w-2xl mx-auto">
+              Enter any business idea and watch FlashFusion analyze market opportunities in real-time
+            </p>
+          </motion.div>
+
+          <InteractiveDemo />
         </div>
       </section>
 
