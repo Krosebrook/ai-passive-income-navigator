@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { base44 } from '@/api/base44Client';
 import { Sparkles, Target, TrendingUp, Users, DollarSign, Calendar, AlertTriangle, CheckCircle2, Lightbulb, Brain } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import FounderSearchPanel from '../founders/FounderSearchPanel';
 
 export default function AIOriginatedDeals() {
   const [isOriginating, setIsOriginating] = useState(false);
@@ -194,11 +195,11 @@ export default function AIOriginatedDeals() {
                       </div>
                     )}
 
-                    {/* Action Required */}
-                    <div className="flex items-center gap-2 p-3 bg-orange-500/10 border border-orange-500/30 rounded-lg">
-                      <AlertTriangle className="w-4 h-4 text-orange-400 flex-shrink-0" />
-                      <p className="text-xs text-orange-300">
-                        Action: Find founder & validate market
+                    {/* Founder Search Indicator */}
+                    <div className="flex items-center gap-2 p-3 bg-[#8b85f7]/10 border border-[#8b85f7]/30 rounded-lg">
+                      <Users className="w-4 h-4 text-[#8b85f7] flex-shrink-0" />
+                      <p className="text-xs text-[#a0aec0]">
+                        Next: Find ideal founder
                       </p>
                     </div>
 
@@ -286,6 +287,11 @@ export default function AIOriginatedDeals() {
                       </div>
                     </div>
                   )}
+
+                  {/* Founder Search */}
+                  <div className="space-y-3">
+                    <FounderSearchPanel deal={selectedDeal} />
+                  </div>
 
                   {/* Next Steps */}
                   <div className="space-y-3">

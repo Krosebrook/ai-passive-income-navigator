@@ -1,274 +1,238 @@
-import React, { useState, useMemo } from 'react';
-import { motion } from 'framer-motion';
-import { useQuery } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  LineChart, Line, BarChart, Bar, 
-  XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
-} from 'recharts';
-import { TrendingUp, Target, Flame } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
+import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { TrendingUp, DollarSign, PieChart as PieIcon, Activity, RefreshCw } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 
-/**
- * Portfolio Analytics Dashboard Component
- * 
- * Features:
- * - ROI trends visualization over time
- * - Profit margin analysis by idea
- * - Portfolio performance vs. goals
- * - AI-identified success drivers and improvement areas
- */
+const COLORS = ['#8b85f7', '#00b7eb', '#ff8e42', '#10b981', '#ef4444', '#a855f7'];
+
 export default function PortfolioAnalyticsDashboard() {
-  const [timeframe, setTimeframe] = useState('30'); // days
+  const [scenarioMultiplier, setScenarioMultiplier] = useState(1);
 
-  const { data: portfolioIdeas = [] } = useQuery({
-    queryKey: ['portfolioIdeas'],
-    queryFn: () => base44.entities.PortfolioIdea.list()
-  });
-
-  const { data: financialData = [] } = useQuery({
-    queryKey: ['financialData'],
-    queryFn: () => base44.entities.FinancialData.list('-date', 100)
-  });
-
-  const { data: preferences } = useQuery({
-    queryKey: ['userPreferences'],
+  const { data: metrics, isLoading, refetch } = useQuery({
+    queryKey: ['portfolio-metrics'],
     queryFn: async () => {
-      const prefs = await base44.entities.UserPreferences.list();
-      return prefs.length > 0 ? prefs[0] : null;
+      const response = await base44.functions.invoke('calculatePortfolioMetrics', {});
+      return response.data;
     }
   });
 
-  /**
-   * Calculate portfolio metrics and trends
-   * Aggregates financial data and compares against goals
-   */
-  const portfolioMetrics = useMemo(() => {
-    const daysAgo = parseInt(timeframe);
-    const cutoffDate = new Date();
-    cutoffDate.setDate(cutoffDate.getDate() - daysAgo);
-
-    const filteredData = financialData.filter(entry => 
-      new Date(entry.date) >= cutoffDate
+  if (isLoading) {
+    return (
+      <div className="text-center py-12">
+        <div className="spinner mx-auto mb-4" />
+        <p className="text-[#64748b]">Calculating portfolio metrics...</p>
+      </div>
     );
+  }
 
-    // Calculate aggregates
-    const totalRevenue = filteredData.reduce((sum, d) => sum + (d.revenue || 0), 0);
-    const totalExpenses = filteredData.reduce((sum, d) => sum + (d.expenses || 0), 0);
-    const totalProfit = totalRevenue - totalExpenses;
-    const avgMargin = filteredData.length > 0 ? ((totalProfit / totalRevenue) * 100).toFixed(1) : 0;
+  if (!metrics || metrics.total_investments === 0) {
+    return (
+      <Card className="border-[#2d1e50] bg-[#1a0f2e]">
+        <CardContent className="py-12 text-center">
+          <Activity className="w-12 h-12 text-[#64748b] mx-auto mb-4" />
+          <h3 className="text-lg font-semibold mb-2">No Investments Yet</h3>
+          <p className="text-[#64748b]">
+            Start investing to see your portfolio analytics
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
 
-    // ROI calculation
-    const totalInvestment = portfolioIdeas.reduce((sum, idea) => {
-      const ideaData = financialData.filter(d => d.portfolio_idea_id === idea.id);
-      return sum + ideaData.reduce((s, d) => s + (d.expenses || 0), 0);
-    }, 0);
-    const roi = totalInvestment > 0 ? ((totalProfit / totalInvestment) * 100).toFixed(1) : 0;
+  const industryData = Object.entries(metrics.by_industry || {}).map(([name, data]) => ({
+    name,
+    value: data.current_value,
+    roi: data.roi
+  }));
 
-    // Goal comparison
-    const monthlyGoal = preferences?.target_monthly_income || 1000;
-    const actualMonthly = totalRevenue / (daysAgo / 30);
-    const goalProgress = ((actualMonthly / monthlyGoal) * 100).toFixed(1);
+  const gainsData = [
+    { name: 'Unrealized', value: metrics.unrealized_gains || 0 },
+    { name: 'Realized', value: metrics.realized_gains || 0 }
+  ];
 
-    return {
-      totalRevenue: totalRevenue.toFixed(2),
-      totalExpenses: totalExpenses.toFixed(2),
-      totalProfit: totalProfit.toFixed(2),
-      avgMargin,
-      roi,
-      goalProgress,
-      monthlyGoal,
-      actualMonthly: actualMonthly.toFixed(2),
-      dataPoints: filteredData.length
-    };
-  }, [financialData, portfolioIdeas, timeframe, preferences]);
-
-  /**
-   * Analyze profit margins by idea
-   * Identifies which ideas are most profitable
-   */
-  const profitMarginByIdea = useMemo(() => {
-    return portfolioIdeas.map(idea => {
-      const ideaData = financialData.filter(d => d.portfolio_idea_id === idea.id);
-      const revenue = ideaData.reduce((sum, d) => sum + (d.revenue || 0), 0);
-      const expenses = ideaData.reduce((sum, d) => sum + (d.expenses || 0), 0);
-      const profit = revenue - expenses;
-      const margin = revenue > 0 ? ((profit / revenue) * 100).toFixed(1) : 0;
-
-      return {
-        id: idea.id,
-        title: idea.title,
-        revenue: parseFloat(revenue.toFixed(2)),
-        expenses: parseFloat(expenses.toFixed(2)),
-        profit: parseFloat(profit.toFixed(2)),
-        margin: parseFloat(margin)
-      };
-    }).filter(item => item.revenue > 0).sort((a, b) => b.margin - a.margin);
-  }, [financialData, portfolioIdeas]);
-
-  /**
-   * ROI trends over time
-   * Shows cumulative ROI progression
-   */
-  const roiTrends = useMemo(() => {
-    const daysAgo = parseInt(timeframe);
-    const trends = {};
-
-    financialData.forEach(entry => {
-      const entryDate = new Date(entry.date);
-      if (entryDate >= new Date(Date.now() - daysAgo * 86400000)) {
-        const dateStr = entry.date;
-        if (!trends[dateStr]) {
-          trends[dateStr] = { date: dateStr, revenue: 0, expenses: 0 };
-        }
-        trends[dateStr].revenue += entry.revenue || 0;
-        trends[dateStr].expenses += entry.expenses || 0;
-      }
-    });
-
-    return Object.values(trends)
-      .sort((a, b) => new Date(a.date) - new Date(b.date))
-      .map(item => ({
-        date: new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-        roi: item.expenses > 0 ? ((item.revenue / item.expenses) * 100).toFixed(1) : 0,
-        profit: (item.revenue - item.expenses).toFixed(2)
-      }));
-  }, [financialData, timeframe]);
+  const scenarioValue = metrics.current_value * scenarioMultiplier;
+  const scenarioROI = ((scenarioValue - metrics.total_invested) / metrics.total_invested) * 100;
 
   return (
     <div className="space-y-6">
-      {/* Time Period Selector */}
-      <Tabs value={timeframe} onValueChange={setTimeframe} className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="7">7 Days</TabsTrigger>
-          <TabsTrigger value="30">30 Days</TabsTrigger>
-          <TabsTrigger value="90">90 Days</TabsTrigger>
-          <TabsTrigger value="365">1 Year</TabsTrigger>
-        </TabsList>
-      </Tabs>
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold flex items-center gap-2">
+          <Activity className="w-6 h-6 text-[#8b85f7]" />
+          Portfolio Analytics
+        </h2>
+        <Button onClick={() => refetch()} variant="outline" size="sm" className="gap-2">
+          <RefreshCw className="w-4 h-4" />
+          Refresh
+        </Button>
+      </div>
 
       {/* Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="border-violet-200 bg-violet-50">
-          <CardContent className="p-4">
-            <p className="text-xs text-gray-600">Total Revenue</p>
-            <p className="text-2xl font-bold text-violet-600">${portfolioMetrics.totalRevenue}</p>
+      <div className="grid md:grid-cols-4 gap-4">
+        <Card className="border-[#2d1e50] bg-[#1a0f2e]">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm text-[#64748b] font-normal">Total Invested</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-2xl font-bold">${metrics.total_invested?.toLocaleString() || 0}</p>
           </CardContent>
         </Card>
-        <Card className="border-emerald-200 bg-emerald-50">
-          <CardContent className="p-4">
-            <p className="text-xs text-gray-600">Total Profit</p>
-            <p className="text-2xl font-bold text-emerald-600">${portfolioMetrics.totalProfit}</p>
+
+        <Card className="border-[#2d1e50] bg-[#1a0f2e]">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm text-[#64748b] font-normal">Current Value</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-2xl font-bold text-[#00b7eb]">${metrics.current_value?.toLocaleString() || 0}</p>
           </CardContent>
         </Card>
-        <Card className="border-blue-200 bg-blue-50">
-          <CardContent className="p-4">
-            <p className="text-xs text-gray-600">Avg Margin</p>
-            <p className="text-2xl font-bold text-blue-600">{portfolioMetrics.avgMargin}%</p>
+
+        <Card className="border-[#2d1e50] bg-[#1a0f2e]">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm text-[#64748b] font-normal">ROI</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className={`text-2xl font-bold ${metrics.roi >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+              {metrics.roi?.toFixed(2) || 0}%
+            </p>
           </CardContent>
         </Card>
-        <Card className="border-amber-200 bg-amber-50">
-          <CardContent className="p-4">
-            <p className="text-xs text-gray-600">Overall ROI</p>
-            <p className="text-2xl font-bold text-amber-600">{portfolioMetrics.roi}%</p>
+
+        <Card className="border-[#2d1e50] bg-[#1a0f2e]">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm text-[#64748b] font-normal">IRR</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className={`text-2xl font-bold ${metrics.irr >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+              {metrics.irr?.toFixed(2) || 0}%
+            </p>
           </CardContent>
         </Card>
       </div>
 
-      {/* ROI Trend Chart */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-violet-600" />
-            ROI & Profit Trends
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={roiTrends}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
-              <YAxis yAxisId="left" />
-              <YAxis yAxisId="right" orientation="right" />
-              <Tooltip />
-              <Legend />
-              <Line yAxisId="left" type="monotone" dataKey="roi" stroke="#8b5cf6" name="ROI %" />
-              <Line yAxisId="right" type="monotone" dataKey="profit" stroke="#10b981" name="Profit $" />
-            </LineChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
+      {/* Charts Row 1 */}
+      <div className="grid md:grid-cols-2 gap-6">
+        <Card className="border-[#2d1e50] bg-[#1a0f2e]">
+          <CardHeader>
+            <CardTitle className="text-base">Performance Over Time</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={250}>
+              <LineChart data={metrics.performance_history || []}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#2d1e50" />
+                <XAxis dataKey="month" stroke="#64748b" fontSize={12} />
+                <YAxis stroke="#64748b" fontSize={12} />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: '#1a0f2e', border: '1px solid #2d1e50' }}
+                  labelStyle={{ color: '#8b85f7' }}
+                />
+                <Line type="monotone" dataKey="value" stroke="#8b85f7" strokeWidth={2} dot={false} />
+              </LineChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
 
-      {/* Profit Margin by Idea */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Profit Margins by Idea</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={profitMarginByIdea}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="title" angle={-45} textAnchor="end" height={80} />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="margin" fill="#8b5cf6" name="Margin %" />
-            </BarChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
+        <Card className="border-[#2d1e50] bg-[#1a0f2e]">
+          <CardHeader>
+            <CardTitle className="text-base">Industry Breakdown</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={250}>
+              <PieChart>
+                <Pie
+                  data={industryData}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                >
+                  {industryData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip 
+                  contentStyle={{ backgroundColor: '#1a0f2e', border: '1px solid #2d1e50' }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      </div>
 
-      {/* Goal Progress */}
-      <Card className="border-indigo-200 bg-indigo-50">
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between mb-4">
+      {/* Charts Row 2 */}
+      <div className="grid md:grid-cols-2 gap-6">
+        <Card className="border-[#2d1e50] bg-[#1a0f2e]">
+          <CardHeader>
+            <CardTitle className="text-base">Unrealized vs Realized Gains</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={250}>
+              <BarChart data={gainsData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#2d1e50" />
+                <XAxis dataKey="name" stroke="#64748b" />
+                <YAxis stroke="#64748b" />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: '#1a0f2e', border: '1px solid #2d1e50' }}
+                />
+                <Bar dataKey="value" fill="#00b7eb" />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        <Card className="border-[#2d1e50] bg-[#1a0f2e]">
+          <CardHeader>
+            <CardTitle className="text-base">Scenario Analysis</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
             <div>
-              <p className="text-sm text-gray-600">Monthly Income Goal</p>
-              <p className="text-3xl font-bold text-indigo-600">${portfolioMetrics.actualMonthly} / ${portfolioMetrics.monthlyGoal}</p>
+              <label className="text-sm text-[#64748b] mb-2 block">
+                Market Multiplier: {scenarioMultiplier.toFixed(2)}x
+              </label>
+              <input
+                type="range"
+                min="0.5"
+                max="2"
+                step="0.1"
+                value={scenarioMultiplier}
+                onChange={(e) => setScenarioMultiplier(parseFloat(e.target.value))}
+                className="w-full"
+              />
             </div>
-            <Target className="w-12 h-12 text-indigo-300" />
-          </div>
-          <div className="w-full bg-indigo-200 rounded-full h-2">
-            <div
-              className="bg-indigo-600 h-2 rounded-full transition-all"
-              style={{ width: `${Math.min(parseFloat(portfolioMetrics.goalProgress), 100)}%` }}
-            />
-          </div>
-          <p className="text-sm text-indigo-600 mt-2 font-medium">{portfolioMetrics.goalProgress}% of goal</p>
-        </CardContent>
-      </Card>
 
-      {/* Top Performing Ideas */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base flex items-center gap-2">
-            <Flame className="w-5 h-5 text-orange-600" />
-            Top Performing Ideas
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            {profitMarginByIdea.slice(0, 5).map((idea, idx) => (
-              <motion.div
-                key={idea.id}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: idx * 0.1 }}
-                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-              >
-                <div>
-                  <p className="font-medium text-gray-900">{idea.title}</p>
-                  <p className="text-xs text-gray-500">Profit: ${idea.profit.toFixed(2)}</p>
-                </div>
-                <Badge className="bg-emerald-100 text-emerald-700">
-                  {idea.margin}% margin
-                </Badge>
-              </motion.div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-[#64748b]">Scenario Value:</span>
+                <span className="font-bold">${scenarioValue.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-[#64748b]">Scenario ROI:</span>
+                <span className={`font-bold ${scenarioROI >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  {scenarioROI.toFixed(2)}%
+                </span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-[#64748b]">Change from Current:</span>
+                <span className="font-bold">
+                  {((scenarioMultiplier - 1) * 100).toFixed(1)}%
+                </span>
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-white/10">
+              <p className="text-xs text-[#64748b]">
+                Adjust the slider to see how market changes would affect your portfolio
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
