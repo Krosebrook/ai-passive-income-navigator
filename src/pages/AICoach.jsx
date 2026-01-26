@@ -12,7 +12,8 @@ import MarketAlertManager from '@/components/market/MarketAlertManager';
 import MarketIntelligencePanel from '@/components/ai/MarketIntelligencePanel';
 import DealPerformanceCorrelation from '@/components/ai/DealPerformanceCorrelation';
 import EmergingOpportunitiesPanel from '@/components/trends/EmergingOpportunitiesPanel';
-import { Sparkles, TrendingUp, Zap, MessageSquare, Brain, Rss, BarChart3, Activity, LineChart, Rocket } from 'lucide-react';
+import AIOriginatedDeals from '@/components/deals/AIOriginatedDeals';
+import { Sparkles, TrendingUp, Zap, MessageSquare, Brain, Rss, BarChart3, Activity, LineChart, Rocket, Lightbulb } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
 export default function AICoachPage() {
@@ -43,8 +44,12 @@ export default function AICoachPage() {
                     subtitle="Real-time market data, sentiment analysis, and deal performance insights"
                 />
 
-                <Tabs defaultValue="emerging" className="mt-8">
-                    <TabsList className="grid w-full grid-cols-10 max-w-full overflow-x-auto">
+                <Tabs defaultValue="originate" className="mt-8">
+                    <TabsList className="grid w-full grid-cols-11 max-w-full overflow-x-auto">
+                        <TabsTrigger value="originate" className="gap-2">
+                            <Lightbulb className="w-4 h-4" />
+                            Originate
+                        </TabsTrigger>
                         <TabsTrigger value="emerging" className="gap-2">
                             <Rocket className="w-4 h-4" />
                             Emerging
@@ -86,6 +91,10 @@ export default function AICoachPage() {
                             Assistant
                         </TabsTrigger>
                     </TabsList>
+
+                    <TabsContent value="originate" className="mt-6">
+                        <AIOriginatedDeals />
+                    </TabsContent>
 
                     <TabsContent value="emerging" className="mt-6">
                         <EmergingOpportunitiesPanel />
