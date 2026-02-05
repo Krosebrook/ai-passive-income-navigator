@@ -17,17 +17,29 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
-      include: ['src/**/*.{js,jsx}'],
+      include: [
+        'src/utils/**/*.{js,jsx,ts,tsx}',
+        'src/lib/**/*.{js,jsx,ts,tsx}',
+        'src/api/**/*.{js,jsx,ts,tsx}',
+        'src/hooks/**/*.{js,jsx,ts,tsx}',
+      ],
       exclude: [
         'src/test/**',
-        'src/**/*.test.{js,jsx}',
-        'src/**/*.spec.{js,jsx}',
+        'src/**/*.test.{js,jsx,ts,tsx}',
+        'src/**/*.spec.{js,jsx,ts,tsx}',
         'src/main.jsx',
         'src/pages.config.js',
+        'src/lib/NavigationTracker.jsx',
+        'src/lib/PageNotFound.jsx',
+        'src/lib/query-client.js',
       ],
       all: true,
-      // Set realistic thresholds for critical paths only
-      // Global thresholds removed - focusing on testing critical features
+      thresholds: {
+        lines: 90,
+        functions: 90,
+        branches: 90,
+        statements: 90,
+      },
     },
   },
   resolve: {

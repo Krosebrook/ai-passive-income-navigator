@@ -170,6 +170,72 @@ describe('AuthContext', () => {
     });
   });
 
+  it('should handle logout with redirect', async () => {
+    const mockUser = { id: 'user123', name: 'Test User' };
+    base44.auth.me.mockResolvedValue(mockUser);
+
+    const TestComponent = () => {
+      const { user, logout, isLoadingAuth } = useAuth();
+      
+      if (isLoadingAuth) return <div>Loading...</div>;
+      
+      return (
+        <div>
+          {user ? <div>User: {user.name}</div> : <div>No User</div>}
+          <button onClick={() => logout(true)}>Logout with Redirect</button>
+        </div>
+      );
+    };
+
+    const { getByRole } = render(
+      <AuthProvider>
+        <TestComponent />
+      </AuthProvider>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('User: Test User')).toBeInTheDocument();
+    });
+
+    const logoutButton = getByRole('button', { name: /logout with redirect/i });
+    logoutButton.click();
+
+    await waitFor(() => {
+      expect(base44.auth.logout).toHaveBeenCalledWith(window.location.href);
+    });
+  });
+
+  it('should handle outer catch block for unexpected errors', async () => {
+    // Mock createAxiosClient to throw a non-structured error
+    const { createAxiosClient } = await import('@base44/sdk/dist/utils/axios-client');
+    createAxiosClient.mockImplementation(() => {
+      throw new Error('Completely unexpected error');
+    });
+
+    vi.resetModules();
+    const { AuthProvider, useAuth } = await import('./AuthContext');
+
+    const TestComponent = () => {
+      const { authError, isLoadingPublicSettings } = useAuth();
+      
+      if (isLoadingPublicSettings) return <div>Loading settings...</div>;
+      if (authError) {
+        return <div>Error: {authError.message}</div>;
+      }
+      return <div>No Error</div>;
+    };
+
+    render(
+      <AuthProvider>
+        <TestComponent />
+      </AuthProvider>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText(/Error:/)).toBeInTheDocument();
+    });
+  });
+
   it('should provide navigateToLogin function', async () => {
     const TestComponent = () => {
       const { navigateToLogin } = useAuth();
@@ -259,5 +325,142 @@ describe('AuthContext', () => {
     await waitFor(() => {
       expect(screen.getByText('Auth Required Error')).toBeInTheDocument();
     });
+  });
+
+  it('should handle other 403 errors with reason', async () => {
+    const { createAxiosClient } = await import('@base44/sdk/dist/utils/axios-client');
+    createAxiosClient.mockReturnValue({
+      get: vi.fn().mockRejectedValue({
+        status: 403,
+        data: {
+          extra_data: {
+            reason: 'custom_error',
+          },
+        },
+        message: 'Custom error message',
+      }),
+    });
+
+    const TestComponent = () => {
+      const { authError, isLoadingPublicSettings } = useAuth();
+      
+      if (isLoadingPublicSettings) return <div>Loading settings...</div>;
+      if (authError?.type === 'custom_error') {
+        return <div>Custom Error</div>;
+      }
+      return <div>No Error</div>;
+    };
+
+    render(
+      <AuthProvider>
+        <TestComponent />
+      </AuthProvider>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Custom Error')).toBeInTheDocument();
+    });
+  });
+
+  it('should handle non-403 errors', async () => {
+    const { createAxiosClient } = await import('@base44/sdk/dist/utils/axios-client');
+    createAxiosClient.mockReturnValue({
+      get: vi.fn().mockRejectedValue({
+        status: 500,
+        message: 'Server error',
+      }),
+    });
+
+    const TestComponent = () => {
+      const { authError, isLoadingPublicSettings } = useAuth();
+      
+      if (isLoadingPublicSettings) return <div>Loading settings...</div>;
+      if (authError?.type === 'unknown') {
+        return <div>Unknown Error</div>;
+      }
+      return <div>No Error</div>;
+    };
+
+    render(
+      <AuthProvider>
+        <TestComponent />
+      </AuthProvider>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Unknown Error')).toBeInTheDocument();
+    });
+  });
+
+  it('should handle unexpected errors without message', async () => {
+    const { createAxiosClient } = await import('@base44/sdk/dist/utils/axios-client');
+    createAxiosClient.mockReturnValue({
+      get: vi.fn().mockRejectedValue(new Error()),
+    });
+
+    const TestComponent = () => {
+      const { authError, isLoadingPublicSettings } = useAuth();
+      
+      if (isLoadingPublicSettings) return <div>Loading settings...</div>;
+      if (authError) {
+        return <div>Error Occurred</div>;
+      }
+      return <div>No Error</div>;
+    };
+
+    render(
+      <AuthProvider>
+        <TestComponent />
+      </AuthProvider>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Error Occurred')).toBeInTheDocument();
+    });
+  });
+
+  it('should handle case when no token is available', async () => {
+    // Reset module cache and re-import with no token
+    vi.resetModules();
+    
+    vi.doMock('@/lib/app-params', () => ({
+      appParams: {
+        appId: 'test-app-id',
+        token: null, // No token
+        functionsVersion: 'v1',
+        appBaseUrl: 'https://test.base44.app',
+      },
+    }));
+
+    const { createAxiosClient } = await import('@base44/sdk/dist/utils/axios-client');
+    createAxiosClient.mockReturnValue({
+      get: vi.fn().mockResolvedValue({
+        id: 'test-app-id',
+        public_settings: {},
+      }),
+    });
+
+    // Re-import AuthContext after mocking
+    const { AuthProvider, useAuth } = await import('./AuthContext');
+
+    const TestComponent = () => {
+      const { isAuthenticated, isLoadingAuth } = useAuth();
+      
+      if (isLoadingAuth) return <div>Loading...</div>;
+      return <div>Not Authenticated</div>;
+    };
+
+    render(
+      <AuthProvider>
+        <TestComponent />
+      </AuthProvider>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Not Authenticated')).toBeInTheDocument();
+    });
+    
+    // Clean up
+    vi.doUnmock('@/lib/app-params');
   });
 });
