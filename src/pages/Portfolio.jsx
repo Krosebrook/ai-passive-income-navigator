@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/select';
 import { 
   Plus, Search, SlidersHorizontal, FolderHeart,
-  LayoutGrid, List, Sparkles
+  LayoutGrid, List, Sparkles, TrendingUp
 } from 'lucide-react';
 
 import PageHeader from '@/components/ui/PageHeader';
@@ -36,6 +36,8 @@ import PortfolioAnalyticsDashboard from '@/components/portfolio/PortfolioAnalyti
 import IdeaValidator from '@/components/ideas/IdeaValidator';
 import MarketingContentGenerator from '@/components/marketing/MarketingContentGenerator';
 import RebalancingSuggestions from '@/components/portfolio/RebalancingSuggestions';
+import PredictiveRebalancingPanel from '@/components/portfolio/PredictiveRebalancingPanel';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { GRADIENT_OPTIONS } from '@/components/data/ideasCatalog';
 
 const STATUS_OPTIONS = ['all', 'exploring', 'planning', 'in_progress', 'launched', 'paused'];
