@@ -187,7 +187,7 @@ export default function Portfolio() {
           }
         />
 
-        {/* Rebalancing Suggestions */}
+        {/* Predictive Rebalancing */}
         {showRebalancing && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -203,7 +203,18 @@ export default function Portfolio() {
                 ✕ Close
               </Button>
             </div>
-            <RebalancingSuggestions />
+            <Tabs defaultValue="predictive">
+              <TabsList>
+                <TabsTrigger value="predictive">Predictive Rebalancing</TabsTrigger>
+                <TabsTrigger value="current">Current Suggestions</TabsTrigger>
+              </TabsList>
+              <TabsContent value="predictive" className="mt-6">
+                <PredictiveRebalancingPanel />
+              </TabsContent>
+              <TabsContent value="current" className="mt-6">
+                <RebalancingSuggestions />
+              </TabsContent>
+            </Tabs>
           </motion.div>
         )}
 

@@ -8,6 +8,7 @@ import { base44 } from '@/api/base44Client';
 import { Sparkles, Target, TrendingUp, Users, DollarSign, Calendar, AlertTriangle, CheckCircle2, Lightbulb, Brain } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import FounderSearchPanel from '../founders/FounderSearchPanel';
+import DealStructureComparison from './DealStructureComparison';
 
 export default function AIOriginatedDeals() {
   const [isOriginating, setIsOriginating] = useState(false);
@@ -287,6 +288,12 @@ export default function AIOriginatedDeals() {
                       </div>
                     </div>
                   )}
+
+                  {/* Deal Structure Variations */}
+                  <div className="space-y-3">
+                    <h3 className="text-sm font-semibold text-[#8b85f7]">Deal Structure Options</h3>
+                    <DealStructureComparison deal={selectedDeal} />
+                  </div>
 
                   {/* Founder Search */}
                   <div className="space-y-3">
