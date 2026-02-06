@@ -10,7 +10,8 @@ import {
   truncateText,
   generateId,
   storage,
-  sleep
+  sleep,
+  isBrowser
 } from '../utils';
 
 /**
@@ -169,6 +170,26 @@ describe('generateId', () => {
     const id = generateId();
     expect(id.length).toBeGreaterThan(0);
   });
+
+  it('should use crypto.randomUUID when available', () => {
+    // In modern browsers, crypto.randomUUID should be available
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+      const id = generateId();
+      // UUID format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      expect(id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
+    }
+  });
+
+  it('should fallback to timestamp-based ID when crypto.randomUUID is not available', () => {
+    const originalRandomUUID = crypto.randomUUID;
+    crypto.randomUUID = undefined;
+    
+    const id = generateId();
+    expect(id).toBeDefined();
+    expect(id.length).toBeGreaterThan(0);
+    
+    crypto.randomUUID = originalRandomUUID;
+  });
 });
 
 describe('storage', () => {
@@ -185,5 +206,96 @@ describe('storage', () => {
 
   it('should return null for non-existent keys', () => {
     expect(storage.get('non-existent-key')).toBe(null);
+  });
+
+  it('should return true when set succeeds', () => {
+    expect(storage.set('success-key', 'value')).toBe(true);
+  });
+
+  it('should return true when remove succeeds', () => {
+    storage.set('remove-key', 'value');
+    expect(storage.remove('remove-key')).toBe(true);
+  });
+
+  it('should handle localStorage errors gracefully', () => {
+    const originalGetItem = Storage.prototype.getItem;
+    Storage.prototype.getItem = () => {
+      throw new Error('Storage error');
+    };
+    
+    expect(storage.get('test-key')).toBe(null);
+    
+    Storage.prototype.getItem = originalGetItem;
+  });
+
+  it('should handle setItem errors gracefully', () => {
+    const originalSetItem = Storage.prototype.setItem;
+    Storage.prototype.setItem = () => {
+      throw new Error('Storage full');
+    };
+    
+    expect(storage.set('test-key', 'value')).toBe(false);
+    
+    Storage.prototype.setItem = originalSetItem;
+  });
+
+  it('should handle removeItem errors gracefully', () => {
+    const originalRemoveItem = Storage.prototype.removeItem;
+    Storage.prototype.removeItem = () => {
+      throw new Error('Storage error');
+    };
+    
+    expect(storage.remove('test-key')).toBe(false);
+    
+    Storage.prototype.removeItem = originalRemoveItem;
+  });
+});
+
+describe('isBrowser', () => {
+  it('should return true in browser environment', () => {
+    expect(isBrowser()).toBe(true);
+  });
+});
+
+describe('sanitizeInput edge cases', () => {
+  it('should handle data: protocol', () => {
+    const input = '<a href="data:text/html,<script>alert(1)</script>">Link</a>';
+    const result = sanitizeInput(input);
+    expect(result).not.toContain('data:');
+  });
+
+  it('should handle vbscript: protocol', () => {
+    const input = '<a href="vbscript:msgbox(1)">Link</a>';
+    const result = sanitizeInput(input);
+    expect(result).not.toContain('vbscript:');
+  });
+
+  it('should handle multiple event handlers', () => {
+    const input = '<div onclick="alert(1)" onmouseover="alert(2)">Test</div>';
+    const result = sanitizeInput(input);
+    expect(result).not.toContain('onclick');
+    expect(result).not.toContain('onmouseover');
+  });
+});
+
+describe('formatCurrency edge cases', () => {
+  it('should handle large numbers', () => {
+    const result = formatCurrency(999999999);
+    expect(result).toContain('999');
+  });
+
+  it('should handle decimal precision', () => {
+    const result = formatCurrency(100.999);
+    expect(result).toMatch(/10[01]/); // Can be $100 or $101 depending on rounding
+  });
+});
+
+describe('generateId edge cases', () => {
+  it('should generate different IDs on consecutive calls', () => {
+    const ids = new Set();
+    for (let i = 0; i < 10; i++) {
+      ids.add(generateId());
+    }
+    expect(ids.size).toBe(10);
   });
 });
