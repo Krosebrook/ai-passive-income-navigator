@@ -13,7 +13,8 @@ import MarketIntelligencePanel from '@/components/ai/MarketIntelligencePanel';
 import DealPerformanceCorrelation from '@/components/ai/DealPerformanceCorrelation';
 import EmergingOpportunitiesPanel from '@/components/trends/EmergingOpportunitiesPanel';
 import AIOriginatedDeals from '@/components/deals/AIOriginatedDeals';
-import { Sparkles, TrendingUp, Zap, MessageSquare, Brain, Rss, BarChart3, Activity, LineChart, Rocket, Lightbulb } from 'lucide-react';
+import AutoDiscoveredDeals from '@/components/deals/AutoDiscoveredDeals';
+import { Sparkles, TrendingUp, Zap, MessageSquare, Brain, Rss, BarChart3, Activity, LineChart, Rocket, Lightbulb, Search } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
 export default function AICoachPage() {
@@ -44,8 +45,12 @@ export default function AICoachPage() {
                     subtitle="Real-time market data, sentiment analysis, and deal performance insights"
                 />
 
-                <Tabs defaultValue="originate" className="mt-8">
-                    <TabsList className="grid w-full grid-cols-11 max-w-full overflow-x-auto">
+                <Tabs defaultValue="discover" className="mt-8">
+                    <TabsList className="grid w-full grid-cols-12 max-w-full overflow-x-auto">
+                        <TabsTrigger value="discover" className="gap-2">
+                            <Search className="w-4 h-4" />
+                            Discover
+                        </TabsTrigger>
                         <TabsTrigger value="originate" className="gap-2">
                             <Lightbulb className="w-4 h-4" />
                             Originate
@@ -91,6 +96,10 @@ export default function AICoachPage() {
                             Assistant
                         </TabsTrigger>
                     </TabsList>
+
+                    <TabsContent value="discover" className="mt-6">
+                        <AutoDiscoveredDeals />
+                    </TabsContent>
 
                     <TabsContent value="originate" className="mt-6">
                         <AIOriginatedDeals />
