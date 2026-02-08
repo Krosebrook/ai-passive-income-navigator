@@ -19,6 +19,10 @@ Deno.serve(async (req) => {
       user_email: user.email 
     });
     const userPrefs = preferences[0] || {};
+
+    // Get latest market intelligence
+    const marketSnapshots = await base44.asServiceRole.entities.MarketDataSnapshot.list('-snapshot_date', 1);
+    const latestMarket = marketSnapshots[0] || {};
     
     const industries = userPrefs.target_industries || ['technology', 'finance'];
     const investmentMin = userPrefs.investment_size_min || 10000;

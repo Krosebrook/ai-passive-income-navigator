@@ -31,9 +31,16 @@ Deno.serve(async (req) => {
     });
     const userPrefs = preferences[0] || {};
 
+    // Get latest market data for context
+    const marketSnapshots = await base44.asServiceRole.entities.MarketDataSnapshot.list('-snapshot_date', 1);
+    const latestMarket = marketSnapshots[0] || {};
+
     const scoredDeals = [];
 
     for (const deal of deals.slice(0, 5)) { // Score 5 at a time
+      // Get sector-specific market data
+      const sectorData = latestMarket.industry_data?.[deal.industry] || {};
+      
       const scoringQuery = `Analyze this investment opportunity and score it:
 
       Deal: ${deal.title}
@@ -44,6 +51,12 @@ Deno.serve(async (req) => {
       - Industries: ${userPrefs.target_industries?.join(', ') || 'any'}
       - Investment Range: $${userPrefs.investment_size_min || 0} - $${userPrefs.investment_size_max || 1000000}
       - Risk Tolerance: ${userPrefs.risk_tolerance || 'moderate'}
+      
+      Current Market Context:
+      - Sector Performance: ${sectorData.change_percent || 'N/A'}%
+      - Market Sentiment: ${sectorData.sentiment || 'neutral'}
+      - Overall Market Volatility: ${latestMarket.volatility_index || 'N/A'}
+      - Key Sector Trends: ${sectorData.key_trends?.join(', ') || 'N/A'}
       
       Provide:
       1. Match Score (0-100): How well it fits user preferences
