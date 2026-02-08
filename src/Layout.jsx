@@ -15,6 +15,7 @@ import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 import SEOHead from '@/components/seo/SEOHead';
 import AdaptiveOnboardingFlow from '@/components/onboarding/AdaptiveOnboardingFlow';
 import GamifiedOnboarding from '@/components/onboarding/GamifiedOnboarding';
+import AIOnboardingFlow from '@/components/onboarding/AIOnboardingFlow';
 import {
   Home, FolderHeart, Bookmark, TrendingUp, 
   LayoutDashboard, Users, Settings, Menu, X,
@@ -40,6 +41,7 @@ export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showGamifiedOnboarding, setShowGamifiedOnboarding] = useState(false);
+  const [showAIOnboarding, setShowAIOnboarding] = useState(false);
   const isPublicPage = PUBLIC_PAGES.includes(currentPageName);
 
   useEffect(() => {
@@ -59,12 +61,12 @@ export default function Layout({ children, currentPageName }) {
         const userData = await base44.auth.me();
         setUser(userData);
 
-        // Check if user needs onboarding
+        // Check if user needs onboarding (use AI-driven flow)
         const onboardingState = await base44.entities.OnboardingState.filter({
           user_email: userData.email
         });
         if (onboardingState.length === 0 || !onboardingState[0].completed_at) {
-          setShowOnboarding(true);
+          setShowAIOnboarding(true);
         }
       } catch (error) {
         console.error('Error fetching user:', error);
@@ -307,7 +309,13 @@ export default function Layout({ children, currentPageName }) {
         isOpen={showGamifiedOnboarding} 
         onClose={() => setShowGamifiedOnboarding(false)} 
       />
-    </div>
-    </GuidanceProvider>
-  );
-}
+
+      {/* AI-Driven Onboarding Flow */}
+      <AIOnboardingFlow 
+        isOpen={showAIOnboarding} 
+        onClose={() => setShowAIOnboarding(false)} 
+      />
+      </div>
+      </GuidanceProvider>
+      );
+      }
