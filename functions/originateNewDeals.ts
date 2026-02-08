@@ -29,12 +29,18 @@ Deno.serve(async (req) => {
     const investmentMax = userPrefs.investment_size_max || 500000;
     const riskTolerance = userPrefs.risk_tolerance || 'moderate';
 
-    // Step 1: Identify underserved markets
+    // Step 1: Identify underserved markets with market context
+    const sectorTrends = latestMarket.industry_data || {};
     const marketGapQuery = `As a venture analyst, identify 3 UNDERSERVED markets or business opportunities that currently lack solutions or have poor existing solutions.
 
     Focus areas: ${industries.join(', ')}
     Investment range: $${investmentMin} - $${investmentMax}
     Risk tolerance: ${riskTolerance}
+    
+    Current Market Intelligence:
+    - Market Sentiment: ${latestMarket.sentiment_score || 'neutral'}
+    - Sector Performance: ${JSON.stringify(sectorTrends)}
+    - Use latest macroeconomic data to inform timing and sector selection
     
     For each opportunity, analyze:
     1. Market gap description (what's missing?)

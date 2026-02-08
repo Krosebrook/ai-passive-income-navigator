@@ -23,6 +23,10 @@ Deno.serve(async (req) => {
       return Response.json({ success: true, forecasts: [], message: 'No investments to forecast' });
     }
 
+    // Get macroeconomic context
+    const marketSnapshots = await base44.asServiceRole.entities.MarketDataSnapshot.list('-snapshot_date', 1);
+    const latestMarket = marketSnapshots[0] || {};
+
     // Aggregate by industry for market context
     const byIndustry = {};
     investments.forEach(inv => {
@@ -30,13 +34,19 @@ Deno.serve(async (req) => {
       byIndustry[industry] = (byIndustry[industry] || 0) + 1;
     });
 
-    // Generate portfolio-wide forecast
+    // Generate portfolio-wide forecast with macro context
     const forecastQuery = `As a financial analyst, forecast the ${timeframe.replace('_', ' ')} performance of this investment portfolio:
 
     Total Investments: ${investments.length}
     Industries: ${Object.keys(byIndustry).join(', ')}
     Current Total Value: $${investments.reduce((sum, inv) => sum + (inv.current_value || inv.initial_investment || 0), 0)}
     Current ROI: ${investments.reduce((sum, inv) => sum + (inv.actual_roi || 0), 0) / investments.length}%
+    
+    Current Market Context:
+    - Market Volatility: ${latestMarket.volatility_index || 'N/A'}
+    - Market Sentiment: ${latestMarket.sentiment_score || 'neutral'}
+    - Sector Performance: ${JSON.stringify(latestMarket.industry_data || {})}
+    - Consider: interest rates, inflation, GDP growth, sector rotation, regulatory changes
     
     Analyze:
     1. Market trends affecting each industry

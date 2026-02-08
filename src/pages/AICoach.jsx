@@ -10,6 +10,7 @@ import NewDealsFeed from '@/components/deals/NewDealsFeed';
 import MarketDataFeed from '@/components/market/MarketDataFeed';
 import MarketAlertManager from '@/components/market/MarketAlertManager';
 import MarketIntelligencePanel from '@/components/ai/MarketIntelligencePanel';
+import EnhancedMarketIntelligence from '@/components/market/EnhancedMarketIntelligence';
 import DealPerformanceCorrelation from '@/components/ai/DealPerformanceCorrelation';
 import EmergingOpportunitiesPanel from '@/components/trends/EmergingOpportunitiesPanel';
 import AIOriginatedDeals from '@/components/deals/AIOriginatedDeals';
@@ -122,10 +123,7 @@ export default function AICoachPage() {
                     </TabsContent>
 
                     <TabsContent value="market" className="mt-6">
-                        <div className="space-y-6">
-                            <MarketDataFeed industries={['Technology', 'Healthcare', 'Finance', 'Real Estate']} />
-                            <MarketAlertManager />
-                        </div>
+                        <EnhancedMarketIntelligence />
                     </TabsContent>
 
                     <TabsContent value="ai-deals" className="mt-6">
