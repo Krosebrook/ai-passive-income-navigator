@@ -9,9 +9,9 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const ANTHROPIC_API_KEY = Deno.env.get('ANTHROPIC_API_KEY');
-    if (!ANTHROPIC_API_KEY) {
-      return Response.json({ error: 'ANTHROPIC_API_KEY not configured' }, { status: 500 });
+    const PERPLEXITY_API_KEY = Deno.env.get('PERPLEXITY_API_KEY');
+    if (!PERPLEXITY_API_KEY) {
+      return Response.json({ error: 'PERPLEXITY_API_KEY not configured' }, { status: 500 });
     }
 
     // Get user preferences
@@ -54,35 +54,27 @@ Prioritize actions that:
 
 Return as JSON array of 5 actions.`;
 
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',
       headers: {
-        'x-api-key': ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
-        'content-type': 'application/json'
+        'Authorization': `Bearer ${PERPLEXITY_API_KEY}`,
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'claude-3-5-sonnet-20240620',
-        max_tokens: 2000,
-        messages: [{
-          role: 'user',
-          content: actionsPrompt
-        }]
+        model: 'llama-3.1-sonar-large-128k-online',
+        messages: [{ role: 'user', content: actionsPrompt }],
+        temperature: 0.3,
+        max_tokens: 2000
       })
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`Anthropic API error: ${response.status} - ${errorText}`);
+      throw new Error(`Perplexity API error: ${response.status} - ${errorText}`);
     }
 
     const data = await response.json();
-    
-    if (!data.content || data.content.length === 0) {
-      throw new Error(`No content received from AI. Response: ${JSON.stringify(data)}`);
-    }
-    
-    const content = data.content[0].text;
+    const content = data.choices[0].message.content;
     
     let actions = [];
     try {
