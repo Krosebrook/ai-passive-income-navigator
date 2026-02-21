@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Shield, Users, Database, Activity } from 'lucide-react';
 import PageHeader from '@/components/ui/PageHeader';
+import BackupManager from '@/components/admin/BackupManager';
 
 /**
  * Admin Dashboard Page
@@ -109,6 +111,13 @@ export default function AdminPage() {
         </div>
 
         <div className="mt-8">
+          <Tabs defaultValue="overview">
+            <TabsList>
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="backups">Backups</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="overview" className="mt-6">
           <Card className="card-dark">
             <CardHeader>
               <CardTitle className="text-gradient">AI Automation Features</CardTitle>
@@ -181,6 +190,12 @@ export default function AdminPage() {
               </div>
             </CardContent>
           </Card>
+            </TabsContent>
+
+            <TabsContent value="backups" className="mt-6">
+              <BackupManager />
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </div>

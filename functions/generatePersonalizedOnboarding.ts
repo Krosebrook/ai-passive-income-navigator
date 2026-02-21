@@ -94,11 +94,13 @@ Return as structured JSON.`;
       onboardingPlan = { raw_content: content, parsed: false };
     }
 
-    return Response.json({
+    const jsonResponse = Response.json({
       success: true,
       onboarding_plan: onboardingPlan,
       generated_at: new Date().toISOString()
     });
+    
+    return addSecurityHeaders(jsonResponse);
 
   } catch (error) {
     console.error('Personalized onboarding error:', error);

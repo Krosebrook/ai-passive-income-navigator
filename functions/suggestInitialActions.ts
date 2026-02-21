@@ -1,5 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
-import { checkRateLimit, validateContentLength, addSecurityHeaders } from './utils/validation.js';
+import { checkRateLimit, validateContentLength, addSecurityHeaders } from './utils/security.js';
 
 Deno.serve(async (req) => {
   try {
@@ -91,11 +91,13 @@ Return as JSON array of 5 actions.`;
       console.error('Actions parsing error:', e);
     }
 
-    return Response.json({
+    const jsonResponse = Response.json({
       success: true,
       suggested_actions: actions,
       generated_at: new Date().toISOString()
     });
+    
+    return addSecurityHeaders(jsonResponse);
 
   } catch (error) {
     console.error('Initial actions suggestion error:', error);
