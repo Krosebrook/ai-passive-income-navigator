@@ -51,7 +51,7 @@ Return as structured JSON.`;
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'llama-3.1-sonar-large-128k-online',
+        model: 'llama-3.1-sonar-huge-128k-online',
         messages: [{ role: 'user', content: onboardingPrompt }],
         temperature: 0.3,
         max_tokens: 3000
