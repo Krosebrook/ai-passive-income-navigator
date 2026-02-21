@@ -61,7 +61,7 @@ Return as JSON array of 5 actions.`;
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'llama-3.1-sonar-huge-128k-online',
+        model: 'sonar-pro',
         messages: [{ role: 'user', content: actionsPrompt }],
         temperature: 0.3,
         max_tokens: 2000
