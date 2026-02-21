@@ -71,10 +71,15 @@ Return as JSON array of 5 actions.`;
       })
     });
 
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Anthropic API error: ${response.status} - ${errorText}`);
+    }
+
     const data = await response.json();
     
     if (!data.content || data.content.length === 0) {
-      throw new Error('No content received from AI');
+      throw new Error(`No content received from AI. Response: ${JSON.stringify(data)}`);
     }
     
     const content = data.content[0].text;
