@@ -11,8 +11,9 @@ import { base44 } from '@/api/base44Client';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { Sparkles, Target, TrendingUp, Clock, DollarSign, Shield, CheckCircle, ArrowRight, Zap, ChevronRight } from 'lucide-react';
+import { Sparkles, Target, TrendingUp, Clock, DollarSign, Shield, CheckCircle, ArrowRight, Zap, ChevronRight, Brain } from 'lucide-react';
 import { toast } from 'sonner';
+import InteractiveQuiz from './InteractiveQuiz';
 
 const INDUSTRIES = ['Technology', 'Healthcare', 'Finance', 'Real Estate', 'E-commerce', 'SaaS', 'Consumer Goods', 'Energy'];
 const DEAL_STRUCTURES = ['Equity', 'Revenue Share', 'Licensing', 'Convertible Note', 'SAFE'];
@@ -32,6 +33,8 @@ export default function AIOnboardingFlow({ isOpen, onClose }) {
   });
   const [onboardingPlan, setOnboardingPlan] = useState(null);
   const [suggestedActions, setSuggestedActions] = useState([]);
+  const [quiz, setQuiz] = useState(null);
+  const [quizResults, setQuizResults] = useState(null);
   const navigate = useNavigate();
 
   const generatePlanMutation = useMutation({
@@ -46,13 +49,30 @@ export default function AIOnboardingFlow({ isOpen, onClose }) {
     }
   });
 
-  const suggestActionsMutation = useMutation({
-    mutationFn: async () => {
-      const result = await base44.functions.invoke('suggestInitialActions', {});
+  const generateQuizMutation = useMutation({
+    mutationFn: async (prefs) => {
+      const result = await base44.functions.invoke('generateOnboardingQuiz', { 
+        preferences: prefs,
+        topic: 'Investment Basics'
+      });
       return result.data;
     },
     onSuccess: (data) => {
-      setSuggestedActions(data.suggested_actions || []);
+      setQuiz(data.quiz);
+    }
+  });
+
+  const suggestActionsMutation = useMutation({
+    mutationFn: async () => {
+      const result = await base44.functions.invoke('generateGranularActions', {
+        preferences,
+        quiz_results: quizResults,
+        onboarding_stage: 'completed_quiz'
+      });
+      return result.data;
+    },
+    onSuccess: (data) => {
+      setSuggestedActions(data.actions || []);
     }
   });
 
@@ -85,16 +105,24 @@ export default function AIOnboardingFlow({ isOpen, onClose }) {
     },
     onSuccess: async () => {
       await generatePlanMutation.mutateAsync(preferences);
-      await suggestActionsMutation.mutateAsync();
+      await generateQuizMutation.mutateAsync(preferences);
       toast.success('Preferences saved! Generating your personalized plan...');
     }
   });
 
+  const handleQuizComplete = async (results) => {
+    setQuizResults(results);
+    await suggestActionsMutation.mutateAsync();
+    toast.success(`Quiz complete! Score: ${results.score}/${results.total}`);
+    setStep(step + 1);
+  };
+
   const handleNext = async () => {
     if (step === 3) {
       await savePreferencesMutation.mutateAsync(preferences);
+    } else {
+      setStep(step + 1);
     }
-    setStep(step + 1);
   };
 
   const handleComplete = () => {
@@ -331,12 +359,48 @@ export default function AIOnboardingFlow({ isOpen, onClose }) {
       )
     },
     {
+      title: 'Test Your Knowledge',
+      icon: Brain,
+      content: quiz ? (
+        <div>
+          <p className="text-[#a0aec0] mb-4 text-sm">
+            Let's see how much you know! This helps us tailor your experience.
+          </p>
+          <InteractiveQuiz quiz={quiz} onComplete={handleQuizComplete} />
+        </div>
+      ) : (
+        <div className="text-center py-12">
+          <div className="spinner mx-auto mb-4" />
+          <p className="text-[#64748b]">Generating your personalized quiz...</p>
+        </div>
+      )
+    },
+    {
       title: 'Your Personalized Plan',
       icon: Sparkles,
       content: onboardingPlan && (
         <div className="space-y-6 max-h-[60vh] overflow-y-auto pr-2">
           <div className="bg-gradient-to-r from-[#8b85f7]/10 to-[#00b7eb]/10 border border-[#8b85f7]/30 rounded-lg p-4">
-            <p className="text-[#a0aec0]">{onboardingPlan.welcome_message}</p>
+            <div className="flex items-start gap-3">
+              <Sparkles className="w-5 h-5 text-[#8b85f7] flex-shrink-0 mt-1" />
+              <div>
+                <p className="text-white font-medium mb-2">
+                  Welcome, {preferences.passive_income_goal === 'financial_freedom' ? 'Future Investor' : 
+                           preferences.passive_income_goal === 'replace_job' ? 'Ambitious Builder' :
+                           preferences.passive_income_goal === 'supplement' ? 'Smart Earner' : 'Side Hustler'}!
+                </p>
+                <p className="text-[#a0aec0] text-sm">{onboardingPlan.welcome_message}</p>
+                {quizResults && (
+                  <div className="mt-3 pt-3 border-t border-[#2d1e50]">
+                    <p className="text-xs text-[#8b85f7]">
+                      ✓ Quiz Score: {quizResults.score}/{quizResults.total} • 
+                      Knowledge Level: {quizResults.score / quizResults.total >= 0.8 ? 'Advanced' : 
+                                       quizResults.score / quizResults.total >= 0.5 ? 'Intermediate' : 'Beginner'}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
 
           {onboardingPlan.learning_path && (
@@ -369,22 +433,42 @@ export default function AIOnboardingFlow({ isOpen, onClose }) {
             <div>
               <h4 className="font-semibold mb-3 flex items-center gap-2">
                 <Zap className="w-4 h-4 text-[#ff8e42]" />
-                Quick Start Actions
+                Your Next Best Actions
               </h4>
+              <p className="text-xs text-[#64748b] mb-3">
+                Based on your profile and quiz performance, start with these specific actions:
+              </p>
               <div className="space-y-2">
-                {suggestedActions.slice(0, 3).map((action, i) => (
+                {suggestedActions.slice(0, 5).map((action, i) => (
                   <Card key={i} className="border-[#2d1e50] bg-[#1a0f2e] cursor-pointer hover:border-[#8b85f7]/50 transition-all"
                     onClick={() => handleActionClick(action)}>
                     <CardContent className="p-3">
-                      <div className="flex items-center justify-between">
-                        <div className="flex-1">
-                          <div className="font-medium text-sm flex items-center gap-2">
-                            {action.title}
-                            <Badge variant="outline" className="text-xs">{action.estimated_time}</Badge>
-                          </div>
-                          <div className="text-xs text-[#64748b] mt-1">{action.description}</div>
+                      <div className="flex items-start gap-3">
+                        <div className="w-6 h-6 rounded-full bg-[#8b85f7]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <span className="text-xs font-bold text-[#8b85f7]">{i + 1}</span>
                         </div>
-                        <ChevronRight className="w-4 h-4 text-[#64748b]" />
+                        <div className="flex-1">
+                          <div className="font-medium text-sm flex items-center gap-2 flex-wrap">
+                            {action.title}
+                            <Badge variant="outline" className="text-xs">{action.estimated_time} min</Badge>
+                            {action.difficulty && (
+                              <Badge className={`text-xs ${
+                                action.difficulty === 'easy' ? 'bg-green-600/20 text-green-400' :
+                                action.difficulty === 'medium' ? 'bg-yellow-600/20 text-yellow-400' :
+                                'bg-red-600/20 text-red-400'
+                              }`}>
+                                {action.difficulty}
+                              </Badge>
+                            )}
+                          </div>
+                          <div className="text-xs text-[#64748b] mt-1 line-clamp-2">{action.description}</div>
+                          {action.success_metric && (
+                            <div className="text-xs text-[#8b85f7] mt-1">
+                              ✓ Success: {action.success_metric}
+                            </div>
+                          )}
+                        </div>
+                        <ChevronRight className="w-4 h-4 text-[#64748b] flex-shrink-0" />
                       </div>
                     </CardContent>
                   </Card>
