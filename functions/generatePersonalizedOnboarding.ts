@@ -1,22 +1,39 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { validatePreferences, sanitizeObject } from './utils/validation.js';
+import { checkRateLimit, validateContentLength, addSecurityHeaders } from './utils/security.js';
 
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     const user = await base44.auth.me();
-    
+
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
+
+    // Security checks
+    checkRateLimit(user.email);
+    validateContentLength(req);
 
     const PERPLEXITY_API_KEY = Deno.env.get('PERPLEXITY_API_KEY');
     if (!PERPLEXITY_API_KEY) {
       return Response.json({ error: 'PERPLEXITY_API_KEY not configured' }, { status: 500 });
     }
 
-    const { preferences } = await req.json();
+    const body = await req.json();
+    const { preferences } = body;
+
+    // Validate and sanitize input
+    if (!preferences || typeof preferences !== 'object') {
+      return Response.json({ error: 'Invalid preferences object' }, { status: 400 });
+    }
+
+    const validatedPrefs = validatePreferences(sanitizeObject(preferences));
 
     const onboardingPrompt = `You are an expert investment advisor creating a personalized onboarding experience. Based on these user preferences, generate:
+
+User Preferences:
+${JSON.stringify(validatedPrefs, null, 2)}
 
 User Profile:
 - Investment Goal: ${preferences.passive_income_goal || 'N/A'}
