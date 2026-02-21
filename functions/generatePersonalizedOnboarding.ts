@@ -62,6 +62,11 @@ Return as structured JSON.`;
     });
 
     const data = await response.json();
+    
+    if (!data.content || data.content.length === 0) {
+      throw new Error('No content received from AI');
+    }
+    
     const content = data.content[0].text;
     
     let onboardingPlan = {};
