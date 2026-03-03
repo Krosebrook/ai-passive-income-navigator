@@ -244,6 +244,8 @@ export default function PortfolioAnalyticsDashboard() {
           </CardContent>
         </Card>
       </div>
+        </>
+      )}
         </TabsContent>
       </Tabs>
     </div>
