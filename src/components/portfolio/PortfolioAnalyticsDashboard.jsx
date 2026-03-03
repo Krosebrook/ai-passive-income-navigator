@@ -31,12 +31,14 @@ export default function PortfolioAnalyticsDashboard() {
   }));
 
   const gainsData = [
-    { name: 'Unrealized', value: metrics.unrealized_gains || 0 },
-    { name: 'Realized', value: metrics.realized_gains || 0 }
+    { name: 'Unrealized', value: metrics?.unrealized_gains || 0 },
+    { name: 'Realized', value: metrics?.realized_gains || 0 }
   ];
 
-  const scenarioValue = metrics.current_value * scenarioMultiplier;
-  const scenarioROI = ((scenarioValue - metrics.total_invested) / metrics.total_invested) * 100;
+  const scenarioValue = (metrics?.current_value || 0) * scenarioMultiplier;
+  const scenarioROI = metrics?.total_invested > 0
+    ? ((scenarioValue - metrics.total_invested) / metrics.total_invested) * 100
+    : 0;
 
   return (
     <div className="space-y-6">
