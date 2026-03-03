@@ -22,30 +22,9 @@ export default function PortfolioAnalyticsDashboard() {
     }
   });
 
-  if (isLoading) {
-    return (
-      <div className="text-center py-12">
-        <div className="spinner mx-auto mb-4" />
-        <p className="text-[#64748b]">Calculating portfolio metrics...</p>
-      </div>
-    );
-  }
+  const noData = !isLoading && (!metrics || metrics.total_investments === 0);
 
-  if (!metrics || metrics.total_investments === 0) {
-    return (
-      <Card className="border-[#2d1e50] bg-[#1a0f2e]">
-        <CardContent className="py-12 text-center">
-          <Activity className="w-12 h-12 text-[#64748b] mx-auto mb-4" />
-          <h3 className="text-lg font-semibold mb-2">No Investments Yet</h3>
-          <p className="text-[#64748b]">
-            Start investing to see your portfolio analytics
-          </p>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  const industryData = Object.entries(metrics.by_industry || {}).map(([name, data]) => ({
+  const industryData = Object.entries(metrics?.by_industry || {}).map(([name, data]) => ({
     name,
     value: data.current_value,
     roi: data.roi
