@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { base44 } from '@/api/base44Client';
-import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { TrendingUp, DollarSign, PieChart as PieIcon, Activity, RefreshCw, Sparkles } from 'lucide-react';
+import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { Activity, RefreshCw, Sparkles } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import FinancialForecastPanel from './FinancialForecastPanel';
@@ -55,197 +54,191 @@ export default function PortfolioAnalyticsDashboard() {
 
       <Tabs defaultValue="analytics">
         <TabsList>
-          <TabsTrigger value="analytics" className="gap-2"><Activity className="w-4 h-4" />Analytics</TabsTrigger>
-          <TabsTrigger value="forecast" className="gap-2"><Sparkles className="w-4 h-4" />AI Forecast</TabsTrigger>
+          <TabsTrigger value="analytics" className="gap-2">
+            <Activity className="w-4 h-4" />Analytics
+          </TabsTrigger>
+          <TabsTrigger value="forecast" className="gap-2">
+            <Sparkles className="w-4 h-4" />AI Forecast
+          </TabsTrigger>
         </TabsList>
+
         <TabsContent value="forecast" className="mt-6">
           <FinancialForecastPanel />
         </TabsContent>
+
         <TabsContent value="analytics" className="mt-6">
-
-      {/* Loading / Empty states inside analytics tab */}
-      {isLoading && (
-        <div className="text-center py-12">
-          <div className="spinner mx-auto mb-4" />
-          <p className="text-[#64748b]">Calculating portfolio metrics...</p>
-        </div>
-      )}
-      {noData && (
-        <Card className="border-[#2d1e50] bg-[#1a0f2e]">
-          <CardContent className="py-12 text-center">
-            <Activity className="w-12 h-12 text-[#64748b] mx-auto mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No Investments Yet</h3>
-            <p className="text-[#64748b]">Start investing to see your portfolio analytics</p>
-          </CardContent>
-        </Card>
-      )}
-      {!isLoading && !noData && (
-        <>
-      {/* Key Metrics */}
-      <div className="grid md:grid-cols-4 gap-4">
-        <Card className="border-[#2d1e50] bg-[#1a0f2e]">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm text-[#64748b] font-normal">Total Invested</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">${metrics.total_invested?.toLocaleString() || 0}</p>
-          </CardContent>
-        </Card>
-
-        <Card className="border-[#2d1e50] bg-[#1a0f2e]">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm text-[#64748b] font-normal">Current Value</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold text-[#00b7eb]">${metrics.current_value?.toLocaleString() || 0}</p>
-          </CardContent>
-        </Card>
-
-        <Card className="border-[#2d1e50] bg-[#1a0f2e]">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm text-[#64748b] font-normal">ROI</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className={`text-2xl font-bold ${metrics.roi >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-              {metrics.roi?.toFixed(2) || 0}%
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="border-[#2d1e50] bg-[#1a0f2e]">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm text-[#64748b] font-normal">IRR</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className={`text-2xl font-bold ${metrics.irr >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-              {metrics.irr?.toFixed(2) || 0}%
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Charts Row 1 */}
-      <div className="grid md:grid-cols-2 gap-6">
-        <Card className="border-[#2d1e50] bg-[#1a0f2e]">
-          <CardHeader>
-            <CardTitle className="text-base">Performance Over Time</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={250}>
-              <LineChart data={metrics.performance_history || []}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#2d1e50" />
-                <XAxis dataKey="month" stroke="#64748b" fontSize={12} />
-                <YAxis stroke="#64748b" fontSize={12} />
-                <Tooltip 
-                  contentStyle={{ backgroundColor: '#1a0f2e', border: '1px solid #2d1e50' }}
-                  labelStyle={{ color: '#8b85f7' }}
-                />
-                <Line type="monotone" dataKey="value" stroke="#8b85f7" strokeWidth={2} dot={false} />
-              </LineChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
-        <Card className="border-[#2d1e50] bg-[#1a0f2e]">
-          <CardHeader>
-            <CardTitle className="text-base">Industry Breakdown</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={250}>
-              <PieChart>
-                <Pie
-                  data={industryData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {industryData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip 
-                  contentStyle={{ backgroundColor: '#1a0f2e', border: '1px solid #2d1e50' }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Charts Row 2 */}
-      <div className="grid md:grid-cols-2 gap-6">
-        <Card className="border-[#2d1e50] bg-[#1a0f2e]">
-          <CardHeader>
-            <CardTitle className="text-base">Unrealized vs Realized Gains</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={gainsData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#2d1e50" />
-                <XAxis dataKey="name" stroke="#64748b" />
-                <YAxis stroke="#64748b" />
-                <Tooltip 
-                  contentStyle={{ backgroundColor: '#1a0f2e', border: '1px solid #2d1e50' }}
-                />
-                <Bar dataKey="value" fill="#00b7eb" />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
-        <Card className="border-[#2d1e50] bg-[#1a0f2e]">
-          <CardHeader>
-            <CardTitle className="text-base">Scenario Analysis</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <label className="text-sm text-[#64748b] mb-2 block">
-                Market Multiplier: {scenarioMultiplier.toFixed(2)}x
-              </label>
-              <input
-                type="range"
-                min="0.5"
-                max="2"
-                step="0.1"
-                value={scenarioMultiplier}
-                onChange={(e) => setScenarioMultiplier(parseFloat(e.target.value))}
-                className="w-full"
-              />
+          {isLoading && (
+            <div className="text-center py-12">
+              <div className="spinner mx-auto mb-4" />
+              <p className="text-[#64748b]">Calculating portfolio metrics...</p>
             </div>
+          )}
 
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-[#64748b]">Scenario Value:</span>
-                <span className="font-bold">${scenarioValue.toLocaleString()}</span>
+          {noData && (
+            <Card className="border-[#2d1e50] bg-[#1a0f2e]">
+              <CardContent className="py-12 text-center">
+                <Activity className="w-12 h-12 text-[#64748b] mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2">No Investments Yet</h3>
+                <p className="text-[#64748b]">Start investing to see your portfolio analytics</p>
+              </CardContent>
+            </Card>
+          )}
+
+          {!isLoading && !noData && (
+            <div className="space-y-6">
+              {/* Key Metrics */}
+              <div className="grid md:grid-cols-4 gap-4">
+                <Card className="border-[#2d1e50] bg-[#1a0f2e]">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-sm text-[#64748b] font-normal">Total Invested</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-2xl font-bold">${metrics.total_invested?.toLocaleString() || 0}</p>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-[#2d1e50] bg-[#1a0f2e]">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-sm text-[#64748b] font-normal">Current Value</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-2xl font-bold text-[#00b7eb]">${metrics.current_value?.toLocaleString() || 0}</p>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-[#2d1e50] bg-[#1a0f2e]">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-sm text-[#64748b] font-normal">ROI</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className={`text-2xl font-bold ${metrics.roi >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                      {metrics.roi?.toFixed(2) || 0}%
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-[#2d1e50] bg-[#1a0f2e]">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-sm text-[#64748b] font-normal">IRR</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className={`text-2xl font-bold ${metrics.irr >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                      {metrics.irr?.toFixed(2) || 0}%
+                    </p>
+                  </CardContent>
+                </Card>
               </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-[#64748b]">Scenario ROI:</span>
-                <span className={`font-bold ${scenarioROI >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                  {scenarioROI.toFixed(2)}%
-                </span>
+
+              {/* Charts Row 1 */}
+              <div className="grid md:grid-cols-2 gap-6">
+                <Card className="border-[#2d1e50] bg-[#1a0f2e]">
+                  <CardHeader>
+                    <CardTitle className="text-base">Performance Over Time</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={250}>
+                      <LineChart data={metrics.performance_history || []}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#2d1e50" />
+                        <XAxis dataKey="month" stroke="#64748b" fontSize={12} />
+                        <YAxis stroke="#64748b" fontSize={12} />
+                        <Tooltip contentStyle={{ backgroundColor: '#1a0f2e', border: '1px solid #2d1e50' }} labelStyle={{ color: '#8b85f7' }} />
+                        <Line type="monotone" dataKey="value" stroke="#8b85f7" strokeWidth={2} dot={false} />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-[#2d1e50] bg-[#1a0f2e]">
+                  <CardHeader>
+                    <CardTitle className="text-base">Industry Breakdown</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={250}>
+                      <PieChart>
+                        <Pie
+                          data={industryData}
+                          cx="50%"
+                          cy="50%"
+                          labelLine={false}
+                          label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                          outerRadius={80}
+                          dataKey="value"
+                        >
+                          {industryData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                          ))}
+                        </Pie>
+                        <Tooltip contentStyle={{ backgroundColor: '#1a0f2e', border: '1px solid #2d1e50' }} />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
               </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-[#64748b]">Change from Current:</span>
-                <span className="font-bold">
-                  {((scenarioMultiplier - 1) * 100).toFixed(1)}%
-                </span>
+
+              {/* Charts Row 2 */}
+              <div className="grid md:grid-cols-2 gap-6">
+                <Card className="border-[#2d1e50] bg-[#1a0f2e]">
+                  <CardHeader>
+                    <CardTitle className="text-base">Unrealized vs Realized Gains</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={250}>
+                      <BarChart data={gainsData}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#2d1e50" />
+                        <XAxis dataKey="name" stroke="#64748b" />
+                        <YAxis stroke="#64748b" />
+                        <Tooltip contentStyle={{ backgroundColor: '#1a0f2e', border: '1px solid #2d1e50' }} />
+                        <Bar dataKey="value" fill="#00b7eb" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-[#2d1e50] bg-[#1a0f2e]">
+                  <CardHeader>
+                    <CardTitle className="text-base">Scenario Analysis</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <label className="text-sm text-[#64748b] mb-2 block">
+                        Market Multiplier: {scenarioMultiplier.toFixed(2)}x
+                      </label>
+                      <input
+                        type="range"
+                        min="0.5"
+                        max="2"
+                        step="0.1"
+                        value={scenarioMultiplier}
+                        onChange={(e) => setScenarioMultiplier(parseFloat(e.target.value))}
+                        className="w-full"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-[#64748b]">Scenario Value:</span>
+                        <span className="font-bold">${scenarioValue.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-[#64748b]">Scenario ROI:</span>
+                        <span className={`font-bold ${scenarioROI >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                          {scenarioROI.toFixed(2)}%
+                        </span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-[#64748b]">Change from Current:</span>
+                        <span className="font-bold">{((scenarioMultiplier - 1) * 100).toFixed(1)}%</span>
+                      </div>
+                    </div>
+                    <div className="pt-4 border-t border-white/10">
+                      <p className="text-xs text-[#64748b]">
+                        Adjust the slider to see how market changes would affect your portfolio
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
             </div>
-
-            <div className="pt-4 border-t border-white/10">
-              <p className="text-xs text-[#64748b]">
-                Adjust the slider to see how market changes would affect your portfolio
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-        </>
-      )}
+          )}
         </TabsContent>
       </Tabs>
     </div>
