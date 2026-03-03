@@ -4,8 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { base44 } from '@/api/base44Client';
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { TrendingUp, DollarSign, PieChart as PieIcon, Activity, RefreshCw } from 'lucide-react';
+import { TrendingUp, DollarSign, PieChart as PieIcon, Activity, RefreshCw, Sparkles } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import FinancialForecastPanel from './FinancialForecastPanel';
 
 const COLORS = ['#8b85f7', '#00b7eb', '#ff8e42', '#10b981', '#ef4444', '#a855f7'];
 
@@ -69,6 +71,16 @@ export default function PortfolioAnalyticsDashboard() {
           Refresh
         </Button>
       </div>
+
+      <Tabs defaultValue="analytics">
+        <TabsList>
+          <TabsTrigger value="analytics" className="gap-2"><Activity className="w-4 h-4" />Analytics</TabsTrigger>
+          <TabsTrigger value="forecast" className="gap-2"><Sparkles className="w-4 h-4" />AI Forecast</TabsTrigger>
+        </TabsList>
+        <TabsContent value="forecast" className="mt-6">
+          <FinancialForecastPanel />
+        </TabsContent>
+        <TabsContent value="analytics" className="mt-6">
 
       {/* Key Metrics */}
       <div className="grid md:grid-cols-4 gap-4">
@@ -233,6 +245,8 @@ export default function PortfolioAnalyticsDashboard() {
           </CardContent>
         </Card>
       </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
