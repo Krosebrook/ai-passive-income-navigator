@@ -15,7 +15,8 @@ import DealPerformanceCorrelation from '@/components/ai/DealPerformanceCorrelati
 import EmergingOpportunitiesPanel from '@/components/trends/EmergingOpportunitiesPanel';
 import AIOriginatedDeals from '@/components/deals/AIOriginatedDeals';
 import AutoDiscoveredDeals from '@/components/deals/AutoDiscoveredDeals';
-import { Sparkles, TrendingUp, Zap, MessageSquare, Brain, Rss, BarChart3, Activity, LineChart, Rocket, Lightbulb, Search } from 'lucide-react';
+import DealScreener from '@/components/deals/DealScreener';
+import { Sparkles, TrendingUp, Zap, MessageSquare, Brain, Rss, BarChart3, Activity, LineChart, Rocket, Lightbulb, Search, SlidersHorizontal } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
 export default function AICoachPage() {
@@ -46,8 +47,12 @@ export default function AICoachPage() {
                     subtitle="Real-time market data, sentiment analysis, and deal performance insights"
                 />
 
-                <Tabs defaultValue="discover" className="mt-8">
-                    <TabsList className="grid w-full grid-cols-12 max-w-full overflow-x-auto">
+                <Tabs defaultValue="screener" className="mt-8">
+                    <TabsList className="grid w-full grid-cols-13 max-w-full overflow-x-auto">
+                        <TabsTrigger value="screener" className="gap-2">
+                            <SlidersHorizontal className="w-4 h-4" />
+                            Screener
+                        </TabsTrigger>
                         <TabsTrigger value="discover" className="gap-2">
                             <Search className="w-4 h-4" />
                             Discover
@@ -97,6 +102,10 @@ export default function AICoachPage() {
                             Assistant
                         </TabsTrigger>
                     </TabsList>
+
+                    <TabsContent value="screener" className="mt-6">
+                        <DealScreener />
+                    </TabsContent>
 
                     <TabsContent value="discover" className="mt-6">
                         <AutoDiscoveredDeals />
