@@ -63,6 +63,24 @@ export default function PortfolioAnalyticsDashboard() {
         </TabsContent>
         <TabsContent value="analytics" className="mt-6">
 
+      {/* Loading / Empty states inside analytics tab */}
+      {isLoading && (
+        <div className="text-center py-12">
+          <div className="spinner mx-auto mb-4" />
+          <p className="text-[#64748b]">Calculating portfolio metrics...</p>
+        </div>
+      )}
+      {noData && (
+        <Card className="border-[#2d1e50] bg-[#1a0f2e]">
+          <CardContent className="py-12 text-center">
+            <Activity className="w-12 h-12 text-[#64748b] mx-auto mb-4" />
+            <h3 className="text-lg font-semibold mb-2">No Investments Yet</h3>
+            <p className="text-[#64748b]">Start investing to see your portfolio analytics</p>
+          </CardContent>
+        </Card>
+      )}
+      {!isLoading && !noData && (
+        <>
       {/* Key Metrics */}
       <div className="grid md:grid-cols-4 gap-4">
         <Card className="border-[#2d1e50] bg-[#1a0f2e]">
