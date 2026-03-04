@@ -124,7 +124,7 @@ export default function SourcedOpportunitiesPanel() {
 
             {/* Status Filter */}
             <div className="flex gap-2">
-                {['new', 'reviewed', 'interested', 'dismissed'].map(status => (
+                {['pending', 'accepted', 'rejected', 'dismissed', 'in_progress'].map(status => (
                     <Badge
                         key={status}
                         variant={filterStatus === status ? 'default' : 'outline'}
