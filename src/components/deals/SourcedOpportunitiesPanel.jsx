@@ -16,11 +16,11 @@ export default function SourcedOpportunitiesPanel() {
     const queryClient = useQueryClient();
     const [selectedDeal, setSelectedDeal] = useState(null);
     const [showDueDiligence, setShowDueDiligence] = useState(false);
-    const [filterStatus, setFilterStatus] = useState('new');
+    const [filterStatus, setFilterStatus] = useState('pending');
 
     // Fetch sourced deals
     const { data: deals = [], isLoading } = useQuery({
-        queryKey: ['sourced-deals'],
+        queryKey: ['sourced-deals', filterStatus],
         queryFn: async () => {
             const results = await base44.entities.SourcedDealOpportunity.filter({ status: filterStatus });
             return results.sort((a, b) => (b.ai_match_score || 0) - (a.ai_match_score || 0));
