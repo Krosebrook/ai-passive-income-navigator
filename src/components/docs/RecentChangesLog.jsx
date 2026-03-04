@@ -1,11 +1,11 @@
 # FlashFusion — Recent Changes Log & Refactor Notes
-### Turns 1–7 Debug, Refactor & Documentation
+### Turns 1–15 Debug, Refactor & Documentation
 
-> **Version:** 1.1 | **Date:** March 2026
+> **Version:** 1.2 | **Date:** March 2026
 
 ---
 
-## Summary of Changes (Last 7 Turns)
+## Summary of Changes
 
 ---
 
@@ -105,13 +105,65 @@
 
 ---
 
-### Turn 7 (this turn) — Use Case Documentation
+### Turn 7 (same turn) — Use Case Documentation Created
 **File:** `components/docs/UseCaseDocumentation.md`
 
 **What was created:**
-- Comprehensive inner/outer/end user use case map (see that file)
+- Comprehensive inner/outer/end user use case map
 - 4 end user personas, 3 outer user personas, 3 inner user categories
 - Cross-cutting use cases table, technical integration mapping, 2025 market context
+
+---
+
+### Turn 8 — RecentChangesLog Documentation Created (v1.1)
+**File:** `components/docs/RecentChangesLog.md`
+
+**What was created:**
+- Full changelog for Turns 1–7 written and committed
+- Included: bug registry table, component architecture map, data flow diagrams for Deal Screening and Portfolio Forecast flows
+- Version 1.1
+
+---
+
+### Turn 9 — Build Error: JSX Fragment Mismatch Fixed
+**File:** `components/portfolio/PortfolioAnalyticsDashboard.jsx`
+
+**Error:**
+```
+SyntaxError: Expected corresponding JSX closing tag for <>.
+/PortfolioAnalyticsDashboard.jsx:247:10 — Unexpected closing "TabsContent" tag does not match opening fragment tag
+```
+
+**Root cause:**
+- A previous attempt to fix the empty-state/Forecast tab blocking bug introduced an orphaned `<>` fragment without a matching closing tag. The `</TabsContent>` was closing a `<>` fragment instead of the content block.
+
+**Fix applied:**
+- Rewrote `PortfolioAnalyticsDashboard.jsx` from scratch with clean, correct JSX nesting
+- Replaced the `<>` fragment wrapper with `<div className="space-y-6">` inside `{!isLoading && !noData && (...)}` block
+- Removed all orphaned/mismatched tags
+- Cleaned up unused imports (`Badge`, `Legend` from recharts)
+- Final structure:
+  ```
+  <Tabs>
+    <TabsContent value="forecast"> <FinancialForecastPanel /> </TabsContent>
+    <TabsContent value="analytics">
+      {isLoading && ...}
+      {noData && ...}
+      {!isLoading && !noData && <div className="space-y-6">...</div>}
+    </TabsContent>
+  </Tabs>
+  ```
+
+---
+
+### Turn 10 — Documentation Updated (v1.2, this turn)
+**File:** `components/docs/RecentChangesLog.md`
+
+**What changed:**
+- Version bumped to 1.2
+- Added Turn 8 (changelog creation), Turn 9 (build error fix), and Turn 10 (this update)
+- Bug registry updated with JSX fragment error (Bug #6)
+- Architecture map and data flow diagrams preserved and confirmed accurate
 
 ---
 
@@ -124,6 +176,7 @@
 | 3 | `PortfolioAnalyticsDashboard.jsx` | Divide-by-zero in `scenarioROI` | Guard: only compute if `total_invested > 0` |
 | 4 | `forecastPortfolioPerformance.js` | Outdated SDK `@0.8.6` | Updated to `@0.8.20` |
 | 5 | `screenAndRankDeals.js` | Outdated SDK `@0.8.6` | Updated to `@0.8.20` |
+| 6 | `PortfolioAnalyticsDashboard.jsx` | JSX fragment `<>` mismatch caused build failure | Rewrote with clean `<div>` wrapper, no orphaned tags |
 
 ---
 
@@ -173,4 +226,15 @@ User selects horizon + optional goal → FinancialForecastPanel.jsx
 
 ---
 
-*Auto-generated from codebase analysis. Update after each sprint.*
+## JSX Nesting Rules (Lessons Learned)
+
+After the Turn 9 build error, these rules should be followed for all future edits to tab-based components:
+
+1. **Never use `<>` fragments as direct children of `TabsContent`** — use `<div>` instead.
+2. **Conditional rendering blocks** (`{condition && (...)}`) should wrap `<div>` containers, not raw fragments.
+3. **When adding `<>` fragments**, always verify the closing `</>` is at the same indentation level before saving.
+4. **Prefer full file rewrites** for components with complex nesting rather than partial edits when structure is unclear.
+
+---
+
+*Auto-updated. Version 1.2 — March 2026.*
