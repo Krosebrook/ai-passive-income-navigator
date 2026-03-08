@@ -56,6 +56,10 @@ Deno.serve(async (req) => {
     });
 
     const data = await response.json();
+    if (!data.choices?.[0]?.message?.content) {
+      console.error('Unexpected Perplexity response:', JSON.stringify(data));
+      return Response.json({ error: 'Unexpected response from Perplexity API', details: data }, { status: 500 });
+    }
     const content = data.choices[0].message.content;
     
     let discoveredDeals = [];
