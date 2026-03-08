@@ -10,101 +10,68 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Unauthorized. Admin access required.' }, { status: 403 });
     }
 
-    const { user_email, backup_type = 'full' } = await req.json();
-    
-    // Validate input
-    if (!user_email) {
-      return Response.json({ error: 'user_email is required' }, { status: 400 });
+    // Support both scheduled (no payload) and manual (user_email provided) invocations
+    let body = {};
+    try { body = await req.json(); } catch (_) {}
+    const { user_email, backup_type = 'full' } = body;
+
+    // If user_email is provided, back up that single user; otherwise back up ALL users
+    let usersToBackup = [];
+    if (user_email) {
+      usersToBackup = [{ email: user_email }];
+    } else {
+      console.log('No user_email provided — running full backup for all users');
+      usersToBackup = await base44.asServiceRole.entities.User.list();
     }
 
-    console.log(`Starting ${backup_type} backup for user: ${user_email}`);
-    
-    const backupData = {
-      timestamp: new Date().toISOString(),
-      user_email,
-      backup_type,
-      data: {}
-    };
+    const results = [];
 
-    // Backup UserPreferences
-    const preferences = await base44.asServiceRole.entities.UserPreferences.filter({
-      created_by: user_email
-    });
-    backupData.data.preferences = preferences;
+    for (const u of usersToBackup) {
+      const email = u.email;
+      console.log(`Starting ${backup_type} backup for user: ${email}`);
 
-    // Backup Investments
-    const investments = await base44.asServiceRole.entities.Investment.filter({
-      user_email
-    });
-    backupData.data.investments = investments;
+      const backupData = {
+        timestamp: new Date().toISOString(),
+        user_email: email,
+        backup_type,
+        data: {}
+      };
 
-    // Backup SourcedDealOpportunity
-    const deals = await base44.asServiceRole.entities.SourcedDealOpportunity.filter({
-      created_by: user_email
-    });
-    backupData.data.deals = deals;
+      const [preferences, investments, deals, goals, watchlists, alerts, achievements, events] =
+        await Promise.all([
+          base44.asServiceRole.entities.UserPreferences.filter({ created_by: email }),
+          base44.asServiceRole.entities.Investment.filter({ user_email: email }),
+          base44.asServiceRole.entities.SourcedDealOpportunity.filter({ created_by: email }),
+          base44.asServiceRole.entities.FinancialGoal.filter({ user_email: email }),
+          base44.asServiceRole.entities.SharedWatchlist.filter({ owner_email: email }),
+          base44.asServiceRole.entities.MarketAlert.filter({ created_by: email }),
+          base44.asServiceRole.entities.UserAchievement.filter({ user_email: email }),
+          base44.asServiceRole.entities.GamificationEvent.filter({ user_email: email }),
+        ]);
 
-    // Backup FinancialGoal
-    const goals = await base44.asServiceRole.entities.FinancialGoal.filter({
-      user_email
-    });
-    backupData.data.goals = goals;
+      backupData.data = { preferences, investments, deals, goals, watchlists, alerts, achievements, events };
 
-    // Backup SharedWatchlist
-    const watchlists = await base44.asServiceRole.entities.SharedWatchlist.filter({
-      owner_email: user_email
-    });
-    backupData.data.watchlists = watchlists;
+      const backupSize = JSON.stringify(backupData).length;
 
-    // Backup MarketAlert
-    const alerts = await base44.asServiceRole.entities.MarketAlert.filter({
-      created_by: user_email
-    });
-    backupData.data.alerts = alerts;
+      const backupRecord = await base44.asServiceRole.entities.UserBackup.create({
+        user_email: email,
+        backup_type,
+        backup_size: backupSize,
+        entities_backed_up: Object.keys(backupData.data),
+        backup_data: backupData,
+        status: 'completed',
+        backup_timestamp: new Date().toISOString()
+      });
 
-    // Backup UserAchievement
-    const achievements = await base44.asServiceRole.entities.UserAchievement.filter({
-      user_email
-    });
-    backupData.data.achievements = achievements;
-
-    // Backup GamificationEvent
-    const events = await base44.asServiceRole.entities.GamificationEvent.filter({
-      user_email
-    });
-    backupData.data.events = events;
-
-    // Calculate backup size
-    const backupSize = JSON.stringify(backupData).length;
-    
-    // Create backup record
-    const backupRecord = await base44.asServiceRole.entities.UserBackup.create({
-      user_email,
-      backup_type,
-      backup_size: backupSize,
-      entities_backed_up: Object.keys(backupData.data),
-      backup_data: backupData,
-      status: 'completed',
-      backup_timestamp: new Date().toISOString()
-    });
-
-    console.log(`Backup completed. Size: ${backupSize} bytes, ID: ${backupRecord.id}`);
+      console.log(`Backup completed for ${email}. Size: ${backupSize} bytes, ID: ${backupRecord.id}`);
+      results.push({ user_email: email, backup_id: backupRecord.id, backup_size: backupSize });
+    }
 
     return Response.json({
       success: true,
-      backup_id: backupRecord.id,
-      backup_size: backupSize,
-      entities_count: {
-        preferences: preferences.length,
-        investments: investments.length,
-        deals: deals.length,
-        goals: goals.length,
-        watchlists: watchlists.length,
-        alerts: alerts.length,
-        achievements: achievements.length,
-        events: events.length
-      },
-      timestamp: backupData.timestamp
+      users_backed_up: results.length,
+      results,
+      timestamp: new Date().toISOString()
     });
 
   } catch (error) {
