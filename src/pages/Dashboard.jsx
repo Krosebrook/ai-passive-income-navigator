@@ -54,6 +54,10 @@ export default function Dashboard() {
               <TrendingUp className="w-4 h-4 mr-2" />
               Predictive Analytics
             </TabsTrigger>
+            <TabsTrigger value="watchlist" className="data-[state=active]:bg-[#8b85f7]">
+              <Bookmark className="w-4 h-4 mr-2" />
+              Watchlist
+            </TabsTrigger>
             <TabsTrigger value="market-intel" className="data-[state=active]:bg-[#8b85f7]">
               <BarChart2 className="w-4 h-4 mr-2" />
               Market Intel
@@ -101,6 +105,11 @@ export default function Dashboard() {
           {/* Predictive Analytics Tab */}
           <TabsContent value="predictive">
             <PredictiveInsightsDashboard />
+          </TabsContent>
+
+          {/* Watchlist Tab */}
+          <TabsContent value="watchlist">
+            <WatchlistDashboard />
           </TabsContent>
 
           {/* Market Intelligence Tab */}
