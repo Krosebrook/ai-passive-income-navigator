@@ -102,6 +102,16 @@ export default function Dashboard() {
             <PredictiveInsightsDashboard />
           </TabsContent>
 
+          {/* Market Intelligence Tab */}
+          <TabsContent value="market-intel">
+            <MarketIntelligenceCharts />
+          </TabsContent>
+
+          {/* Deal Risk-Reward Tab */}
+          <TabsContent value="deal-profiles">
+            <DealRiskRewardCharts />
+          </TabsContent>
+
           {/* Customize Tab */}
           <TabsContent value="customize">
             <CustomizableWidgets>
