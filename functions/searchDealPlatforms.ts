@@ -3,27 +3,22 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
-    
-    if (!user) {
-      return Response.json({ error: 'Unauthorized' }, { status: 401 });
-    }
 
     const PERPLEXITY_API_KEY = Deno.env.get('PERPLEXITY_API_KEY');
     if (!PERPLEXITY_API_KEY) {
       return Response.json({ error: 'PERPLEXITY_API_KEY not configured' }, { status: 500 });
     }
 
-    // Fetch user preferences
-    const preferences = await base44.entities.UserPreferences.filter({ 
-      user_email: user.email 
-    });
-    const userPrefs = preferences[0] || {};
-    
-    const industries = userPrefs.target_industries || ['technology', 'finance'];
-    const investmentMin = userPrefs.investment_size_min || 10000;
-    const investmentMax = userPrefs.investment_size_max || 500000;
-    const dealStructures = userPrefs.preferred_deal_structures || ['equity', 'revenue_share'];
+    // Fetch all user preferences (runs for all users when called by scheduler)
+    const allPreferences = await base44.asServiceRole.entities.UserPreferences.list();
+    // Aggregate unique industries and investment ranges across all users for a broad search
+    const allIndustries = [...new Set(allPreferences.flatMap(p => p.target_industries || []))];
+    const allStructures = [...new Set(allPreferences.flatMap(p => p.preferred_deal_structures || []))];
+
+    const industries = allIndustries.length > 0 ? allIndustries : ['technology', 'finance'];
+    const investmentMin = Math.min(...allPreferences.map(p => p.investment_size_min || 10000));
+    const investmentMax = Math.max(...allPreferences.map(p => p.investment_size_max || 500000));
+    const dealStructures = allStructures.length > 0 ? allStructures : ['equity', 'revenue_share'];
 
     // Search query for deal discovery
     const searchQuery = `Search recent startup investment opportunities, funding rounds, and deals from the past 30 days in these industries: ${industries.join(', ')}.
