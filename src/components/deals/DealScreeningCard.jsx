@@ -3,6 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CheckCircle2, AlertTriangle, ChevronDown, ChevronUp, DollarSign, TrendingUp, Shield } from 'lucide-react';
+import WatchButton from '@/components/deals/WatchButton';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const FIT_CONFIG = {

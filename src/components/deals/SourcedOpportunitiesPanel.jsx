@@ -9,6 +9,7 @@ import {
     Sparkles, TrendingUp, AlertCircle, CheckCircle2, 
     ExternalLink, Loader2, RefreshCw, Star, FileSearch 
 } from 'lucide-react';
+import WatchButton from '@/components/deals/WatchButton';
 import { toast } from 'sonner';
 import DueDiligenceAssistant from '@/components/deals/DueDiligenceAssistant';
 
