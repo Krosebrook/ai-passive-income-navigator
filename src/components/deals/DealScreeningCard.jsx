@@ -101,7 +101,9 @@ export default function DealScreeningCard({ deal, rank }) {
             </div>
           </div>
 
-          {/* Expand / Collapse */}
+          {/* Watch + Expand */}
+          <div className="flex items-center justify-between mt-3">
+            <WatchButton deal={deal} size="sm" />
           <Button
             variant="ghost"
             size="sm"

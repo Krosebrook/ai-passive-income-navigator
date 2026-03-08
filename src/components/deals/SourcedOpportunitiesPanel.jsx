@@ -214,6 +214,7 @@ export default function SourcedOpportunitiesPanel() {
 
                                 {/* Action Buttons */}
                                 <div className="flex gap-2 pt-2">
+                                   <WatchButton deal={deal} />
                                    <Button
                                        size="sm"
                                        variant="outline"
