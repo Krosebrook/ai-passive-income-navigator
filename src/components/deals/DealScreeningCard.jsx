@@ -104,14 +104,14 @@ export default function DealScreeningCard({ deal, rank }) {
           {/* Watch + Expand */}
           <div className="flex items-center justify-between mt-3">
             <WatchButton deal={deal} size="sm" />
-          <Button
-            variant="ghost"
-            size="sm"
-            className="w-full mt-3 h-7 text-xs text-[#64748b] hover:text-[#8b85f7]"
-            onClick={() => setExpanded(!expanded)}
-          >
-            {expanded ? <><ChevronUp className="w-3 h-3 mr-1" />Hide details</> : <><ChevronDown className="w-3 h-3 mr-1" />Show match details</>}
-          </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-7 text-xs text-[#64748b] hover:text-[#8b85f7]"
+              onClick={() => setExpanded(!expanded)}
+            >
+              {expanded ? <><ChevronUp className="w-3 h-3 mr-1" />Hide details</> : <><ChevronDown className="w-3 h-3 mr-1" />Show match details</>}
+            </Button>
           </div>
 
           <AnimatePresence>
