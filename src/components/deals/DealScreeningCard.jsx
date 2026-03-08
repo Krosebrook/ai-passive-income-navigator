@@ -112,6 +112,7 @@ export default function DealScreeningCard({ deal, rank }) {
           >
             {expanded ? <><ChevronUp className="w-3 h-3 mr-1" />Hide details</> : <><ChevronDown className="w-3 h-3 mr-1" />Show match details</>}
           </Button>
+          </div>
 
           <AnimatePresence>
             {expanded && (
