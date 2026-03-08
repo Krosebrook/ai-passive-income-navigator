@@ -53,6 +53,14 @@ export default function Dashboard() {
               <TrendingUp className="w-4 h-4 mr-2" />
               Predictive Analytics
             </TabsTrigger>
+            <TabsTrigger value="market-intel" className="data-[state=active]:bg-[#8b85f7]">
+              <BarChart2 className="w-4 h-4 mr-2" />
+              Market Intel
+            </TabsTrigger>
+            <TabsTrigger value="deal-profiles" className="data-[state=active]:bg-[#8b85f7]">
+              <Target className="w-4 h-4 mr-2" />
+              Deal Profiles
+            </TabsTrigger>
             <TabsTrigger value="customize" className="data-[state=active]:bg-[#8b85f7]">
               <Settings className="w-4 h-4 mr-2" />
               Customize
