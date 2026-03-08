@@ -75,7 +75,7 @@ Deno.serve(async (req) => {
     // Store discovered deals for scoring
     const storedDeals = [];
     for (const deal of discoveredDeals) {
-      const stored = await base44.entities.SourcedDealOpportunity.create({
+      const stored = await base44.asServiceRole.entities.SourcedDealOpportunity.create({
         title: deal.company_name || deal.name || 'Untitled Deal',
         industry: deal.industry || industries[0],
         summary: deal.description || 'Deal discovered from external sources',
