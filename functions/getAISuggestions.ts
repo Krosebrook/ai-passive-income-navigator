@@ -65,38 +65,38 @@ const PROMPT_TEMPLATES = {
            Return a JSON array of strings: ["summary1", "summary2", ...]`,
   }),
   deal_title: (ctx) => ({
-    system: 'You are a deal naming expert. Create clear, compelling investment opportunity titles.',
+    system: 'You are a deal naming expert. Create clear, compelling investment opportunity titles. Always respond with valid JSON.',
     user: `Generate ${ctx._count} distinct deal titles for a ${ctx.industry ?? 'business'} investment opportunity.
            ${ctx.summary ? `Context: ${ctx.summary}` : ''}
-           Return a JSON array of strings.`,
+           Respond with JSON: {"suggestions": ["title1", "title2", "title3"]}`,
   }),
   deal_how_to_pursue: (ctx) => ({
-    system: 'You are a seasoned deal sourcer with deep M&A experience.',
+    system: 'You are a seasoned deal sourcer with deep M&A experience. Always respond with valid JSON.',
     user: `Write ${ctx._count} distinct action plans for pursuing a ${ctx.industry ?? 'business'} deal.
            ${ctx.title ? `Deal: ${ctx.title}` : ''}
-           Each should be 2-3 sentences covering first contact, due diligence, and closing approach.
-           Return a JSON array of strings.`,
+           Each 2-3 sentences covering first contact, due diligence, and closing.
+           Respond with JSON: {"suggestions": ["plan1", "plan2", "plan3"]}`,
   }),
   // Portfolio / idea fields
   idea_description: (ctx) => ({
-    system: 'You are a business development expert helping investors craft passive income ideas.',
+    system: 'You are a business development expert helping investors craft passive income ideas. Always respond with valid JSON.',
     user: `Generate ${ctx._count} compelling descriptions for a ${ctx.category ?? 'business'} passive income idea.
            ${ctx.name ? `Idea name: ${ctx.name}` : ''}
            Each 2-3 sentences, focus on scalability and ROI potential.
-           Return a JSON array of strings.`,
+           Respond with JSON: {"suggestions": ["desc1", "desc2", "desc3"]}`,
   }),
   goal_name: (ctx) => ({
-    system: 'You help investors set clear, motivating financial goals.',
-    user: `Suggest ${ctx._count} specific financial goal names for someone with a ${ctx.risk_tolerance ?? 'moderate'} risk tolerance targeting ${ctx.target_return ?? 20}% returns.
-           Return a JSON array of concise goal name strings.`,
+    system: 'You help investors set clear, motivating financial goals. Always respond with valid JSON.',
+    user: `Suggest ${ctx._count} specific financial goal names for someone with ${ctx.risk_tolerance ?? 'moderate'} risk tolerance targeting ${ctx.target_return ?? 20}% returns.
+           Respond with JSON: {"suggestions": ["goal1", "goal2", "goal3"]}`,
   }),
   // Generic fallback for unregistered fields
   _default: (ctx) => ({
-    system: 'You are a helpful AI assistant generating form field suggestions.',
+    system: 'You are a helpful AI assistant generating form field suggestions. Always respond with valid JSON.',
     user: `Generate ${ctx._count} helpful suggestions for a form field labeled "${ctx._fieldKey}".
            ${ctx._label ? `Field description: ${ctx._label}` : ''}
            Context: ${JSON.stringify(ctx)}
-           Return a JSON array of suggestion strings.`,
+           Respond with JSON: {"suggestions": ["suggestion1", "suggestion2", "suggestion3"]}`,
   }),
 };
 
