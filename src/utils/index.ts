@@ -19,16 +19,15 @@ export function sanitizeInput(input: string): string {
         return DOMPurify.sanitize(input, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] });
     }
 
-    // Fallback for non-browser environments (SSR, tests): strip all tags via regex
+    // Fallback for non-browser environments (SSR/tests):
+    // Encode HTML-special characters as entities so no markup can be injected.
+    // This is safer than regex-based tag stripping which can have bypass vectors.
     return input
-        .replace(/<[^>]+>/g, '')
-        .replace(/&(?:amp|lt|gt|quot|#x27|#x2F);/gi, (m) => {
-            const entities: Record<string, string> = {
-                '&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"',
-                '&#x27;': "'", '&#x2F;': '/',
-            };
-            return entities[m] ?? m;
-        })
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#x27;')
         .trim();
 }
 

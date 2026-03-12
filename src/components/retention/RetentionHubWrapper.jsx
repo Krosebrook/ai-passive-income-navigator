@@ -101,12 +101,6 @@ export default function RetentionHubWrapper() {
           />
         )}
       </AnimatePresence>
-
-      {/* Expose trigger function for parent components */}
-      {typeof window !== 'undefined' && (
-         
-        console.log('Retention hub ready - triggerHabitLoop available')
-      )}
     </>
   );
 }
