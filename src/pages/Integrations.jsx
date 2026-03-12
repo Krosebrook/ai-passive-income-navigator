@@ -1,7 +1,6 @@
 import React from 'react';
 import PageHeader from '@/components/ui/PageHeader';
 import IntegrationManager from '@/components/integrations/IntegrationManager';
-import { Zap } from 'lucide-react';
 
 export default function IntegrationsPage() {
     return (

@@ -4,10 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
-  TrendingUp, TrendingDown, AlertTriangle, Lightbulb, 
-  Target, Clock, Sparkles, RefreshCw, BarChart3, PieChart
+  TrendingUp, AlertTriangle, Lightbulb, 
+  Target, Clock, Sparkles, RefreshCw, BarChart3
 } from 'lucide-react';
-import { LineChart, Line, AreaChart, Area, BarChart, Bar, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';

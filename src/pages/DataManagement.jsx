@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import PageHeader from '@/components/ui/PageHeader';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Download, HardDrive, Shield, Clock } from 'lucide-react';
+import { Download, Shield } from 'lucide-react';
 import ExportModal from '@/components/export/ExportModal';
 import BackupStatus from '@/components/backup/BackupStatus';
 

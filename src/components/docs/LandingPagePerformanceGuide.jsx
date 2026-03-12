@@ -99,7 +99,7 @@ export default function LandingPagePerformanceGuide() {
         },
         {
           tactic: 'Mobile Sticky CTA Bar',
-          why: 'Thumb zone: users can't reach top CTA on mobile',
+          why: "Thumb zone: users can't reach top CTA on mobile",
           how: 'Fixed position bottom (p-4 padding, z-40), only on md:hidden',
           impact: 'Mobile CTA click-through increases 25-35%',
         },

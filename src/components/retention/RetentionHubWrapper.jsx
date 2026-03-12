@@ -104,7 +104,7 @@ export default function RetentionHubWrapper() {
 
       {/* Expose trigger function for parent components */}
       {typeof window !== 'undefined' && (
-        // eslint-disable-next-line no-console
+         
         console.log('Retention hub ready - triggerHabitLoop available')
       )}
     </>

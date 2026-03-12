@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
-import { Plus, CheckCircle, Clock, Bell, MessageSquare } from 'lucide-react';
+import { Bell } from 'lucide-react';
 import CommentSection from '@/components/collaboration/CommentSection';
 import WorkflowBuilder from '@/components/pipeline/WorkflowBuilder';
 import TaskManager from './TaskManager';

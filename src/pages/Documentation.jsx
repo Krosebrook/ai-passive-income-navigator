@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import PageHeader from '@/components/ui/PageHeader';
 import AIFeaturesGuide from '@/components/docs/AIFeaturesGuide';
 import OnboardingFlowGuide from '@/components/docs/OnboardingFlowGuide';
-import { BookOpen, Sparkles, Map, Code } from 'lucide-react';
+import { Sparkles, Map } from 'lucide-react';
 
 export default function DocumentationPage() {
   return (

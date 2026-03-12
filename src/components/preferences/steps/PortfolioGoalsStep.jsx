@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle2, PieChart } from 'lucide-react';
 import ContextualTooltip from '@/components/guidance/ContextualTooltip';
 
 const ASSET_CLASSES = [

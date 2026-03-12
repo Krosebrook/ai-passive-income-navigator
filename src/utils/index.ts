@@ -1,45 +1,35 @@
+import DOMPurify from 'dompurify';
+
 export function createPageUrl(pageName: string) {
     return '/' + pageName.replace(/ /g, '-');
 }
 
 /**
- * IMPORTANT SECURITY NOTE:
- * This is a BASIC sanitization function for demonstration purposes.
- * For PRODUCTION use, you MUST use a dedicated HTML sanitization library like DOMPurify.
- * 
- * Install DOMPurify:
- *   npm install dompurify
- * 
- * Usage with DOMPurify:
- *   import DOMPurify from 'dompurify';
- *   const clean = DOMPurify.sanitize(dirtyInput);
- * 
- * Known limitations of this basic implementation:
- * - Does not handle nested or malformed script tags
- * - Does not handle encoded characters (e.g., &lt;script&gt;)
- * - Does not handle all XSS vectors (data URIs, SVG, etc.)
- * - Should NOT be used for security-critical operations
+ * Sanitize HTML input using DOMPurify to prevent XSS attacks.
+ * Strips all HTML tags and dangerous attributes, returning safe plain text or HTML.
+ *
+ * @param input - Raw user-supplied string that may contain HTML or script content
+ * @returns Sanitized string safe for insertion into the DOM
  */
 export function sanitizeInput(input: string): string {
     if (!input) return '';
-    
-    // Development-only warning
-    if (import.meta.env.DEV) {
-        console.warn('[SECURITY] Using basic sanitization. For production, use DOMPurify library.');
+
+    // Use DOMPurify in browser environments for robust XSS protection
+    if (typeof window !== 'undefined' && DOMPurify.isSupported) {
+        return DOMPurify.sanitize(input, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] });
     }
-    
-    // BASIC sanitization - NOT production-ready
-    // Remove script tags and their content
-    let sanitized = input.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script\s*>/gi, '');
-    
-    // Remove on* event handlers
-    sanitized = sanitized.replace(/\s*on\w+\s*=\s*["'][^"']*["']/gi, '');
-    sanitized = sanitized.replace(/\s*on\w+\s*=\s*[^\s>]*/gi, '');
-    
-    // Remove dangerous URL schemes
-    sanitized = sanitized.replace(/(javascript|data|vbscript):/gi, '');
-    
-    return sanitized.trim();
+
+    // Fallback for non-browser environments (SSR, tests): strip all tags via regex
+    return input
+        .replace(/<[^>]+>/g, '')
+        .replace(/&(?:amp|lt|gt|quot|#x27|#x2F);/gi, (m) => {
+            const entities: Record<string, string> = {
+                '&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"',
+                '&#x27;': "'", '&#x2F;': '/',
+            };
+            return entities[m] ?? m;
+        })
+        .trim();
 }
 
 /**

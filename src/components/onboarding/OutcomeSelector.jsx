@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { TrendingUp, DollarSign, GraduationCap, Compass, ArrowRight, X } from 'lucide-react';
+import { TrendingUp, DollarSign, GraduationCap, Compass, ArrowRight } from 'lucide-react';
 
 const OUTCOMES = [
   {

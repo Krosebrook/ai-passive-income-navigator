@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ArrowLeft, Sparkles, CheckCircle2 } from 'lucide-react';
 import WelcomeStep from './adaptive-steps/WelcomeStep';
 import PreferencesStep from './adaptive-steps/PreferencesStep';
 import RiskProfileStep from './adaptive-steps/RiskProfileStep';

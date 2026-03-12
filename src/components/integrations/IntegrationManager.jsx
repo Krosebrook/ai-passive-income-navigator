@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-    CheckCircle2, AlertCircle, Settings, Link2, Clock,
+import { Settings, Link2,
     Zap, DollarSign, MessageSquare, Brain, FileText, Calendar
 } from 'lucide-react';
 

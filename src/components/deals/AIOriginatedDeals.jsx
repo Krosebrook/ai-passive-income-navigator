@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { base44 } from '@/api/base44Client';
-import { Sparkles, Target, TrendingUp, Users, DollarSign, Calendar, AlertTriangle, CheckCircle2, Lightbulb, Brain } from 'lucide-react';
+import { Sparkles, Target, TrendingUp, Users, DollarSign, CheckCircle2, Lightbulb, Brain } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import FounderSearchPanel from '../founders/FounderSearchPanel';
 import DealStructureComparison from './DealStructureComparison';

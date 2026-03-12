@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
-import { ArrowRight, Target, TrendingUp, Clock, Shield } from 'lucide-react';
+import { ArrowRight, Target, Clock, Shield } from 'lucide-react';
 
 const GOALS = [
   { id: 'side_income', label: 'Side Income', icon: '💰', desc: 'Extra $500-2k/month' },

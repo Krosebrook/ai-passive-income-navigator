@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { toast } from 'sonner';
 import { 
-  MessageSquare, Search, Plus, TrendingUp, 
+  MessageSquare, Search, Plus, 
   CheckCircle, Eye, ArrowUp 
 } from 'lucide-react';
 import { Link } from 'react-router-dom';

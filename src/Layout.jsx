@@ -17,9 +17,8 @@ import AdaptiveOnboardingFlow from '@/components/onboarding/AdaptiveOnboardingFl
 import GamifiedOnboarding from '@/components/onboarding/GamifiedOnboarding';
 import AIOnboardingFlow from '@/components/onboarding/AIOnboardingFlow';
 import {
-  Home, FolderHeart, Bookmark, TrendingUp, 
-  LayoutDashboard, Users, Settings, Menu, X,
-  Sparkles, BookOpen, Shield, Zap, HardDrive
+  Home, FolderHeart, TrendingUp, Users, Settings, Menu, X,
+  Sparkles, Shield
 } from 'lucide-react';
 
 const NAV_ITEMS = [

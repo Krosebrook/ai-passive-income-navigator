@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { 
     Plus, Trash2, Sparkles, Calendar, Mail, Bell, 
-    CheckCircle2, Loader2, Copy, Edit2 
+    CheckCircle2, Loader2, Edit2 
 } from 'lucide-react';
 import { toast } from 'sonner';
 

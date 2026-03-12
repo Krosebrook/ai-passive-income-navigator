@@ -3,11 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { 
-  Sparkles, ArrowRight, Check, Target, TrendingUp, 
-  Brain, Rocket, ChevronRight
+import { Check, ChevronRight
 } from 'lucide-react';
 import WelcomeStep from './interactive-steps/WelcomeStep';
 import QuickPreferencesStep from './interactive-steps/QuickPreferencesStep';

@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { base44 } from '@/api/base44Client';
-import { TrendingUp, Sparkles, AlertCircle, Clock, BarChart3, Target, Zap, Bell, BellOff } from 'lucide-react';
+import { TrendingUp, Sparkles, AlertCircle, BarChart3, Target, Zap, Bell } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 export default function EmergingOpportunitiesPanel() {

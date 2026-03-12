@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { CheckCircle, Sparkles, TrendingUp, Zap } from 'lucide-react';
+import { CheckCircle, Sparkles, Zap } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export default function CompletionStep({ data, onNext }) {

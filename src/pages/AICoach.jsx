@@ -7,8 +7,6 @@ import AIGeneratedDeals from '@/components/deals/AIGeneratedDeals';
 import AIAssistantChat from '@/components/ai/AIAssistantChat';
 import EnhancedAIAdvisor from '@/components/ai/EnhancedAIAdvisor';
 import NewDealsFeed from '@/components/deals/NewDealsFeed';
-import MarketDataFeed from '@/components/market/MarketDataFeed';
-import MarketAlertManager from '@/components/market/MarketAlertManager';
 import MarketIntelligencePanel from '@/components/ai/MarketIntelligencePanel';
 import EnhancedMarketIntelligence from '@/components/market/EnhancedMarketIntelligence';
 import DealPerformanceCorrelation from '@/components/ai/DealPerformanceCorrelation';

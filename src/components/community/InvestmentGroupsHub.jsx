@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Avatar } from '@/components/ui/avatar';
 import { 
   Users, Plus, TrendingUp, DollarSign, 
   MessageCircle, UserPlus, Crown

@@ -9,8 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Switch } from '@/components/ui/switch';
 import { 
-  Eye, Users, Plus, Star, TrendingUp, 
-  Share2, Bookmark, X 
+  Eye, Users, Plus, Star, TrendingUp, Bookmark 
 } from 'lucide-react';
 import { toast } from 'sonner';
 

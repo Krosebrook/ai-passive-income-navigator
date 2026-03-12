@@ -12,8 +12,6 @@ import {
 import IdeaCard from '@/components/ideas/IdeaCard';
 import CategoryFilter from '@/components/ideas/CategoryFilter';
 import SearchBar from '@/components/ideas/SearchBar';
-import AdvancedOnboardingWizard from '@/components/onboarding/AdvancedOnboardingWizard';
-import EnhancedOnboardingFlow from '@/components/onboarding/EnhancedOnboardingFlow';
 import InteractiveOnboarding from '@/components/onboarding/InteractiveOnboarding';
 import AIOnboardingWizard from '@/components/onboarding/AIOnboardingWizard';
 import AIGuideChat from '@/components/ai/AIGuideChat';

@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
-import { Plus, MoreVertical, TrendingUp, Zap, Settings, Layout, BarChart3 } from 'lucide-react';
-import DealCard from '@/components/pipeline/DealCard';
+import { Plus, TrendingUp, Zap, Settings, Layout, BarChart3 } from 'lucide-react';
 import AddDealModal from '@/components/pipeline/AddDealModal';
 import DealDetailsModal from '@/components/pipeline/DealDetailsModal';
 import AutomationRulesManager from '@/components/pipeline/AutomationRulesManager';

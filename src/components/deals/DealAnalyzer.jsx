@@ -12,7 +12,7 @@ import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
 import { 
   TrendingUp, AlertTriangle, Target, DollarSign, 
-  Users, Clock, Lightbulb, CheckCircle, XCircle, Loader2,
+  Users, Lightbulb, CheckCircle, XCircle, Loader2,
   Upload, FileText, Cloud, BarChart3
 } from 'lucide-react';
 

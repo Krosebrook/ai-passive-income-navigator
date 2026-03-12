@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { Target, TrendingUp } from 'lucide-react';
 
 const COLORS = ['#8b85f7', '#00b7eb', '#ff8e42', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4'];

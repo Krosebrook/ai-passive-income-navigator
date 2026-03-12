@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { TrendingUp, DollarSign, Clock, AlertCircle, Bookmark, ExternalLink } from 'lucide-react';
+import { DollarSign, Clock, AlertCircle, Bookmark, ExternalLink } from 'lucide-react';
 
 /**
  * Immediate Value Exposure Component

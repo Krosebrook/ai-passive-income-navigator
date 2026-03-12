@@ -4,7 +4,7 @@ import { base44 } from '@/api/base44Client';
 import {
   RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
   Tooltip, ResponsiveContainer, ScatterChart, Scatter, XAxis, YAxis,
-  CartesianGrid, Legend, ZAxis
+  CartesianGrid, ZAxis
 } from 'recharts';
 import { Badge } from '@/components/ui/badge';
 import { Activity } from 'lucide-react';
