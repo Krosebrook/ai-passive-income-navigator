@@ -11,6 +11,7 @@ import PredictiveInsightsDashboard from '@/components/analytics/PredictiveInsigh
 import MarketIntelligenceCharts from '@/components/dashboard/MarketIntelligenceCharts';
 import DealRiskRewardCharts from '@/components/dashboard/DealRiskRewardCharts';
 import WatchlistDashboard from '@/components/dashboard/WatchlistDashboard';
+import PortfolioAnalysis from '@/components/dashboard/PortfolioAnalysis';
 
 export default function Dashboard() {
   const { data: deals = [], isLoading: dealsLoading } = useQuery({
