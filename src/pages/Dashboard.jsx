@@ -55,6 +55,10 @@ export default function Dashboard() {
               <TrendingUp className="w-4 h-4 mr-2" />
               Predictive Analytics
             </TabsTrigger>
+            <TabsTrigger value="portfolio-analysis" className="data-[state=active]:bg-[#8b85f7]">
+              <PieChart className="w-4 h-4 mr-2" />
+              Portfolio Analysis
+            </TabsTrigger>
             <TabsTrigger value="watchlist" className="data-[state=active]:bg-[#8b85f7]">
               <Bookmark className="w-4 h-4 mr-2" />
               Watchlist
