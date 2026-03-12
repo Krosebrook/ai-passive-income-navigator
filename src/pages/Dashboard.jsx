@@ -112,6 +112,11 @@ export default function Dashboard() {
             <PredictiveInsightsDashboard />
           </TabsContent>
 
+          {/* Portfolio Analysis Tab */}
+          <TabsContent value="portfolio-analysis">
+            <PortfolioAnalysis />
+          </TabsContent>
+
           {/* Watchlist Tab */}
           <TabsContent value="watchlist">
             <WatchlistDashboard />
