@@ -2,7 +2,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { LayoutDashboard, TrendingUp, Sparkles, Settings, BarChart2, Target, Bookmark } from 'lucide-react';
+import { LayoutDashboard, TrendingUp, Sparkles, Settings, BarChart2, Target, Bookmark, PieChart } from 'lucide-react';
 import DealPerformanceMetrics from '@/components/dashboard/DealPerformanceMetrics';
 import MarketPerformanceWidget from '@/components/dashboard/MarketPerformanceWidget';
 import AIInsightsSummary from '@/components/dashboard/AIInsightsSummary';
