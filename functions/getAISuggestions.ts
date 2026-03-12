@@ -59,10 +59,10 @@ function hashObject(obj) {
 const PROMPT_TEMPLATES = {
   // Deal fields
   deal_summary: (ctx) => ({
-    system: 'You are an expert investment analyst. Write concise, compelling deal summaries for investors.',
+    system: 'You are an expert investment analyst. Write concise, compelling deal summaries for investors. Always respond with valid JSON.',
     user: `Generate ${ctx._count} distinct one-paragraph deal summaries for a ${ctx.industry ?? 'technology'} opportunity${ctx.title ? ` called "${ctx.title}"` : ''}. 
            Tone: professional, data-driven, opportunity-focused.
-           Return a JSON array of strings: ["summary1", "summary2", ...]`,
+           Respond with JSON: {"suggestions": ["summary1", "summary2", "summary3"]}`,
   }),
   deal_title: (ctx) => ({
     system: 'You are a deal naming expert. Create clear, compelling investment opportunity titles. Always respond with valid JSON.',
