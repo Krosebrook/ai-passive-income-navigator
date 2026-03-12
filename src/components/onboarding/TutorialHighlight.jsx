@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronRight, ChevronLeft } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 /**

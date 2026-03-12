@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { X, ChevronRight, CheckCircle2 } from 'lucide-react';
+import { X, ChevronRight } from 'lucide-react';
 
 /**
  * Reusable guidance card component for activation paths

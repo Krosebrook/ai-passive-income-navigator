@@ -7,7 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
 import { 
-  Sparkles, Copy, Search, Hash, Megaphone, 
+  Sparkles, Copy, Search, Megaphone, 
   TrendingUp, Target, Loader2, CheckCircle
 } from 'lucide-react';
 

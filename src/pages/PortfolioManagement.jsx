@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { TrendingUp, PieChart, RefreshCw, Plus, Link as LinkIcon } from 'lucide-react';
+import { TrendingUp, PieChart, RefreshCw } from 'lucide-react';
 import PortfolioPerformanceChart from '@/components/portfolio/PortfolioPerformanceChart';
 import AllocationVisualization from '@/components/portfolio/AllocationVisualization';
 import InvestmentList from '@/components/portfolio/InvestmentList';

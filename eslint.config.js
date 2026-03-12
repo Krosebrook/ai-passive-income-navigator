@@ -6,12 +6,22 @@ import pluginUnusedImports from "eslint-plugin-unused-imports";
 
 export default [
   {
+    // Global ignores: non-JS/JSX files with .jsx extension and excluded directories
+    ignores: [
+      "src/lib/**/*",
+      "src/components/ui/**/*",
+      "**/*.md.jsx",
+      "**/*.json.jsx",
+      "src/components/docs/RecentChangesLog.jsx",
+      "src/components/docs/UseCaseDocumentation.jsx",
+    ],
+  },
+  {
     files: [
       "src/components/**/*.{js,mjs,cjs,jsx}",
       "src/pages/**/*.{js,mjs,cjs,jsx}",
       "src/Layout.jsx",
     ],
-    ignores: ["src/lib/**/*", "src/components/ui/**/*"],
     ...pluginJs.configs.recommended,
     ...pluginReact.configs.flat.recommended,
     languageOptions: {

@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Badge } from '@/components/ui/badge';
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
-import { Users, Plus, UserPlus, Crown, Shield } from 'lucide-react';
+import { Users, Plus, UserPlus, Crown } from 'lucide-react';
 
 export default function InvestmentGroups() {
   const queryClient = useQueryClient();

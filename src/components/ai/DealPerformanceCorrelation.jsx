@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { TrendingUp, TrendingDown, AlertCircle, RefreshCw, ExternalLink, Target } from 'lucide-react';
+import { TrendingUp, TrendingDown, AlertCircle, RefreshCw, Target } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function DealPerformanceCorrelation() {

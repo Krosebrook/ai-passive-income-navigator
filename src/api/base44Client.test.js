@@ -63,6 +63,17 @@ describe('base44Client', () => {
         token: expect.any(String),
         functionsVersion: expect.any(String),
         appBaseUrl: expect.any(String),
+        requiresAuth: expect.any(Boolean),
+      })
+    );
+  });
+
+  it('should disable requiresAuth outside of production', async () => {
+    const { createClient } = await import('@base44/sdk');
+
+    // In test/dev environments, import.meta.env.PROD is false
+    expect(createClient).toHaveBeenCalledWith(
+      expect.objectContaining({
         requiresAuth: false,
       })
     );

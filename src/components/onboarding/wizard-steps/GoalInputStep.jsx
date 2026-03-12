@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Badge } from '@/components/ui/badge';
 import { Target, TrendingUp, GraduationCap, Loader2 } from 'lucide-react';
 

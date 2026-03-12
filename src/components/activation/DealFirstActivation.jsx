@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { CheckCircle2, Sparkles, TrendingUp } from 'lucide-react';
+import { Sparkles, TrendingUp } from 'lucide-react';
 import ActivationGuidanceCard from '@/components/activation/ActivationGuidanceCard';
 
 /**

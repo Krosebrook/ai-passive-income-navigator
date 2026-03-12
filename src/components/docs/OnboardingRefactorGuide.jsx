@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle, AlertCircle, Zap, Target, TrendingUp } from 'lucide-react';
+import { CheckCircle, AlertCircle, Target, TrendingUp } from 'lucide-react';
 
 /**
  * ONBOARDING REFACTOR AUDIT & DESIGN GUIDE

@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { base44 } from '@/api/base44Client';
-import { FileText, TrendingUp, AlertTriangle, CheckCircle2, XCircle, DollarSign, Calendar, Target } from 'lucide-react';
+import { FileText, TrendingUp, AlertTriangle, CheckCircle2, XCircle } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 

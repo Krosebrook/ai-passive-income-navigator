@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRight, ChevronLeft, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';

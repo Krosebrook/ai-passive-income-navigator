@@ -1,11 +1,13 @@
 import React from 'react';
 import { AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import errorLogger from '@/lib/errorLogger';
 
 export default class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false, error: null };
+    this.handleReset = this.handleReset.bind(this);
   }
 
   static getDerivedStateFromError(error) {
@@ -13,11 +15,11 @@ export default class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    // Log to error tracking service (Sentry)
-    if (window.__SENTRY__) {
-      window.__SENTRY__.captureException(error, { contexts: { react: errorInfo } });
-    }
-    console.error('Error caught:', error, errorInfo);
+    errorLogger.captureException(error, { react: errorInfo });
+  }
+
+  handleReset() {
+    this.setState({ hasError: false, error: null });
   }
 
   render() {
@@ -30,12 +32,18 @@ export default class ErrorBoundary extends React.Component {
             <p className="text-gray-600 mb-6">
               We've logged this error and our team will look into it.
             </p>
-            <Button 
-              onClick={() => window.location.href = '/'}
-              className="w-full"
-            >
-              Return to Home
-            </Button>
+            <div className="flex flex-col gap-2">
+              <Button onClick={this.handleReset} className="w-full">
+                Try Again
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => window.location.href = '/'}
+                className="w-full"
+              >
+                Return to Home
+              </Button>
+            </div>
           </div>
         </div>
       );

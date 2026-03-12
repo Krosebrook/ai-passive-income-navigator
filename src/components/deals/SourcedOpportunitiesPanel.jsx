@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { 
-    Sparkles, TrendingUp, AlertCircle, CheckCircle2, 
+    Sparkles, AlertCircle, CheckCircle2, 
     ExternalLink, Loader2, RefreshCw, Star, FileSearch 
 } from 'lucide-react';
 import WatchButton from '@/components/deals/WatchButton';

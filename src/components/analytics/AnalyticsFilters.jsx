@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Filter, X } from 'lucide-react';
+import { Filter, X } from 'lucide-react';
 
 const INDUSTRIES = [
   'Technology', 'Finance', 'Healthcare', 'E-commerce', 

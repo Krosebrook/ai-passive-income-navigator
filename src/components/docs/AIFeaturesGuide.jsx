@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Sparkles, TrendingUp, Users, Target, Brain, Zap } from 'lucide-react';
+import { Sparkles, TrendingUp, Users, Target, Brain } from 'lucide-react';
 
 export default function AIFeaturesGuide() {
   return (

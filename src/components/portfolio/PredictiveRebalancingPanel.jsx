@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { base44 } from '@/api/base44Client';
-import { TrendingUp, TrendingDown, AlertTriangle, Target, Calendar, Activity, Zap, CheckCircle2 } from 'lucide-react';
+import { TrendingUp, TrendingDown, AlertTriangle, Target, Calendar, Activity, Zap } from 'lucide-react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 

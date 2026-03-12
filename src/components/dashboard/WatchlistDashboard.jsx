@@ -1,13 +1,11 @@
 import React, { useMemo } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Bookmark, TrendingUp, TrendingDown, AlertTriangle, CheckCircle2, Activity, ArrowRight } from 'lucide-react';
+import { Bookmark, TrendingUp, TrendingDown, AlertTriangle, CheckCircle2, Activity } from 'lucide-react';
 import { formatDistanceToNow, parseISO } from 'date-fns';
-import { toast } from 'sonner';
 import WatchButton from '@/components/deals/WatchButton';
-import { RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 
 const CHANGE_THRESHOLD = 15; // % point change considered "significant"
 

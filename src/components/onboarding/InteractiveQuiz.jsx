@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { CheckCircle2, XCircle, ArrowRight } from 'lucide-react';
+import { CheckCircle2, XCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function InteractiveQuiz({ quiz, onComplete }) {

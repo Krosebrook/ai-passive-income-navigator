@@ -6,7 +6,7 @@ import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
 import { 
   Brain, Loader2, TrendingUp, AlertTriangle, CheckCircle2, 
-  Target, DollarSign, Calendar, BarChart3 
+  Target, BarChart3 
 } from 'lucide-react';
 
 export default function AIFinancialAnalysis({ entityType, entityId, entityTitle }) {

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
-import { ChevronRight, ChevronLeft, Check, Sparkles, Loader2 } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Check, Loader2 } from 'lucide-react';
 
 import WelcomeStep from './steps/WelcomeStep';
 import ComprehensiveDealSourcingStep from './steps/ComprehensiveDealSourcingStep';

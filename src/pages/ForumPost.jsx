@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
-import { ArrowUp, ArrowDown, CheckCircle, MessageSquare, Eye } from 'lucide-react';
+import { ArrowUp, ArrowDown, CheckCircle, Eye } from 'lucide-react';
 import ForumAnswer from '@/components/forum/ForumAnswer';
 
 export default function ForumPostPage() {

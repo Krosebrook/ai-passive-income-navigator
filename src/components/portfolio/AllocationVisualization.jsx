@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { PieChart as PieIcon } from 'lucide-react';
 
 const COLORS = ['#8b85f7', '#00b7eb', '#ff8e42', '#ff69b4', '#10b981', '#f59e0b'];

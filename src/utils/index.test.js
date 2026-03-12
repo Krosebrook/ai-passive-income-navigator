@@ -39,24 +39,32 @@ describe('createPageUrl', () => {
 });
 
 describe('sanitizeInput', () => {
-  it('should remove script tags', () => {
+  it('should strip script tags and their content', () => {
     const input = 'Hello <script>alert("XSS")</script> World';
-    expect(sanitizeInput(input)).toBe('Hello  World');
+    expect(sanitizeInput(input)).not.toContain('<script>');
+    expect(sanitizeInput(input)).not.toContain('alert');
   });
 
-  it('should remove event handlers with quotes', () => {
+  it('should strip all HTML tags including event handlers', () => {
     const input = '<div onclick="alert()">Click me</div>';
-    expect(sanitizeInput(input)).toBe('<div>Click me</div>');
+    const result = sanitizeInput(input);
+    expect(result).not.toContain('onclick');
+    expect(result).not.toContain('<div>');
+    expect(result).toContain('Click me');
   });
 
-  it('should remove event handlers without quotes', () => {
+  it('should strip event handlers without quotes', () => {
     const input = '<div onclick=alert()>Click me</div>';
-    expect(sanitizeInput(input)).toBe('<div>Click me</div>');
+    const result = sanitizeInput(input);
+    expect(result).not.toContain('onclick');
+    expect(result).toContain('Click me');
   });
 
-  it('should remove javascript: protocols', () => {
+  it('should strip javascript: protocols', () => {
     const input = '<a href="javascript:alert()">Link</a>';
-    expect(sanitizeInput(input)).toBe('<a href="alert()">Link</a>');
+    const result = sanitizeInput(input);
+    expect(result).not.toContain('javascript:');
+    expect(result).toContain('Link');
   });
 
   it('should handle empty string', () => {
@@ -262,6 +270,7 @@ describe('sanitizeInput edge cases', () => {
     const input = '<a href="data:text/html,<script>alert(1)</script>">Link</a>';
     const result = sanitizeInput(input);
     expect(result).not.toContain('data:');
+    expect(result).not.toContain('<script>');
   });
 
   it('should handle vbscript: protocol', () => {

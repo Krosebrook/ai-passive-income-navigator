@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Zap, TrendingUp, Shield, Users, Download, X, Menu, Check, LogIn, UserPlus } from 'lucide-react';
+import { ArrowRight, Zap, TrendingUp, Shield, Users, X, Menu, Check, LogIn, UserPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { base44 } from '@/api/base44Client';
-import { Search, Target, TrendingUp, AlertTriangle, ExternalLink, Flag, Zap } from 'lucide-react';
+import { Search, TrendingUp, AlertTriangle, ExternalLink, Flag, Zap } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 

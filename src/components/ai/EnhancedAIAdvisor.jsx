@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
-import { useQuery, useMutation } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -8,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { 
   AlertTriangle, TrendingUp, Target, Zap, 
-  BarChart3, Brain, CheckCircle2, XCircle,
+  BarChart3, Brain, CheckCircle2,
   ArrowUpRight, ArrowDownRight
 } from 'lucide-react';
 import { toast } from 'sonner';
