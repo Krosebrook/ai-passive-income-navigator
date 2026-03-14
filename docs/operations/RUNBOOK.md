@@ -1,414 +1,356 @@
 # Operational Runbook
 
-**Status:** ⚠️ **Not Started** - CRITICAL Production Blocker
+**Version:** 1.0  
+**Last Updated:** 2026-01-19  
+**Platform:** AI Passive Income Navigator on Base44
 
 ---
 
-## Purpose
+## Table of Contents
 
-This document will provide step-by-step procedures for common operational tasks and emergency scenarios.
-
-## Quick Reference
-
-| Scenario | Severity | First Response | Full Procedure |
-|----------|----------|----------------|----------------|
-| Complete outage | SEV1 | Check status page, contact Base44 | [Section 1.1](#11-complete-outage) |
-| High error rate | SEV2 | Check recent deployments | [Section 1.2](#12-high-error-rate) |
-| Slow performance | SEV3 | Check monitoring dashboard | [Section 1.3](#13-slow-performance) |
-| Authentication failures | SEV2 | Check Base44 auth status | [Section 1.4](#14-authentication-failures) |
-| Database issues | SEV1 | Check Base44 status | [Section 1.5](#15-database-issues) |
-
----
-
-## 1. Emergency Procedures
-
-### 1.1 Complete Outage
-**Detection:** Uptime check fails, users cannot access application
-
-**Immediate Actions (5 minutes):**
-1. Check Base44 status page: [URL TBD]
-2. Verify DNS resolution: `nslookup your-domain.com`
-3. Check CDN status: [Provider TBD]
-4. Check recent deployments (last 1 hour)
-
-**Investigation (10 minutes):**
-1. Review error logs: [Log aggregation tool TBD]
-2. Check monitoring dashboard for alerts
-3. Verify SSL certificates (not expired)
-4. Test API endpoints directly: `curl https://api.your-domain.com/health`
-
-**Resolution:**
-- If Base44 outage → Wait for resolution, communicate to users
-- If bad deployment → Rollback (see [Section 2.1](#21-rollback-deployment))
-- If DNS issue → Contact DNS provider
-- If CDN issue → Contact CDN provider or bypass CDN
-
-**Communication:**
-- Post status update within 5 minutes
-- Update every 15 minutes until resolved
-- Post-mortem within 24 hours
+- [Deployment Process](#deployment-process)
+- [Rollback Procedure](#rollback-procedure)
+- [Common Operational Tasks](#common-operational-tasks)
+  - [Clear Application Cache](#clear-application-cache)
+  - [Reset User Data](#reset-user-data)
+  - [Check Cloud Function Logs](#check-cloud-function-logs)
+  - [Monitor Active Users](#monitor-active-users)
+  - [Update Environment Configuration](#update-environment-configuration)
+- [Incident Response Quick Reference](#incident-response-quick-reference)
+- [Escalation Procedures](#escalation-procedures)
+- [On-Call Checklist](#on-call-checklist)
+- [Regular Maintenance Tasks](#regular-maintenance-tasks)
 
 ---
 
-### 1.2 High Error Rate
-**Detection:** Error rate > 5% for 5+ minutes
+## Deployment Process
 
-**Immediate Actions:**
-1. Check recent deployments (last 2 hours)
-2. Review error types in monitoring dashboard
-3. Check Base44 API status
-4. Verify environment configuration
+### Prerequisites
 
-**Common Causes & Solutions:**
-- **Recent deployment bug** → Rollback
-- **Base44 API issues** → Wait for resolution, implement fallback
-- **Rate limiting** → Increase limits or implement backoff
-- **Database connection issues** → Check Base44 database status
+Before deploying, ensure:
 
-**Resolution Steps:**
-1. Identify error pattern (specific endpoint? user segment?)
-2. Check if error rate increasing or stable
-3. If increasing → Consider rollback
-4. If stable → Investigate and fix
-5. Deploy hotfix or rollback
+- [ ] All CI checks pass on the feature branch (`npm run lint`, `npm run test`)
+- [ ] PR has been reviewed and approved
+- [ ] No open P0/P1 incidents
+- [ ] Not deploying during peak hours (08:00–10:00 or 17:00–19:00 local time for primary user base)
 
----
+### Standard Deployment Steps
 
-### 1.3 Slow Performance
-**Detection:** P95 response time > 2s for 10+ minutes
+**1. Merge to main branch**
 
-**Immediate Actions:**
-1. Check monitoring dashboard for bottlenecks
-2. Review recent code changes
-3. Check Base44 API latency
-4. Check CDN performance
-
-**Investigation:**
-1. Identify slow endpoints: [Monitoring tool TBD]
-2. Check database query performance
-3. Check cloud function execution times
-4. Check frontend bundle size and load times
-
-**Common Fixes:**
-- Add database indexes
-- Optimize slow queries
-- Implement caching (React Query cache, CDN cache)
-- Reduce bundle size (code splitting)
-
----
-
-### 1.4 Authentication Failures
-**Detection:** High rate of 401/403 errors
-
-**Immediate Actions:**
-1. Check Base44 authentication service status
-2. Verify JWT token configuration
-3. Check token expiry settings
-4. Review recent auth-related code changes
-
-**Common Causes:**
-- Base44 auth service outage
-- Token expiry configuration changed
-- CORS misconfiguration
-- Session storage cleared
-
-**Resolution:**
-1. Test authentication flow manually
-2. Check browser console for errors
-3. Verify `requiresAuth` setting in base44Client.js
-4. Check CORS headers
-
----
-
-### 1.5 Database Issues
-**Detection:** Database query failures, timeout errors
-
-**Immediate Actions:**
-1. Check Base44 database status
-2. Review recent database operations (migrations, large writes)
-3. Check connection pool settings
-
-**Common Causes:**
-- Base44 database maintenance
-- Connection pool exhausted
-- Slow queries causing locks
-- Database storage full (if self-hosted)
-
-**Resolution:**
-1. Contact Base44 support if platform issue
-2. Identify slow queries and optimize
-3. Increase connection pool size (if configurable)
-4. Implement query timeouts
-
----
-
-## 2. Common Operational Tasks
-
-### 2.1 Rollback Deployment
-
-**When to Rollback:**
-- Error rate > 10% after deployment
-- Critical bug discovered in production
-- Performance degradation > 50%
-- Security vulnerability introduced
-
-**Rollback Procedure:**
-
-**Option A: Git Rollback (Recommended)**
 ```bash
-# 1. Identify last known good commit
+git checkout main
+git pull origin main
+git merge --no-ff feature/your-feature
+git push origin main
+```
+
+**2. CI/CD pipeline runs automatically**
+
+The GitHub Actions workflow (`.github/workflows/ci.yml`) runs:
+- Lint: `npm run lint`
+- Tests: `npm run test`
+- Build: `npm run build`
+- Bundle size check
+
+Wait for all checks to pass. Do not proceed if any check fails.
+
+**3. Publish via Base44**
+
+Base44 applications are published through the Base44 dashboard:
+
+```
+1. Navigate to https://app.base44.com/[appId]
+2. Click "Publish" → "Production"
+3. Select the latest build artifact
+4. Confirm deployment
+```
+
+**4. Verify deployment — Smoke Test Checklist**
+
+- [ ] Application loads at the production URL
+- [ ] Login/authentication works
+- [ ] Dashboard displays correctly
+- [ ] Ideas list loads (tests Base44 database read)
+- [ ] Create a test idea (tests write operation)
+- [ ] Run a quick AI analysis (tests cloud function invocation)
+- [ ] Delete the test idea (cleanup)
+
+**5. Monitor post-deployment (15 minutes)**
+
+- Watch Sentry for new error types
+- Check Base44 function logs for 5xx spikes
+- Verify Core Web Vitals have not regressed (LCP < 2.5s)
+
+**Deployment complete — announce in team Slack channel.**
+
+---
+
+## Rollback Procedure
+
+### When to Rollback
+
+Rollback immediately if, within 30 minutes of deployment:
+
+- Error rate increases by > 2x baseline
+- New P0 errors appear in Sentry
+- Authentication is broken for any users
+- Data read/write operations fail consistently
+
+### Option A: Base44 Version Rollback (Preferred — < 5 minutes)
+
+1. Log in to the Base44 dashboard: `https://app.base44.com/[appId]`
+2. Navigate to **Deployments → History**
+3. Find the last known good deployment (timestamp before the bad deploy)
+4. Click **Rollback to this version**
+5. Confirm. Traffic is immediately rerouted.
+6. Run smoke test checklist to verify previous version is healthy.
+
+### Option B: Git Revert + Redeploy
+
+```bash
+# Find the last good commit SHA
 git log --oneline -10
 
-# 2. Revert to previous commit
-git revert HEAD --no-edit
+# Revert the problematic commit
+git revert <bad-commit-sha> --no-edit
 
-# 3. Push to trigger deployment
+# Push and let CI redeploy
 git push origin main
-
-# 4. Monitor deployment
-# Check CI/CD pipeline: [URL TBD]
-# Verify application health
 ```
 
-**Option B: Base44 Builder Rollback**
-1. Log into Base44 Builder: [URL TBD]
-2. Navigate to Deployments
-3. Select previous deployment
-4. Click "Rollback"
-5. Confirm rollback
-6. Monitor deployment
+### Option C: Emergency Hotfix
 
-**Post-Rollback:**
-1. Verify application is healthy
-2. Notify team in Slack/email
-3. Create incident ticket
-4. Schedule post-mortem
-
----
-
-### 2.2 Clear Application Cache
-
-**When Needed:**
-- Stale data visible to users
-- Configuration changes not reflecting
-- After environment variable updates
-
-**Procedure:**
-
-**Client-Side Cache:**
-1. Clear browser cache (instruct users)
-2. Increment app version in `package.json`
-3. Clear service worker cache (if implemented)
-
-**Server-Side Cache (React Query):**
-```javascript
-// In app code
-queryClient.invalidateQueries();
-```
-
-**CDN Cache:**
-1. Log into CDN provider: [URL TBD]
-2. Purge cache for specific URLs or entire domain
-3. Verify cache cleared: `curl -I https://your-domain.com`
-
----
-
-### 2.3 Restart Services
-
-**Note:** As a static frontend with Base44 backend, there are limited services to restart.
-
-**Base44 Platform:**
-- Contact Base44 support for service restarts
-- Support: [support@base44.com]
-
-**CI/CD Pipeline:**
-- Re-trigger failed build: [GitHub Actions URL]
-- Cancel stuck pipeline: [GitHub Actions URL]
-
----
-
-### 2.4 Check Application Health
-
-**Manual Health Check:**
 ```bash
-# Check main application
-curl -I https://your-domain.com
+# Create hotfix branch from main
+git checkout main && git pull
+git checkout -b hotfix/critical-bug-description
 
-# Check API endpoint (if available)
-curl https://api.your-domain.com/health
+# Make the minimal fix
+# Test locally: npm run test && npm run build
 
-# Check authentication
-curl -X POST https://your-domain.com/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"test@example.com","password":"test"}'
+# Push and fast-track PR review
+git push origin hotfix/critical-bug-description
+# Create PR, request emergency review, merge and deploy
 ```
 
-**Automated Health Check:**
-- See monitoring dashboard: [URL TBD]
-- Check uptime monitor: [URL TBD]
+### Post-Rollback Actions
+
+1. Update the incident Slack channel: "Rollback complete. Service restored at HH:MM UTC."
+2. Create a post-incident ticket: what broke, detection time, rollback time.
+3. Complete a root-cause analysis within 48 hours.
 
 ---
 
-### 2.5 View Logs
+## Common Operational Tasks
 
-**Frontend Logs (Browser Console):**
-1. Open browser DevTools (F12)
-2. Navigate to Console tab
-3. Filter by errors: Click "Errors" filter
+### Clear Application Cache
 
-**Backend Logs (Base44):**
-1. Log into Base44 Console: [URL TBD]
-2. Navigate to Logs section
-3. Filter by date/time range
-4. Filter by severity (ERROR, WARN, INFO)
+**React Query cache (client-side — per user session):**
 
-**Cloud Function Logs:**
-1. Base44 Console → Cloud Functions
-2. Select function
-3. View execution logs
-4. Look for errors and performance metrics
+The React Query cache lives in the browser. Users can clear it by:
 
-**Aggregated Logs (if configured):**
-- [Log aggregation tool TBD]
-- [Sentry for error tracking TBD]
+- Logging out and back in (`queryClient.clear()` is called on logout)
+- Hard-refreshing the page: `Ctrl+Shift+R` / `Cmd+Shift+R`
+
+**Base44 platform cache:**
+
+Trigger a re-fetch by updating the relevant document's `updated_date` field via the Base44 dashboard Database Explorer.
+
+**CDN cache (static assets):**
+
+After a new deployment, Vite's content-hash file naming (e.g., `main.a3f9b2c1.js`) cache-busts automatically. No manual CDN purge needed.
 
 ---
 
-### 2.6 Database Backup and Restore
+### Reset User Data
 
-**See [DISASTER_RECOVERY.md](./DISASTER_RECOVERY.md) for detailed procedures.**
+> ⚠️ **WARNING:** Data resets are irreversible. Confirm with the user in writing before proceeding.
 
-**Quick Backup Check:**
-1. Log into Base44 Console
-2. Navigate to Database → Backups
-3. Verify latest backup timestamp
-4. Verify backup size is reasonable
+**Reset a specific user's preferences (e.g., after onboarding bug):**
 
-**Quick Restore Test:**
-[Procedure to be documented]
+```
+1. Navigate to Base44 Dashboard → Database → preferences
+2. Filter: created_by = user@email.com
+3. Select the document → Delete
+4. The user will be prompted to re-complete onboarding on next login
+```
 
----
+**Delete test or junk data (support request):**
 
-### 2.7 Deploy Hotfix
+```
+1. Navigate to Database → [collection name]
+2. Filter: created_by = user@email.com, created_date__gte = [date range]
+3. Select items → Bulk Delete
+```
 
-**Urgent Fix Procedure (Bypassing Normal Process):**
+**Full user data export (GDPR data subject access request):**
 
-1. **Create hotfix branch**
-   ```bash
-   git checkout main
-   git pull origin main
-   git checkout -b hotfix/critical-issue
-   ```
+Use the `exportUserData` cloud function:
 
-2. **Make minimal fix**
-   - Fix only the critical issue
-   - Do NOT include unrelated changes
+```bash
+# POST to the function with admin credentials
+curl -X POST https://app.base44.com/api/functions/exportUserData \
+  -H "Authorization: Bearer [admin-token]" \
+  -H "Content-Type: application/json" \
+  -d '{"targetUserEmail": "user@example.com"}'
+# Returns: ZIP archive of all user collections as JSON
+```
 
-3. **Test locally**
-   ```bash
-   npm run build
-   npm run preview
-   ```
-
-4. **Create PR with "HOTFIX" label**
-   - Skip normal review if SEV1
-   - Get approval from on-call engineer
-
-5. **Merge and deploy**
-   ```bash
-   git merge hotfix/critical-issue
-   git push origin main
-   ```
-
-6. **Monitor closely**
-   - Watch error rates
-   - Watch performance metrics
-   - Be ready to rollback
-
-7. **Post-deployment**
-   - Notify team
-   - Document in incident ticket
-   - Schedule proper fix for next sprint
+See [PRIVACY_POLICY.md](../legal/PRIVACY_POLICY.md) for data subject rights obligations.
 
 ---
 
-## 3. Monitoring and Alerts
+### Check Cloud Function Logs
 
-### 3.1 Interpreting Alerts
+**Via Base44 Dashboard:**
 
-**High Error Rate Alert:**
-- Check recent deployments
-- Review error types in monitoring
-- Follow [Section 1.2](#12-high-error-rate)
+```
+1. Navigate to https://app.base44.com/[appId]/functions
+2. Click the function name (e.g., analyzeDeal, categorizeDeal)
+3. Select the "Logs" tab
+4. Filter by time range or search for "ERROR"
+```
 
-**Slow Response Time Alert:**
-- Check monitoring dashboard for bottlenecks
-- Follow [Section 1.3](#13-slow-performance)
+**Common log patterns:**
 
-**Uptime Alert (Down):**
-- Follow [Section 1.1](#11-complete-outage)
+```
+# Healthy execution
+[INFO] analyzeDeal: started for user@example.com
+[INFO] analyzeDeal: LLM response received in 8234ms
+[INFO] analyzeDeal: analysis saved id=abc123
 
-**High Traffic Alert:**
-- Monitor performance under load
-- Scale if needed (contact Base44 support)
-- Check for DDoS attack (unusual traffic patterns)
+# Error patterns to investigate
+[ERROR] analyzeDeal: Unauthorized           → User session missing
+[ERROR] analyzeDeal: LLM timeout 30000ms   → Retry or simplify input
+[ERROR] analyzeDeal: entity save failed     → Validation error; check input
+```
 
----
+**Check all functions for error spikes:**
 
-## 4. On-Call Procedures
-
-### 4.1 On-Call Responsibilities
-- Respond to pages within 15 minutes
-- Investigate and mitigate incidents
-- Escalate if needed (see escalation matrix)
-- Document incidents in ticket system
-- Conduct post-mortems for SEV1/SEV2
-
-### 4.2 Escalation Matrix
-
-| Severity | Response Time | Escalation After |
-|----------|---------------|------------------|
-| SEV1 | Immediate | 30 minutes |
-| SEV2 | 1 hour | 2 hours |
-| SEV3 | 4 hours | Next business day |
-| SEV4 | 24 hours | No escalation |
-
-**Escalation Contacts:**
-1. On-Call Engineer: [Name TBD] - [Phone/Slack TBD]
-2. Engineering Lead: [Name TBD] - [Phone/Slack TBD]
-3. CTO: [Name TBD] - [Phone TBD]
-4. Base44 Support: support@base44.com
+```
+1. Base44 Dashboard → Functions → Overview
+2. Set time range: "Last 24 hours"
+3. Sort by "Error rate" descending
+4. Investigate any function with error rate > 5%
+```
 
 ---
 
-## 5. Regular Maintenance Tasks
+### Monitor Active Users
 
-### Daily Tasks
-- [ ] Review error logs
-- [ ] Check monitoring dashboards
-- [ ] Verify backup completion
-- [ ] Review security alerts (npm audit)
+**Quick count via Base44 database query:**
 
-### Weekly Tasks
-- [ ] Review performance trends
-- [ ] Update dependencies (if patches available)
-- [ ] Review and respond to user feedback
-- [ ] Test backup restore procedure
+In the Base44 Database Explorer, query the `analytics` collection:
 
-### Monthly Tasks
-- [ ] Comprehensive performance audit
-- [ ] Security vulnerability scan
-- [ ] Review and update documentation
-- [ ] Conduct disaster recovery drill
+```
+Filter: created_date__gte = [1 hour ago ISO timestamp]
+Count unique `created_by` values
+```
+
+**Engagement trend:**
+
+```
+Filter: created_date__gte = [7 days ago]
+Group by: created_date (day), count distinct created_by
+```
 
 ---
 
-**Priority:** P0 - CRITICAL  
-**Estimated Documentation Time:** 3 days  
-**Assigned To:** [Unassigned]  
-**Target Completion:** [Not Set]
+### Update Environment Configuration
+
+**Base44 credentials or feature flags:**
+
+```bash
+# 1. Update .env.production (NEVER commit this file)
+VITE_BASE44_APP_ID=your_app_id
+VITE_BASE44_TOKEN=your_token
+VITE_BASE44_FUNCTIONS_VERSION=production
+
+# 2. Rebuild
+npm run build
+
+# 3. Redeploy via Base44 publish (see Deployment Process above)
+```
+
+**Updating app-level constants** (feature flags, rate limit values):
+
+- Edit `src/lib/app-params.js`
+- Open a PR, follow standard deployment process
+- Coordinate with team before changing rate limits
 
 ---
 
-*This placeholder was created during the 2026-01-21 documentation audit.*
-*RISK: On-call engineers cannot respond effectively without runbooks.*
+## Incident Response Quick Reference
+
+| Symptom | First Action | Reference |
+|---------|-------------|-----------|
+| Site returns 503 | Check Base44 status page | [DISASTER_RECOVERY.md](./DISASTER_RECOVERY.md) |
+| Users cannot log in | Check Base44 auth status in dashboard | ADR-002: Auth via Base44 |
+| AI analysis failing | Check `analyzeDeal` function logs | Cloud Function Logs section above |
+| Very slow page loads | Check Sentry performance, check LCP | [PERFORMANCE_BASELINE.md](./PERFORMANCE_BASELINE.md) |
+| Data not saving | Check Base44 DB status, check 5xx in network tab | [MONITORING.md](./MONITORING.md) |
+| Security breach suspected | Isolate immediately, escalate | [INCIDENT_RESPONSE.md](../security/INCIDENT_RESPONSE.md) |
+| High 429 rate | Check rate limit config, notify impacted users | [ERROR_HANDLING.md](../api/ERROR_HANDLING.md) |
+
+---
+
+## Escalation Procedures
+
+### Escalation Matrix
+
+| Level | Trigger | Action |
+|-------|---------|--------|
+| **L1 — Self-resolve** | < 5 users affected, fix is known | Fix, document, and close |
+| **L2 — Team** | > 5 users affected, or unknown root cause | Alert in #engineering channel |
+| **L3 — Platform (Base44)** | Root cause is Base44 infrastructure | File Base44 support ticket |
+| **L4 — Executive** | Data breach, > 1h outage, legal risk | Notify project lead immediately |
+
+### Filing a Base44 Support Ticket
+
+Include the following in every Base44 support request:
+
+- **App ID:** [your Base44 app ID]
+- **Affected function(s):** e.g., `analyzeDeal`, `calculatePipelineAnalytics`
+- **Error message:** exact text from logs
+- **Correlation IDs:** from error responses
+- **Time of first occurrence:** ISO 8601 UTC
+- **Reproduction steps:** what the user was doing
+
+Support portal: `https://support.base44.com`
+
+---
+
+## On-Call Checklist
+
+### Start of On-Call Shift
+
+- [ ] Review any open incidents from the previous shift
+- [ ] Check Sentry for unresolved errors in the last 24h
+- [ ] Verify CI/CD pipeline is green on `main`
+- [ ] Check Base44 function error rates are < 1%
+- [ ] Confirm you have access to Base44 dashboard and Sentry
+
+### End of On-Call Shift
+
+- [ ] Document any incidents that occurred in the incident log
+- [ ] Hand off open issues to the next on-call person
+- [ ] Verify all P0/P1 incidents are resolved or have a mitigation in place
+
+---
+
+## Regular Maintenance Tasks
+
+| Task | Frequency | Steps |
+|------|-----------|-------|
+| `npm audit` review | Weekly | Run `npm audit`; create tickets for high/critical findings |
+| Dependency updates | Bi-weekly | `npm update` for patch updates; test before merging |
+| Shadcn/ui component updates | Monthly | `npx shadcn-ui add [component]` to pull latest versions |
+| Review Base44 function p95 durations | Monthly | Optimize any function consistently > 20s |
+| Rotate API/service tokens | Quarterly | Update `.env.production`, redeploy |
+| Review and prune old analytics events | Monthly | Archive `analytics` events older than 90 days |
+| Validate backup restore procedure | Quarterly | Follow [DISASTER_RECOVERY.md](./DISASTER_RECOVERY.md) restore drill |
+
+---
+
+*Related: [Monitoring](MONITORING.md) · [Disaster Recovery](DISASTER_RECOVERY.md) · [Performance Baseline](PERFORMANCE_BASELINE.md) · [Incident Response](../security/INCIDENT_RESPONSE.md)*
