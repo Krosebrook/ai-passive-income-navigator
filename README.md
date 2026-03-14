@@ -11,19 +11,23 @@ View and edit your app on [Base44.com](http://Base44.com)
 
 ## 📋 Documentation
 
-### 🚨 Documentation Audit (2026-01-21)
-**NEW:** A comprehensive documentation audit has been completed:
-- 📋 **[DOCUMENTATION_AUDIT.md](./DOCUMENTATION_AUDIT.md)** - Complete audit with findings and remediation plan
-- 📂 **[Documentation Index](./DOCUMENTATION_INDEX.md)** - Navigate all documentation
-- 📁 **[docs/](./docs/)** - Restructured technical documentation
+All technical documentation lives in the **[docs/](./docs/)** directory, organized by topic.
 
-**Key Findings:** 11 critical documentation gaps identified. Production-ready status: ❌ No
-
----
+| I want to... | Go to |
+|---|---|
+| Get started as a developer | [docs/DEVELOPMENT.md](./docs/DEVELOPMENT.md) |
+| Contribute to the project | [CONTRIBUTING.md](./CONTRIBUTING.md) |
+| Understand the architecture | [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) |
+| Deploy the application | [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md) |
+| Use the API | [docs/API.md](./docs/API.md) |
+| Write or run tests | [docs/TESTING.md](./docs/TESTING.md) |
+| Fix a problem | [docs/TROUBLESHOOTING.md](./docs/TROUBLESHOOTING.md) |
+| Report a security issue | [SECURITY.md](./SECURITY.md) |
+| Browse all docs | [docs/INDEX.md](./docs/INDEX.md) |
 
 ### Core Documentation
 - 📖 **[Contributing Guide](./CONTRIBUTING.md)** - How to contribute to this project
-- 🏗️ **[Architecture](./ARCHITECTURE.md)** - System architecture and design decisions
+- 🏗️ **[Architecture](./docs/ARCHITECTURE.md)** - System architecture and design decisions
 - 🔌 **[API Documentation](./docs/API.md)** - API endpoints and usage
 - 🚀 **[Deployment Guide](./docs/DEPLOYMENT.md)** - How to deploy the application
 - 💻 **[Development Guide](./docs/DEVELOPMENT.md)** - Development setup and workflow
@@ -35,11 +39,11 @@ View and edit your app on [Base44.com](http://Base44.com)
 ### Product Documentation
 **Important:** Before launching to production, please review the comprehensive audit and roadmap:
 
-- 📊 **[PRODUCT_AUDIT.md](./PRODUCT_AUDIT.md)** - Complete technical and business audit
-- 🗺️ **[PRODUCT_ROADMAP.md](./PRODUCT_ROADMAP.md)** - 3-month roadmap to production
-- 🔧 **[TECHNICAL_RECOMMENDATIONS.md](./TECHNICAL_RECOMMENDATIONS.md)** - Recommended tools and libraries
-- 🚀 **[IMPLEMENTATION_GUIDE.md](./IMPLEMENTATION_GUIDE.md)** - Quick start guide for immediate actions
-- 🛡️ **[SECURITY_RECOMMENDATIONS.md](./SECURITY_RECOMMENDATIONS.md)** - Security best practices
+- 📊 **[Product Audit](./docs/product/PRODUCT_AUDIT.md)** - Complete technical and business audit
+- 🗺️ **[Product Roadmap](./docs/product/PRODUCT_ROADMAP.md)** - 3-month roadmap to production
+- 🔧 **[Technical Recommendations](./docs/TECHNICAL_RECOMMENDATIONS.md)** - Recommended tools and libraries
+- 🚀 **[Implementation Guide](./docs/product/IMPLEMENTATION_GUIDE.md)** - Quick start guide for immediate actions
+- 🛡️ **[Security Recommendations](./docs/security/SECURITY_RECOMMENDATIONS.md)** - Security best practices
 
 ## Features
 
@@ -104,7 +108,7 @@ View and edit your app on [Base44.com](http://Base44.com)
 
 1. Enable authentication in `src/api/base44Client.js` (set `requiresAuth: true`)
 2. Fix security vulnerabilities: `npm audit fix`
-3. Review the [PRODUCT_AUDIT.md](./PRODUCT_AUDIT.md) for all security concerns
+3. Review the [Product Audit](./docs/product/PRODUCT_AUDIT.md) for all security concerns
 
 ## 🏗️ Tech Stack
 
@@ -134,10 +138,22 @@ ai-passive-income-navigator/
 │   ├── pages/           # Page components
 │   └── utils/           # Utility functions
 ├── public/              # Static assets
-├── PRODUCT_AUDIT.md     # Technical audit report
-├── PRODUCT_ROADMAP.md   # Development roadmap
-├── TECHNICAL_RECOMMENDATIONS.md
-└── IMPLEMENTATION_GUIDE.md
+└── docs/
+    ├── ARCHITECTURE.md       # System architecture
+    ├── API.md                # API reference
+    ├── DEVELOPMENT.md        # Developer guide
+    ├── DEPLOYMENT.md         # Deployment guide
+    ├── TESTING.md            # Testing guide
+    ├── TROUBLESHOOTING.md    # Troubleshooting
+    ├── TECHNICAL_RECOMMENDATIONS.md
+    ├── architecture/         # Architecture decisions & data model
+    ├── api/                  # Detailed API & error-handling docs
+    ├── operations/           # Runbooks, monitoring, DR
+    ├── security/             # Incident response, recommendations
+    ├── legal/                # Privacy policy, terms of service
+    ├── features/             # Feature-level documentation
+    ├── product/              # Product audit, roadmap, guides
+    └── audits/               # Audit reports & refactoring notes
 ```
 
 ## 🚀 Deployment
@@ -152,11 +168,11 @@ Any changes pushed to the repository will be reflected in the Base44 Builder.
 
 ### Alternative Deployment (Vercel/Netlify)
 
-See [TECHNICAL_RECOMMENDATIONS.md](./TECHNICAL_RECOMMENDATIONS.md) for deployment options.
+See [Technical Recommendations](./docs/TECHNICAL_RECOMMENDATIONS.md) for deployment options.
 
 ## 🐛 Known Issues
 
-See [PRODUCT_AUDIT.md](./PRODUCT_AUDIT.md) for a complete list of:
+See [Product Audit](./docs/product/PRODUCT_AUDIT.md) for a complete list of:
 - Security vulnerabilities (11 npm packages)
 - Missing features
 - Technical debt
@@ -176,7 +192,7 @@ See [PRODUCT_AUDIT.md](./PRODUCT_AUDIT.md) for a complete list of:
 - Implement monitoring/logging
 - Add legal pages (Privacy Policy, Terms)
 
-See [PRODUCT_ROADMAP.md](./PRODUCT_ROADMAP.md) for the 3-month plan to production.
+See [Product Roadmap](./docs/product/PRODUCT_ROADMAP.md) for the 3-month plan to production.
 
 ## 🤝 Contributing
 
@@ -186,7 +202,7 @@ We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md)
 
 1. Read the [Contributing Guide](./CONTRIBUTING.md)
 2. Check the [Development Guide](./docs/DEVELOPMENT.md)
-3. Review the [Product Roadmap](./PRODUCT_ROADMAP.md)
+3. Review the [Product Roadmap](./docs/product/PRODUCT_ROADMAP.md)
 4. Create a feature branch
 5. Make your changes
 6. Run tests and linting
@@ -200,8 +216,8 @@ This project adheres to a [Code of Conduct](./CODE_OF_CONDUCT.md). By participat
 
 - **Base44 Documentation:** [https://docs.base44.com/Integrations/Using-GitHub](https://docs.base44.com/Integrations/Using-GitHub)
 - **Base44 Support:** [https://app.base44.com/support](https://app.base44.com/support)
-- **Project Audit:** [PRODUCT_AUDIT.md](./PRODUCT_AUDIT.md)
-- **Roadmap:** [PRODUCT_ROADMAP.md](./PRODUCT_ROADMAP.md)
+- **Project Audit:** [docs/product/PRODUCT_AUDIT.md](./docs/product/PRODUCT_AUDIT.md)
+- **Roadmap:** [docs/product/PRODUCT_ROADMAP.md](./docs/product/PRODUCT_ROADMAP.md)
 
 ## 📄 License
 

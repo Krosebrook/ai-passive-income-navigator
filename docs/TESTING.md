@@ -748,7 +748,7 @@ expect(screen.getByText('Loaded')).toBeInTheDocument();
 
 - [Development Guide](./DEVELOPMENT.md)
 - [Contributing Guide](../CONTRIBUTING.md)
-- [Architecture Documentation](../ARCHITECTURE.md)
+- [Architecture Documentation](./ARCHITECTURE.md)
 
 ---
 

@@ -1,330 +1,490 @@
 # Feature: Deal Pipeline Management
 
-**Status:** ⚠️ **Incomplete** - Critical Documentation Gap
+**Version:** 1.0  
+**Last Updated:** 2026-01-19
 
 ---
 
-## Purpose
+## Table of Contents
 
-The Deal Pipeline feature allows users to source, analyze, and manage passive income deal opportunities through a structured pipeline workflow.
-
-## Overview
-
-**Feature Complexity:** HIGH  
-**Lines of Code:** ~5,000+ (estimated)  
-**Cloud Functions:** 30+ dedicated functions  
-**Collections:** `deals` (assumed), `dealAnalytics`  
-**Documentation Quality:** ❌ **MISSING (F Grade)**
-
-**This is the LARGEST feature with the LEAST documentation.**
-
----
-
-## Feature Components
-
-### 1. Deal Sourcing
-**Purpose:** Proactively find passive income deals from various sources
-
-**Cloud Functions:**
-- `proactivelySourceDeals.ts` - [UNDOCUMENTED]
-- `sourceDealOpportunities.ts` - [UNDOCUMENTED]
-- `scrapeDealPlatforms.ts` - [UNDOCUMENTED]
-- `aiSourceAndAnalyzeDeals.ts` - [UNDOCUMENTED]
-
-**Questions:**
-- What platforms are scraped? (Flippa, Empire Flippers, others?)
-- How often are deals sourced? (Daily? Hourly? On-demand?)
-- What criteria filter deals? (Price range, category, ROI?)
-- How are duplicate deals handled?
+- [Feature Overview](#feature-overview)
+- [Pipeline Stages](#pipeline-stages)
+- [Key User Flows](#key-user-flows)
+- [Data Model](#data-model)
+- [Cloud Functions Reference](#cloud-functions-reference)
+- [AI Capabilities](#ai-capabilities)
+- [Automation System](#automation-system)
+- [Analytics and Reporting](#analytics-and-reporting)
+- [Notifications and Reminders](#notifications-and-reminders)
+- [How to Use the Feature](#how-to-use-the-feature)
+- [Configuration](#configuration)
+- [Known Limitations](#known-limitations)
 
 ---
 
-### 2. Deal Analysis
-**Purpose:** Evaluate deal viability using AI and financial analysis
+## Feature Overview
 
-**Cloud Functions:**
-- `analyzeDeal.ts` - [UNDOCUMENTED]
-- `analyzeInitialViability.ts` - [UNDOCUMENTED]
-- `analyzeFinancials.ts` - [UNDOCUMENTED]
-- `analyzeMarketImpact.ts` - [UNDOCUMENTED]
-- `analyzeSuccessStories.ts` - [UNDOCUMENTED]
+The Deal Pipeline is the core feature for users who want to move beyond idea discovery into actively sourcing, evaluating, and executing passive income opportunities. It provides a structured workflow — similar to a sales CRM — tailored to the lifecycle of a passive income deal (e.g., acquiring a content site, buying a dividend-paying stock portfolio, or launching a SaaS product).
 
-**Questions:**
-- What analysis metrics are calculated? (ROI, payback period, risk score?)
-- What data sources are used for analysis?
-- How accurate is the AI analysis?
-- Can users override AI recommendations?
+### What It Does
 
----
+- **Sourcing:** AI automatically finds and ranks deals from various platforms and categories based on the user's criteria
+- **Analysis:** Deep AI-powered analysis with market data, financial projections, risk scoring, and economic scenario simulations
+- **Pipeline Management:** Kanban-style board to move deals through stages from discovery to execution
+- **Workflow Automation:** Automatically creates tasks, reminders, and follow-up actions when deals change stages
+- **Insights and Reporting:** AI-generated insights, ROI forecasts, due diligence reports, and performance analytics
 
-### 3. Deal Categorization
-**Purpose:** Automatically categorize deals by type, industry, risk level
+### Who Uses It
 
-**Cloud Functions:**
-- `categorizeDeal.ts` - [UNDOCUMENTED]
-- `categorizeDealWithAI.ts` - [UNDOCUMENTED]
-
-**Questions:**
-- What categories exist? (E-commerce, SaaS, Content sites, etc.?)
-- Is categorization manual, AI-powered, or hybrid?
-- Can categories be customized by users?
+Users who are actively evaluating passive income opportunities — not just browsing ideas. Typical users have moved past the "learning" phase and are ready to transact.
 
 ---
 
-### 4. Deal Comparison
-**Purpose:** Compare multiple deals side-by-side
+## Pipeline Stages
 
-**Cloud Functions:**
-- `compareDeals.ts` - [UNDOCUMENTED]
+Deals move through a sequential pipeline. Each stage has defined entry criteria, key activities, and exit conditions.
 
-**Questions:**
-- What metrics are compared? (Price, revenue, traffic, ROI?)
-- How many deals can be compared at once?
-- Is there a scoring/ranking system?
+```
+  ┌──────────┐   ┌────────────────┐   ┌──────────┐   ┌─────────────┐
+  │ Sourcing │──▶│ Initial Review │──▶│ Analysis │──▶│ Negotiation │
+  └──────────┘   └────────────────┘   └──────────┘   └─────────────┘
+                                                              │
+  ┌────────────┐   ┌───────────┐   ┌──────────────┐          │
+  │ Monitoring │◀──│ Execution │◀──│ Due Diligence│◀─────────┘
+  └────────────┘   └───────────┘   └──────────────┘
+       │
+       ▼
+  ┌───────────┐
+  │ Completed │
+  └───────────┘
+  (or Archived)
+```
 
----
+### Stage Descriptions
 
-### 5. Deal Insights & Reporting
-**Purpose:** Generate insights and reports for deals
-
-**Cloud Functions:**
-- `generateDealInsights.ts` - [UNDOCUMENTED]
-- `generateDealReport.ts` - [UNDOCUMENTED]
-- `generatePredictiveInsights.ts` - [UNDOCUMENTED]
-
-**Questions:**
-- What insights are generated? (Market trends, risk factors, opportunities?)
-- What format are reports? (PDF, HTML, CSV?)
-- Can reports be scheduled/automated?
-
----
-
-### 6. Deal Pipeline Management
-**Purpose:** Track deals through pipeline stages
-
-**Pipeline Stages (Assumed):**
-1. Sourced - Deal discovered
-2. Analysis - Under evaluation
-3. Negotiation - Discussing terms
-4. Due Diligence - Verifying claims
-5. Execution - Closing deal
-6. Monitoring - Post-acquisition tracking
-
-**Cloud Functions:**
-- `suggestDealWorkflow.ts` - [UNDOCUMENTED]
-- `executePipelineAutomation.ts` - [UNDOCUMENTED]
-- `calculatePipelineAnalytics.ts` - [UNDOCUMENTED]
-
-**Questions:**
-- Are pipeline stages customizable?
-- What triggers stage transitions?
-- What automations exist? (Reminders, status updates?)
-- What analytics are calculated? (Conversion rates, time in stage?)
+| Stage | Purpose | Key Activities | AI Support |
+|-------|---------|---------------|-----------|
+| **Sourcing** | Discover deals from platforms and AI suggestions | Browse sourced opportunities, set criteria | `aiSourceAndAnalyzeDeals`, `scrapeDealPlatforms`, `scoreDealOpportunities` |
+| **Initial Review** | Quick assessment — pass or proceed? | Review AI categorisation, read summary | `categorizeDeal`, `categorizeDealWithAI` |
+| **Analysis** | Deep dive — financial, market, risk | Run full analysis, compare with alternatives | `analyzeDeal`, `compareDeals`, `forecastDealROI` |
+| **Negotiation** | Price and terms | Document offers, track counter-offers | `generateDealInsights`, `generateDealStructureVariations` |
+| **Due Diligence** | Verify claims and assumptions | Checklist completion, document review | `performDealDueDiligence`, `generateDueDiligenceReport` |
+| **Execution** | Close and execute | Final steps, paperwork, payment | `suggestDealWorkflow`, `executePipelineAutomation` |
+| **Monitoring** | Track post-acquisition performance | Income tracking, milestone alerts | `sendDealReminders`, `calculatePipelineAnalytics` |
+| **Completed** | Terminal — successful exit or maturity | Generate final performance report | `generateDealReport` |
+| **Archived** | Terminal — passed or failed | Document learnings | — |
 
 ---
 
-### 7. Deal Reminders & Notifications
-**Purpose:** Notify users of deal-related events
+## Key User Flows
 
-**Cloud Functions:**
-- `sendDealReminders.ts` - [UNDOCUMENTED]
+### Flow 1: AI-Sourced Deal → Pipeline
 
-**Questions:**
-- What events trigger reminders? (New deals, status changes, deadlines?)
-- What channels? (Email, push notifications, in-app?)
-- Can users configure reminder preferences?
+```
+1. User configures DealSourcingCriteria (categories, budget, risk tolerance)
+2. User clicks "Find Deals"
+3. System invokes: aiSourceAndAnalyzeDeals → scrapeDealPlatforms → scoreDealOpportunities
+4. Sourced deals appear in the "Sourcing" stage with AI scores
+5. User reviews deal cards (name, category, AI match score, asking price)
+6. User clicks "Add to Pipeline" → deal moves to "Initial Review"
+7. categorizeDeal runs automatically → assigns hot/warm/cold lead label
+8. User reviews the categorisation and moves to "Analysis" or passes
+```
+
+### Flow 2: Manual Deal Entry → Analysis
+
+```
+1. User clicks "Add Deal" and fills in name, description, category
+2. Deal is created in "Initial Review" stage
+3. User clicks "Analyse" → invokes analyzeDeal function
+4. Analysis runs (8–25 seconds with LLM + web search)
+5. Results appear: overall score, risk score, market analysis, recommendation
+6. If analysis suggests "buy" or "strong_buy", user moves deal to "Negotiation"
+```
+
+### Flow 3: Stage Change → Automated Workflow
+
+```
+1. User drags deal from "Analysis" to "Negotiation" on the Kanban board
+2. executePipelineAutomation is triggered by the stage change event
+3. Active automation rules for "negotiation" stage are fetched
+4. System automatically creates:
+   - Task: "Research comparable deal prices" (due in 3 days)
+   - Reminder: "Follow up with seller" (due in 7 days)
+   - Email draft: Template for initial offer email
+5. User sees new tasks appear in the deal's task list
+```
+
+### Flow 4: Due Diligence → Execution
+
+```
+1. User moves deal to "Due Diligence"
+2. System invokes performDealDueDiligence → generates a due diligence checklist
+3. generateDueDiligenceReport creates a structured report
+4. User works through the checklist (financials verified, traffic confirmed, etc.)
+5. When checklist is 100% complete, deal is eligible to move to "Execution"
+6. suggestDealWorkflow generates a personalised closing workflow
+7. User executes steps and moves deal to "Monitoring" or "Completed"
+```
+
+### Flow 5: Portfolio-Level Analytics
+
+```
+1. User navigates to "Pipeline Analytics" dashboard
+2. calculatePipelineAnalytics is invoked
+3. Returns:
+   - Conversion rates by stage
+   - Average deal cycle time
+   - Revenue potential of pipeline
+   - Stage bottlenecks
+   - Task completion rates
+4. Recharts render the analytics as bar, line, and funnel charts
+```
 
 ---
 
 ## Data Model
 
-### Deal Schema (Assumed)
+The deal pipeline uses the following Base44 collections. See [DATA_MODEL.md](../architecture/DATA_MODEL.md) for full schema definitions.
+
+### Primary Collections
+
+| Collection | Purpose |
+|-----------|---------|
+| `DealSourcingCriteria` | User's filters for AI-powered deal sourcing |
+| `SourcedDealOpportunity` | Raw deals found by sourcing functions |
+| `DealPipeline` | Active deals being tracked through stages |
+| `DealStage` | Stage configuration (order, colors, automation rules) |
+| `DealTask` | Action items associated with a deal |
+| `DealAnalysis` | Stored results from `analyzeDeal` function |
+
+### Key Fields on `DealPipeline`
 
 ```typescript
-interface Deal {
-  id: string;
-  
-  // Basic Info
-  title: string;
-  description: string;
-  source: string;          // Platform where deal was found
-  sourceUrl: string;       // Link to original listing
-  
-  // Financial
-  askingPrice: number;
-  monthlyRevenue: number;
-  monthlyProfit: number;
-  multipleOfProfit: number; // Valuation multiple
-  
-  // Metrics
-  traffic: number;         // Monthly visitors
-  ageInMonths: number;     // How long business has existed
-  category: string;        // E-commerce, SaaS, etc.
-  
-  // Pipeline
-  stage: PipelineStage;    // Current stage in pipeline
-  status: DealStatus;      // Active, archived, closed
-  
-  // Analysis
-  aiScore: number;         // 0-100 AI viability score
-  riskLevel: RiskLevel;    // Low, medium, high
-  estimatedROI: number;    // Percentage
-  
-  // Dates
-  sourcedAt: Date;
-  lastAnalyzedAt: Date;
-  updatedAt: Date;
+{
+  id: string,
+  name: string,
+  stage: PipelineStage,          // Current stage
+  stage_history: StageHistoryEntry[], // Full audit trail
+  asking_price: number | null,
+  offer_price: number | null,
+  projected_roi_pct: number | null,
+  projected_monthly_income: number | null,
+  ai_insights: object | null,    // From generateDealInsights
+  due_diligence_report: object | null,
+  assigned_workflow: string | null,
+  automation_enabled: boolean,
+  priority: "low" | "medium" | "high" | "critical",
 }
 ```
 
-**Status:** ⚠️ **Schema Not Confirmed** - Assumed from function names
+### Stage History
+
+Every stage transition is logged in `stage_history` (append-only):
+
+```typescript
+{
+  stage: "negotiation",
+  entered_at: "2026-01-19T14:32:00Z",
+  exited_at: "2026-01-22T09:15:00Z",
+  notes: "Offer submitted at $12,000",
+  changed_by: "user@example.com"
+}
+```
 
 ---
 
-## User Flows
+## Cloud Functions Reference
 
-### Flow 1: Discover and Add Deal
-1. User views sourced deals list
-2. User clicks on deal to view details
-3. System displays AI analysis
-4. User adds deal to pipeline
-5. Deal appears in pipeline view
+### Sourcing Functions
 
-**Status:** ⚠️ **Flow Not Documented** - Assumed
+| Function | Input | Output | Notes |
+|----------|-------|--------|-------|
+| `aiSourceAndAnalyzeDeals` | User criteria | Array of sourced deals with AI scores | Combines scraping + LLM analysis |
+| `scrapeDealPlatforms` | Category, criteria | Raw deal listings | Web scraping + filtering |
+| `searchDealPlatforms` | Search query, filters | Ranked deal list | Keyword-based search |
+| `scoreDealOpportunities` | Array of deals, criteria | Deals with priority scores | Ranks by user criteria match |
+| `sourceDealOpportunities` | Criteria | Sourced deals | General sourcing function |
+| `sourceDealOpportunitiesExternal` | Criteria | External platform results | Fetches from external APIs |
+| `proactivelySourceDeals` | User profile | Proactive suggestions | Background sourcing based on preferences |
+| `originateNewDeals` | Category, budget | New deal ideas | Generates novel deal opportunities |
 
----
+### Analysis Functions
 
-### Flow 2: Analyze and Progress Deal
-1. User opens deal in "Analysis" stage
-2. User reviews AI insights
-3. User requests additional analysis (if needed)
-4. User moves deal to "Negotiation" stage
-5. System sends reminder notifications
+| Function | Input | Output | Notes |
+|----------|-------|--------|-------|
+| `analyzeDeal` | `dealName`, `dealDescription`, `dealCategory`, `userCriteria`, `documentUrls?`, `runScenarios?` | Full analysis with scores, risks, opportunities | Core analysis function; uses real-time web data |
+| `categorizeDeal` | `dealId` | Category label + priority score | Assigns hot/warm/cold/pass labels |
+| `categorizeDealWithAI` | Deal data | AI-powered categorisation | Extended version with richer output |
+| `compareDeals` | Array of deal IDs | Comparison matrix | Side-by-side analysis of multiple deals |
+| `forecastDealROI` | Deal data, timeline | ROI projections | 3/6/12/24 month forecasts |
+| `generateDealStructureVariations` | Deal data | 3 alternative deal structures | Creative structuring options |
+| `predictDealPerformance` | Deal + historical data | Performance prediction | ML-based scoring |
+| `screenAndRankDeals` | Array of deals, criteria | Ranked list | Bulk screening |
 
-**Status:** ⚠️ **Flow Not Documented** - Assumed
+### Insights and Reporting Functions
 
----
+| Function | Input | Output | Notes |
+|----------|-------|--------|-------|
+| `generateDealInsights` | `dealId` | AI insights on negotiation, risks, timing | Contextual deal coaching |
+| `generateDealReport` | `dealId` | Formatted markdown report | Shareable deal summary |
+| `generateDueDiligenceReport` | `dealId` | Structured DD checklist + findings | Comprehensive DD support |
+| `performDealDueDiligence` | `dealId`, documents | Due diligence checklist + analysis | Automated DD process |
 
-### Flow 3: Compare Multiple Deals
-1. User selects 2-5 deals
-2. User clicks "Compare"
-3. System displays side-by-side comparison
-4. User can export comparison report
+### Workflow and Automation Functions
 
-**Status:** ⚠️ **Flow Not Documented** - Assumed
+| Function | Input | Output | Notes |
+|----------|-------|--------|-------|
+| `suggestDealWorkflow` | `dealId` | Personalised workflow with stages, tasks, email templates | AI-generated action plan |
+| `executePipelineAutomation` | Stage change event | Created tasks, reminders, notifications | Triggered on stage change |
+| `sendDealReminders` | Scheduled trigger | Reminder notifications sent | Runs on schedule |
+| `notifyDealUpdate` | Deal update event | Notifications to assigned users | Event-driven notifications |
 
----
+### Analytics Functions
 
-## Dependencies
-
-### External Services
-- Web scraping services? (Bright Data, ScraperAPI?)
-- Financial data APIs? (Plaid, Stripe for business verification?)
-- AI/ML services (OpenAI, Claude for analysis)
-
-**Status:** ⚠️ **Dependencies Not Documented**
-
-### Internal Dependencies
-- `ideas` collection (for converting deals to ideas?)
-- `portfolioItems` collection (for tracking acquired deals?)
-- `analytics` collection (for pipeline analytics)
-- User authentication (user-specific deals)
-
----
-
-## Edge Cases & Failure Modes
-
-### Edge Case 1: Duplicate Deals
-**Scenario:** Same deal sourced from multiple platforms  
-**Expected Behavior:** [UNDOCUMENTED]  
-**Current Behavior:** [UNKNOWN]
-
-### Edge Case 2: Deal Data Incomplete
-**Scenario:** Scraped deal missing revenue or price data  
-**Expected Behavior:** [UNDOCUMENTED]  
-**Current Behavior:** [UNKNOWN]
-
-### Edge Case 3: AI Analysis Fails
-**Scenario:** AI service timeout or error  
-**Expected Behavior:** [UNDOCUMENTED]  
-**Fallback:** [UNKNOWN]
-
-### Edge Case 4: Deal Expires/Sold
-**Scenario:** Deal sold before user acts  
-**Expected Behavior:** [UNDOCUMENTED]  
-**Notification:** [UNKNOWN]
-
-### Edge Case 5: Pipeline Stage Regression
-**Scenario:** User moves deal backward (Negotiation → Analysis)  
-**Expected Behavior:** [UNDOCUMENTED]  
-**Data Integrity:** [UNKNOWN]
+| Function | Input | Output | Notes |
+|----------|-------|--------|-------|
+| `calculatePipelineAnalytics` | User's deals | Conversion rates, cycle times, stage distribution, revenue potential | Pipeline-wide metrics |
 
 ---
 
-## Performance Considerations
+## AI Capabilities
 
-- **Web Scraping:** Rate limiting? Proxy rotation? Legal compliance?
-- **AI Analysis:** Cost per analysis? Batch processing? Caching results?
-- **Large Datasets:** Pagination for deal lists? Lazy loading?
+### Deal Analysis (`analyzeDeal`)
 
-**Status:** ⚠️ **Performance Not Documented**
+The most powerful function in the pipeline. For each deal, it produces:
 
----
+- **Overall Score (0–100):** Weighted average of market, competition, and profitability scores
+- **Risk Score (0–100):** Higher = riskier
+- **Reward Score (0–100):** Upside potential
+- **Market Analysis:** Size, growth rate, saturation level
+- **Competition Analysis:** Level, key competitors, competitive advantages
+- **Profitability Analysis:** Timeline to profit, margin estimate, revenue potential
+- **Risk Factors:** 3–5 risks with severity and mitigation strategies
+- **Recommendation:** `strong_buy` | `buy` | `hold` | `avoid`
+- **Economic Scenarios** (optional): Optimistic, base case, pessimistic projections
 
-## Security Considerations
+**Important:** The analysis uses `add_context_from_internet: true` for real-time market data. This adds 5–15 seconds to the response time but significantly improves accuracy.
 
-- **Web Scraping:** Compliance with ToS of source platforms?
-- **Data Privacy:** Are scraped deals public data? PII concerns?
-- **Rate Limiting:** Abuse prevention for expensive AI calls?
+### Deal Insights (`generateDealInsights`)
 
-**Status:** ⚠️ **Security Not Documented**
+Context-aware coaching for the deal's current stage:
+- Success probability score
+- Negotiation strategies specific to the current stage
+- Timing recommendations
+- Leverage points and walk-away conditions
+- Market timing analysis
 
----
+### Workflow Suggestion (`suggestDealWorkflow`)
 
-## Testing Status
-
-**Unit Tests:** ❌ None found  
-**Integration Tests:** ❌ None found  
-**E2E Tests:** ❌ None found
-
-**Coverage:** 0%
-
----
-
-## Documentation Quality Assessment
-
-| Criterion | Grade | Notes |
-|-----------|-------|-------|
-| **Accuracy** | F | Feature exists but zero documentation |
-| **Completeness** | F | 5% (inferred from function names only) |
-| **Traceability** | D | Code exists but no spec documents |
-| **Change Resilience** | F | No versioning, no changelog for feature |
-| **Operational Usefulness** | F | No runbooks for deal pipeline |
-| **Onboarding Clarity** | F | New engineers cannot understand feature |
-| **Senior-Engineer Readability** | F | No architectural documentation |
-
-**Overall Grade:** ❌ **F (Failing)**
+Generates a personalised workflow based on:
+- Deal name, description, category, and current stage
+- User's risk tolerance and time commitment preferences
+- Recommended stages for the specific deal type
+- Scheduled actions with relative timing (e.g., "follow up at day 3, week 1, week 2")
+- Email templates for seller outreach
 
 ---
 
-## Immediate Actions Required
+## Automation System
 
-1. **Document all 30+ cloud functions** (see [CLOUD_FUNCTIONS_REFERENCE.md](../api/cloud-functions/REFERENCE.md))
-2. **Create deal pipeline architecture diagram**
-3. **Document deal data schema** (see [DATA_MODEL.md](../architecture/DATA_MODEL.md))
-4. **Document user flows** with screenshots
-5. **Document external service integrations**
-6. **Write tests** for critical deal pipeline functions
-7. **Create runbook** for deal pipeline operations
+The pipeline automation system executes predefined rules when deals change stages.
 
-**Estimated Documentation Time:** 5 days  
-**Priority:** P0 - CRITICAL  
+### How Automation Works
+
+1. A deal's `stage` field is updated (via UI or programmatically)
+2. Base44 entity triggers fire `executePipelineAutomation` with the before/after state
+3. The function fetches active `PipelineAutomationRule` records matching `trigger_stage`
+4. For each matching rule, it executes the configured `actions` array
+
+### Supported Action Types
+
+| Action Type | What It Does | Required Config |
+|------------|-------------|----------------|
+| `create_task` | Creates a `DealTask` assigned to the deal owner | `task_title`, `task_description`, `task_priority`, `due_days_offset` |
+| `create_reminder` | Creates a `DealReminder` | `reminder_message`, `reminder_days_offset` |
+| `send_notification` | Triggers `sendNotification` function | `notification_type`, `message_template` |
+| `update_deal_field` | Updates a field on the `DealPipeline` record | `field_name`, `field_value` |
+
+### Enabling Automation
+
+Automation is controlled per-deal via the `automation_enabled` flag on `DealPipeline`. It is `true` by default.
+
+To disable automation for a specific deal:
+
+```typescript
+await base44.entities.DealPipeline.update(dealId, {
+  automation_enabled: false
+});
+```
 
 ---
 
-**This feature represents ~40% of the codebase but has 0% documentation.**  
-**Cannot go to production without comprehensive deal pipeline documentation.**
+## Analytics and Reporting
+
+### Pipeline Analytics (`calculatePipelineAnalytics`)
+
+The analytics function calculates:
+
+| Metric | Description |
+|--------|-------------|
+| **Deal cycle time** | Average days from creation to completion |
+| **Conversion rate by stage** | % of deals that advance from each stage to the next |
+| **Stage distribution** | Count of deals in each stage |
+| **Revenue potential** | Sum of `projected_monthly_income` for all active deals |
+| **Task completion rate** | % of tasks completed vs. overdue |
+| **Won/lost ratio** | Completed vs. archived (passed) deals |
+
+### Deal Report (`generateDealReport`)
+
+The report function creates a comprehensive markdown document covering:
+- Deal overview and investment thesis
+- Financial projections (3, 6, 12, 24 months)
+- Risk assessment with mitigation plans
+- Market analysis summary
+- Due diligence findings
+- Recommended next steps
+
+Reports are stored in the `DealPipeline.ai_report_url` field and can be downloaded or shared.
 
 ---
 
-*This placeholder was created during the 2026-01-21 documentation audit.*
+## Notifications and Reminders
+
+### `sendDealReminders`
+
+A scheduled function (runs daily) that:
+1. Fetches all `DealReminder` records with `reminder_date <= today`
+2. For each reminder, invokes `sendNotification`
+3. Marks the reminder as sent
+
+### `notifyDealUpdate`
+
+Triggered on deal updates (stage changes, new analysis results):
+- Notifies the deal owner via email (if email notifications are enabled)
+- Updates the in-app notification feed
+
+### In-App Notifications
+
+The notification feed shows:
+- AI analysis completed (with overall score)
+- Stage changed (with new stage name)
+- Overdue tasks
+- Upcoming due diligence deadlines
+- Reminder due dates
+
+---
+
+## How to Use the Feature
+
+### Step 1: Configure Sourcing Criteria
+
+1. Navigate to **Deal Pipeline** in the main navigation
+2. Click **⚙️ Sourcing Settings**
+3. Set your criteria:
+   - Categories of interest (e.g., "saas", "content_creation")
+   - Maximum asking price
+   - Minimum annual revenue
+   - Risk tolerance
+   - Maximum deal multiple (price / annual profit)
+4. Click **Save Criteria**
+
+### Step 2: Source Deals
+
+**Option A: AI Auto-Source**
+1. Click **🤖 Find Deals**
+2. Select categories to search
+3. Wait 15–30 seconds for sourcing to complete
+4. Review the sourced deals, sorted by AI match score
+
+**Option B: Add Deal Manually**
+1. Click **+ Add Deal**
+2. Enter the deal name, description, category, and any known financial details
+3. Click **Save**
+
+### Step 3: Analyse a Deal
+
+1. Click on a deal card to open the deal detail view
+2. Click **🔬 Run Analysis**
+3. Optionally: upload document URLs for analysing pitch decks or financial reports
+4. Optionally: enable "Run Economic Scenarios" for bull/base/bear projections
+5. Wait for the analysis to complete (8–25 seconds)
+6. Review the analysis panel:
+   - Overall score and recommendation badge
+   - Risk and reward scores
+   - Market, competition, and profitability breakdowns
+   - Risk factors with mitigation strategies
+
+### Step 4: Manage the Pipeline
+
+1. The main Pipeline view is a Kanban board with columns for each stage
+2. Drag deal cards between stages (triggers automation)
+3. Click on a deal card to:
+   - View the full analysis
+   - Add notes
+   - Complete tasks
+   - View stage history
+4. Use filters to narrow the board: by category, priority, or score range
+
+### Step 5: Complete Due Diligence
+
+1. When a deal is in "Due Diligence", click **📋 Generate DD Report**
+2. Work through the generated checklist
+3. Check off items as you verify them
+4. Add findings notes for each item
+5. When the checklist is complete, the deal is eligible to move to "Execution"
+
+### Step 6: Post-Execution Monitoring
+
+1. After moving a deal to "Monitoring", set up monthly income tracking
+2. Log actual income each month via the income log
+3. Review the AI-generated performance insights
+4. Set reminders for quarterly reviews
+
+---
+
+## Configuration
+
+### Sourcing Criteria Fields
+
+| Field | Description | Default |
+|-------|-------------|---------|
+| `categories` | Deal categories to source | All categories |
+| `min_annual_revenue` | Minimum annual revenue | $0 |
+| `max_asking_price` | Maximum asking price | $50,000 |
+| `min_profit_margin_pct` | Minimum profit margin % | 20% |
+| `max_multiple` | Maximum price/profit multiple | 3x |
+| `risk_tolerance` | low / medium / high | medium |
+| `geographic_focus` | Country codes to focus on | ["US"] |
+| `exclude_keywords` | Keywords to filter out | [] |
+
+### Analysis Criteria
+
+The analysis criteria (`userCriteria` in `analyzeDeal`) are drawn from user `preferences`:
+
+| Field | Description |
+|-------|-------------|
+| `min_market_size` | Minimum market size for a viable deal |
+| `max_competition_level` | Maximum acceptable competition level |
+| `max_profitability_timeline_months` | Maximum months to break even |
+| `min_profit_margin` | Minimum acceptable profit margin % |
+| `required_initial_investment` | Available capital for the deal |
+| `risk_tolerance` | User's risk appetite |
+
+---
+
+## Known Limitations
+
+| Limitation | Impact | Workaround |
+|-----------|--------|-----------|
+| AI analysis may produce outdated market data | Medium | Re-run analysis for deals older than 30 days |
+| `scrapeDealPlatforms` limited to public listing data | Medium | Add private deal details manually |
+| LLM analysis can take up to 30 seconds | Low | Progress indicator shown; results are cached |
+| No real-time notifications (polling only) | Low | Manual refresh or set reminders |
+| Economic scenarios add significant latency | Low | Optional — disable if speed is priority |
+| Pipeline automation rules are global (not per-user) | Medium | Track with GitHub issue; per-user rules planned |
+| Deal comparison limited to 5 deals at once | Low | Run in batches |
+
+---
+
+*Related: [Data Model](../architecture/DATA_MODEL.md) · [API Documentation](../API.md) · [Error Handling](../api/ERROR_HANDLING.md)*

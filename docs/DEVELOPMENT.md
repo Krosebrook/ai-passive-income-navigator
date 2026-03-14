@@ -640,7 +640,7 @@ const mutation = useMutation({
 - [Contributing Guide](../CONTRIBUTING.md)
 - [Testing Guide](./TESTING.md)
 - [API Documentation](./API.md)
-- [Architecture Documentation](../ARCHITECTURE.md)
+- [Architecture Documentation](./ARCHITECTURE.md)
 
 ---
 
