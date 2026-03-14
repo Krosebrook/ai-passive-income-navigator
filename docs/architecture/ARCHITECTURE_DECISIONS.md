@@ -172,7 +172,7 @@ What other options did we evaluate?
 
 ## Related Documentation
 
-- [ARCHITECTURE.md](../../ARCHITECTURE.md) - System architecture overview
+- [ARCHITECTURE.md](../ARCHITECTURE.md) - System architecture overview
 - [DATA_MODEL.md](./DATA_MODEL.md) - Database design decisions
 - [STATE_MANAGEMENT.md](./STATE_MANAGEMENT.md) - State management patterns
 

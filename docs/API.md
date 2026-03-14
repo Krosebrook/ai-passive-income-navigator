@@ -218,7 +218,7 @@ async function createIdea(data) {
 
 ## Related Documentation
 
-- [Architecture Documentation](../ARCHITECTURE.md)
+- [Architecture Documentation](./ARCHITECTURE.md)
 - [Development Guide](./DEVELOPMENT.md)
 - [Testing Guide](./TESTING.md)
 

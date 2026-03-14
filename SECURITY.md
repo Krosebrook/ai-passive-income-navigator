@@ -91,7 +91,7 @@ After you submit a report, we will:
    - Fix: Implement input sanitization
    - Tracked in: SECURITY_RECOMMENDATIONS.md
 
-See [SECURITY_RECOMMENDATIONS.md](./SECURITY_RECOMMENDATIONS.md) for complete list.
+See [SECURITY_RECOMMENDATIONS.md](./docs/security/SECURITY_RECOMMENDATIONS.md) for complete list.
 
 ## Security Best Practices for Contributors
 

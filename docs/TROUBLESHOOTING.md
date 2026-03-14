@@ -665,7 +665,7 @@ If you're still stuck:
 
 - [Development Guide](./DEVELOPMENT.md)
 - [Deployment Guide](./DEPLOYMENT.md)
-- [Architecture Documentation](../ARCHITECTURE.md)
+- [Architecture Documentation](./ARCHITECTURE.md)
 
 ---
 
