@@ -4,7 +4,8 @@ import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
-import { Plus, TrendingUp, Zap, Settings, Layout, BarChart3 } from 'lucide-react';
+import { Plus, TrendingUp, Zap, Settings, Layout, BarChart3, Target } from 'lucide-react';
+import MatchmakerPanel from '@/components/deals/MatchmakerPanel';
 import AddDealModal from '@/components/pipeline/AddDealModal';
 import DealDetailsModal from '@/components/pipeline/DealDetailsModal';
 import AutomationRulesManager from '@/components/pipeline/AutomationRulesManager';
@@ -151,6 +152,10 @@ export default function DealPipelinePage() {
               <Zap className="w-4 h-4 mr-2" />
               Automation
             </TabsTrigger>
+            <TabsTrigger value="matchmaker">
+              <Target className="w-4 h-4 mr-2" />
+              Matchmaker
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="pipeline">
@@ -169,6 +174,10 @@ export default function DealPipelinePage() {
 
           <TabsContent value="automation">
             <AutomationRulesManager />
+          </TabsContent>
+
+          <TabsContent value="matchmaker">
+            <MatchmakerPanel />
           </TabsContent>
         </Tabs>
 
