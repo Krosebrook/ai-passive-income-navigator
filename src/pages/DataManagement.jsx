@@ -27,11 +27,6 @@ export default function DataManagement() {
     }
   });
 
-  const handleExport = (type) => {
-    setExportType(type);
-    setShowExportModal(true);
-  };
-
   return (
     <div className="min-h-screen p-6 bg-[#0f0618]">
       <div className="max-w-5xl mx-auto">
