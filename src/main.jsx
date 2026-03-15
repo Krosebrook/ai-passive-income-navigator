@@ -6,6 +6,11 @@ import '@/index.css'
 // Ensures all errors are captured from the beginning
 // Uses console.error fallback if external service not configured
 import '@/lib/errorLogger'
+import { validateEnv } from '@/lib/env'
+
+// Validate required environment variables before mounting the app.
+// Throws in development; warns in production (see src/lib/env.js).
+validateEnv()
 
 // Error logger is auto-initialized with console fallback
 // Can be configured later with Sentry DSN without changing app code

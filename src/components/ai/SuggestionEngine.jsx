@@ -13,10 +13,9 @@
  *   <AISuggestedInput fieldKey="deal_title" label="Deal Title" ... />
  */
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Button } from '@/components/ui/button';
-import { Sparkles, RefreshCw, Check, X, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
+import { Sparkles, RefreshCw, Check, X, ChevronLeft, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // ─────────────────────────────────────────
