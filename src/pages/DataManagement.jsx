@@ -114,7 +114,6 @@ export default function DataManagement() {
       <ExportModal
         isOpen={showExportModal}
         onClose={() => setShowExportModal(false)}
-        exportType={exportType}
       />
     </div>
   );
