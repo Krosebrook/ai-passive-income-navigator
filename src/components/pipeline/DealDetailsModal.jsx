@@ -15,6 +15,8 @@ import WorkflowBuilder from '@/components/pipeline/WorkflowBuilder';
 import TaskManager from './TaskManager';
 import DealMarketAnalysis from '@/components/market/DealMarketAnalysis';
 import DealInsightsPanel from '@/components/deals/DealInsightsPanel';
+import AutoDDReport from '@/components/pipeline/AutoDDReport';
+import ExitForecastPanel from '@/components/pipeline/ExitForecastPanel';
 
 export default function DealDetailsModal({ open, onClose, deal }) {
   const queryClient = useQueryClient();
@@ -79,8 +81,10 @@ export default function DealDetailsModal({ open, onClose, deal }) {
         </DialogHeader>
 
         <Tabs defaultValue="overview">
-          <TabsList className="grid w-full grid-cols-7">
+          <TabsList className="grid w-full grid-cols-9 text-xs">
             <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="auto-dd">Auto DD</TabsTrigger>
+            <TabsTrigger value="forecast">Forecast</TabsTrigger>
             <TabsTrigger value="insights">AI Insights</TabsTrigger>
             <TabsTrigger value="market">Market</TabsTrigger>
             <TabsTrigger value="workflow">Workflow</TabsTrigger>
@@ -88,6 +92,14 @@ export default function DealDetailsModal({ open, onClose, deal }) {
             <TabsTrigger value="reminders">Reminders</TabsTrigger>
             <TabsTrigger value="discussion">Discussion</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="auto-dd">
+            <AutoDDReport deal={deal} />
+          </TabsContent>
+
+          <TabsContent value="forecast">
+            <ExitForecastPanel deal={deal} />
+          </TabsContent>
 
           <TabsContent value="insights">
             <DealInsightsPanel dealId={deal.id} />
