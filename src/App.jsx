@@ -9,6 +9,7 @@ import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { Suspense } from 'react';
+import HiddenGems from './pages/HiddenGems';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -85,6 +86,11 @@ const AuthenticatedApp = () => {
           }
         />
       ))}
+      <Route path="/HiddenGems" element={
+        <LayoutWrapper currentPageName="HiddenGems">
+          <HiddenGems />
+        </LayoutWrapper>
+      } />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
