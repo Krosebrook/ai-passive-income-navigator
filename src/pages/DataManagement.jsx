@@ -10,7 +10,6 @@ import BackupStatus from '@/components/backup/BackupStatus';
 
 export default function DataManagement() {
   const [showExportModal, setShowExportModal] = useState(false);
-  const [exportType, setExportType] = useState(null);
 
   const { data: backups, refetch: refetchBackups } = useQuery({
     queryKey: ['backups'],
