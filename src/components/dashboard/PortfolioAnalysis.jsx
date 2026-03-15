@@ -18,7 +18,6 @@ import {
 } from 'recharts';
 import { TrendingUp, AlertTriangle, DollarSign, Layers, Sparkles, RefreshCw, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { motion } from 'framer-motion';
 
 // ── Colour palette ────────────────────────────────────────────

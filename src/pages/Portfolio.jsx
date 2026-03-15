@@ -23,6 +23,8 @@ import {
   LayoutGrid, List, Sparkles, TrendingUp
 } from 'lucide-react';
 
+import { portfolioIdeaSchema, formatZodError } from '@/lib/validations';
+import { toast } from 'sonner';
 import PageHeader from '@/components/ui/PageHeader';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import EmptyState from '@/components/ui/EmptyState';
@@ -90,11 +92,17 @@ export default function Portfolio() {
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.PortfolioIdea.create({
-      ...data,
-      color: GRADIENT_OPTIONS[Math.floor(Math.random() * GRADIENT_OPTIONS.length)],
-      is_generated: false
-    }),
+    mutationFn: (data) => {
+      const result = portfolioIdeaSchema.safeParse(data);
+      if (!result.success) {
+        throw new Error(formatZodError(result.error));
+      }
+      return base44.entities.PortfolioIdea.create({
+        ...result.data,
+        color: GRADIENT_OPTIONS[Math.floor(Math.random() * GRADIENT_OPTIONS.length)],
+        is_generated: false
+      });
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['portfolioIdeas'] });
       setShowAddModal(false);
@@ -106,6 +114,9 @@ export default function Portfolio() {
         status: 'exploring',
         priority: 'medium'
       });
+    },
+    onError: (error) => {
+      toast.error(error.message || 'Failed to add idea. Please try again.');
     }
   });
 
