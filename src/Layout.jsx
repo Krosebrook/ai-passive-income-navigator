@@ -18,7 +18,7 @@ import GamifiedOnboarding from '@/components/onboarding/GamifiedOnboarding';
 import AIOnboardingFlow from '@/components/onboarding/AIOnboardingFlow';
 import {
   Home, FolderHeart, TrendingUp, Users, Settings, Menu, X,
-  Sparkles, Shield
+  Sparkles, Shield, Gem
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -26,6 +26,7 @@ const NAV_ITEMS = [
   { name: 'Portfolio', icon: FolderHeart, page: 'Portfolio' },
   { name: 'AI Coach', icon: Sparkles, page: 'AICoach' },
   { name: 'Pipeline', icon: TrendingUp, page: 'DealPipeline' },
+  { name: 'Hidden Gems', icon: Gem, page: 'HiddenGems' },
   { name: 'Preferences', icon: Settings, page: 'UserPreferences' },
   { name: 'Community', icon: Users, page: 'Community' }
 ];
