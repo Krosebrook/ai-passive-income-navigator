@@ -2,7 +2,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { LayoutDashboard, TrendingUp, Sparkles, Settings, BarChart2, Target, Bookmark, PieChart } from 'lucide-react';
+import { LayoutDashboard, TrendingUp, Sparkles, Settings, BarChart2, Target, Bookmark, PieChart, Globe } from 'lucide-react';
 import DealPerformanceMetrics from '@/components/dashboard/DealPerformanceMetrics';
 import MarketPerformanceWidget from '@/components/dashboard/MarketPerformanceWidget';
 import AIInsightsSummary from '@/components/dashboard/AIInsightsSummary';
@@ -12,6 +12,7 @@ import MarketIntelligenceCharts from '@/components/dashboard/MarketIntelligenceC
 import DealRiskRewardCharts from '@/components/dashboard/DealRiskRewardCharts';
 import WatchlistDashboard from '@/components/dashboard/WatchlistDashboard';
 import PortfolioAnalysis from '@/components/dashboard/PortfolioAnalysis';
+import LiveMarketPulse from '@/components/dashboard/LiveMarketPulse';
 
 export default function Dashboard() {
   const { data: deals = [], isLoading: dealsLoading } = useQuery({
@@ -62,6 +63,10 @@ export default function Dashboard() {
             <TabsTrigger value="watchlist" className="data-[state=active]:bg-[#8b85f7]">
               <Bookmark className="w-4 h-4 mr-2" />
               Watchlist
+            </TabsTrigger>
+            <TabsTrigger value="live-pulse" className="data-[state=active]:bg-[#8b85f7]">
+              <Globe className="w-4 h-4 mr-2" />
+              Live Pulse
             </TabsTrigger>
             <TabsTrigger value="market-intel" className="data-[state=active]:bg-[#8b85f7]">
               <BarChart2 className="w-4 h-4 mr-2" />
@@ -120,6 +125,11 @@ export default function Dashboard() {
           {/* Watchlist Tab */}
           <TabsContent value="watchlist">
             <WatchlistDashboard />
+          </TabsContent>
+
+          {/* Live Market Pulse Tab */}
+          <TabsContent value="live-pulse">
+            <LiveMarketPulse />
           </TabsContent>
 
           {/* Market Intelligence Tab */}

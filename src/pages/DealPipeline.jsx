@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 import { Plus, TrendingUp, Zap, Settings, Layout, BarChart3, Target } from 'lucide-react';
 import MatchmakerPanel from '@/components/deals/MatchmakerPanel';
-import AddDealModal from '@/components/pipeline/AddDealModal';
+import SmartAddDealModal from '@/components/pipeline/SmartAddDealModal';
 import DealDetailsModal from '@/components/pipeline/DealDetailsModal';
 import AutomationRulesManager from '@/components/pipeline/AutomationRulesManager';
 import KanbanBoard from '@/components/pipeline/KanbanBoard';
@@ -181,7 +181,7 @@ export default function DealPipelinePage() {
           </TabsContent>
         </Tabs>
 
-        <AddDealModal 
+        <SmartAddDealModal 
           open={addModalOpen} 
           onClose={() => setAddModalOpen(false)} 
         />
