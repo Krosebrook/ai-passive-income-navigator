@@ -5,10 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
-import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from 'recharts';
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from 'recharts';
 import {
   TrendingUp, TrendingDown, Minus, Sparkles, RefreshCw,
-  Target, AlertTriangle, CheckCircle2, Loader2, Calendar, Zap
+  Target, AlertTriangle, CheckCircle2, Loader2, Calendar, Zap, BarChart3
 } from 'lucide-react';
 
 const ACTION_CONFIG = {
