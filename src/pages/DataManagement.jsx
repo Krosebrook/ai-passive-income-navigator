@@ -47,35 +47,17 @@ export default function DataManagement() {
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="space-y-3">
+            <CardContent>
               <Button
-                variant="outline"
-                className="w-full justify-start border-[#2d1e50] text-[#64748b] hover:text-[#8b85f7]"
-                onClick={() => handleExport('portfolio')}
+                className="w-full bg-gradient-to-r from-[#8b85f7] to-[#583cf0] hover:from-[#9a95ff] hover:to-[#6b4fff]"
+                onClick={() => setShowExportModal(true)}
               >
-                📊 Export Portfolio (CSV)
+                <Download className="w-4 h-4 mr-2" />
+                Open Export Center
               </Button>
-              <Button
-                variant="outline"
-                className="w-full justify-start border-[#2d1e50] text-[#64748b] hover:text-[#8b85f7]"
-                onClick={() => handleExport('transactions')}
-              >
-                💱 Export Transactions (CSV)
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full justify-start border-[#2d1e50] text-[#64748b] hover:text-[#8b85f7]"
-                onClick={() => handleExport('performance')}
-              >
-                📈 Export Performance Report (PDF)
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full justify-start border-[#2d1e50] text-[#64748b] hover:text-[#8b85f7]"
-                onClick={() => handleExport('all')}
-              >
-                📦 Export All Data (ZIP)
-              </Button>
+              <p className="text-xs text-[#64748b] mt-3 text-center">
+                Export deals, opportunities & investments as CSV or PDF
+              </p>
             </CardContent>
           </Card>
 
